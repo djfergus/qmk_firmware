@@ -85,11 +85,25 @@ void ergodox_blink_all_leds(void)
     ergodox_led_all_off();
     ergodox_led_all_set(LED_BRIGHTNESS_DEFAULT);
     ergodox_right_led_1_on();
-    _delay_ms(50);
+    _delay_ms(100);
+    ergodox_right_led_1_off();
+    _delay_ms(100);
     ergodox_right_led_2_on();
-    _delay_ms(50);
+    _delay_ms(100);
+    ergodox_right_led_2_off();
+    _delay_ms(100);
     ergodox_right_led_3_on();
-    _delay_ms(50);
+    _delay_ms(100);
+    ergodox_right_led_3_off();
+    _delay_ms(100);
+    ergodox_right_led_2_on();
+    _delay_ms(100);
+    ergodox_right_led_2_off();
+    _delay_ms(100);
+    ergodox_right_led_1_on();
+    _delay_ms(100);
+    ergodox_right_led_1_off();
+    _delay_ms(100);
 #ifdef LEFT_LEDS
     ergodox_left_led_1_on();
     _delay_ms(50);
@@ -107,11 +121,14 @@ void ergodox_blink_all_leds(void)
       mcp23018_status = ergodox_left_leds_update();
     }
 #endif
-    ergodox_right_led_1_off();
-    _delay_ms(50);
-    ergodox_right_led_2_off();
-    _delay_ms(50);
-    ergodox_right_led_3_off();
+    // ergodox_right_led_1_off();
+    // _delay_ms(50);
+    // ergodox_right_led_2_off();
+    // _delay_ms(50);
+    // ergodox_right_led_3_off();
+    // _delay_ms(50);
+    // ergodox_right_led_3_on();
+    // _delay_ms(50);
 #ifdef LEFT_LEDS
     _delay_ms(50);
     ergodox_left_led_1_off();
