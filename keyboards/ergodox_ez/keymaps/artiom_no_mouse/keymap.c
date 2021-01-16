@@ -57,7 +57,9 @@ enum custom_keycodes {
   ST_M_double_right_angle,
   ST_M_double_colon,
   ST_M_bunny_hop,
-  ST_M_enable_bunny_hop
+  ST_M_enable_bunny_hop,
+  ST_M_brightness_down,
+  ST_M_brightness_up,
 };
 
 int rgb_show = 1;
@@ -67,6 +69,8 @@ int enable_bunnyhop = 0;
 
 int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
 int leader_key_is_running = 0;
+
+int brightness_amount = 10;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -121,7 +125,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
-    ______,             ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ______,         ______,         ______,         ______,         RESET,
+    ______,             ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
     ______,             ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ______,         ______,         ______,         ______,         ST_M_enable_bunny_hop,
     ______,             ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),     LCTL(KC_K),     LCTL(KC_L),     ______,         ______,
     ______,             ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
@@ -242,7 +246,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
     //             8                    9                           0                    -                       =
     [Layer_macros] =
-            { LM_______,            LM_______,              LM_______,              LM_______,              LM_______,          \
+            { LM_______,            LM_Blooder_Red,         LM_NeonGreen,           LM_______,              LM_______,          \
     //             y                    u                           i                    o                       p
             LM_______,              LM_______,              LM_______,              LM_______,              LM_______,          \
     //             h                    j                           k                    l                       ;
@@ -294,6 +298,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
 };
 
+
 void set_layer_color(int layer) {
   for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
     if(enable_bunnyhop && i == 4){ //show indicator on = key
@@ -314,9 +319,25 @@ void set_layer_color(int layer) {
       if (!hsv.h && !hsv.s && !hsv.v) {
           rgb_matrix_set_color( i, 0, 0, 0 );
       } else {
-          RGB rgb = hsv_to_rgb( hsv );
-          float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-          rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+
+        if(brightness_amount != 0){
+            int check = hsv.v + brightness_amount;
+
+            if(check < 250 && check > 10){
+                hsv.v = check;
+            }else{
+                if(brightness_amount<0){
+                    brightness_amount+=10;
+                }else{
+                    brightness_amount-=10;
+                }
+            }
+        }
+
+        RGB rgb = hsv_to_rgb( hsv );
+        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+
       }
     }
 
@@ -484,6 +505,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       //enable_bunnyhop ? ergodox_right_led_1_on() : ergodox_right_led_1_off();
     }
     break;
+
+    case ST_M_brightness_up:
+    if (record->event.pressed) {
+      brightness_amount+=10;
+    }
+    break;
+
+    case ST_M_brightness_down:
+    if (record->event.pressed) {
+      brightness_amount-=10;
+    }
+    break;
+
+
+
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
@@ -572,9 +608,10 @@ void matrix_scan_user(void) {
       did_leader_succeed = true;
     }
     else
-    SEQ_THREE_KEYS(KC_RIGHT, KC_RIGHT, KC_RIGHT){ //turn on leds and wake
+    SEQ_THREE_KEYS(KC_RIGHT, KC_RIGHT, KC_RIGHT){ //turn on leds and wake and reset brightness
         rgb_timed_out = 0;
         rgb_show = 1;
+        brightness_amount = 0;
         did_leader_succeed = true;
     }
     leader_end();
