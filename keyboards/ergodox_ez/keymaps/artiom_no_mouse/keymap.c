@@ -70,7 +70,7 @@ int enable_bunnyhop = 0;
 int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
 int leader_key_is_running = 0;
 
-int brightness_amount = 10;
+int brightness_amount = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -505,21 +505,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       //enable_bunnyhop ? ergodox_right_led_1_on() : ergodox_right_led_1_off();
     }
     break;
-
     case ST_M_brightness_up:
     if (record->event.pressed) {
       brightness_amount+=10;
     }
     break;
-
     case ST_M_brightness_down:
     if (record->event.pressed) {
       brightness_amount-=10;
     }
     break;
-
-
-
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
@@ -590,12 +585,11 @@ void matrix_scan_user(void) {
       SEND_STRING("10.0.0.69:19009" SS_TAP(X_ENTER) SS_DELAY(700) "pirate" SS_TAP(X_TAB));
       did_leader_succeed = true;
     } else
-    SEQ_TWO_KEYS(KC_H, KC_A) {
+    SEQ_ONE_KEY(KC_H) {
       SEND_STRING("hahahahahahahahahahaha" );
       did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_C) {
-      // Anything you can do in a macro.
       SEND_STRING("code ." SS_TAP(X_ENTER));
       did_leader_succeed = true;
     } else
@@ -606,13 +600,16 @@ void matrix_scan_user(void) {
     SEQ_TWO_KEYS(KC_RIGHT, KC_RIGHT) { //toggle leds on/off
         rgb_show = !rgb_show;
       did_leader_succeed = true;
-    }
-    else
+    } else
     SEQ_THREE_KEYS(KC_RIGHT, KC_RIGHT, KC_RIGHT){ //turn on leds and wake and reset brightness
         rgb_timed_out = 0;
         rgb_show = 1;
         brightness_amount = 0;
         did_leader_succeed = true;
+    } else
+    SEQ_ONE_KEY(KC_E) {
+      SEND_STRING(SS_LSFT("'") "t80search_bot ");
+      did_leader_succeed = true;
     }
     leader_end();
   }
