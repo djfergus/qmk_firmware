@@ -65,6 +65,9 @@ int rgb_timed_out = 0;
 int use_bunnyhop = 0;
 int enable_bunnyhop = 0;
 
+int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
+int leader_key_is_running = 0;
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /*
@@ -293,18 +296,30 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
 void set_layer_color(int layer) {
   for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-    HSV hsv = {
-      .h = pgm_read_byte(&ledmap[layer][i][0]),
-      .s = pgm_read_byte(&ledmap[layer][i][1]),
-      .v = pgm_read_byte(&ledmap[layer][i][2]),
-    };
-    if (!hsv.h && !hsv.s && !hsv.v) {
-        rgb_matrix_set_color( i, 0, 0, 0 );
-    } else {
-        RGB rgb = hsv_to_rgb( hsv );
-        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+    if(enable_bunnyhop && i == 4){ //show indicator on = key
+      if(modifiers_blink_count < 50){
+        rgb_matrix_set_color( i, 250, 0, 0 );
+      }else if(modifiers_blink_count > 100){
+        modifiers_blink_count = 0;
+      }
+      modifiers_blink_count++;
+    }else if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
+      rgb_matrix_set_color( i, 0, 0, 250 );
+    }else{
+      HSV hsv = {
+        .h = pgm_read_byte(&ledmap[layer][i][0]),
+        .s = pgm_read_byte(&ledmap[layer][i][1]),
+        .v = pgm_read_byte(&ledmap[layer][i][2]),
+      };
+      if (!hsv.h && !hsv.s && !hsv.v) {
+          rgb_matrix_set_color( i, 0, 0, 0 );
+      } else {
+          RGB rgb = hsv_to_rgb( hsv );
+          float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+          rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+      }
     }
+
   }
 }
 
@@ -466,7 +481,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ST_M_enable_bunny_hop:
     if (record->event.pressed) {
       enable_bunnyhop = !enable_bunnyhop;
-      enable_bunnyhop ? ergodox_right_led_1_on() : ergodox_right_led_1_off();
+      //enable_bunnyhop ? ergodox_right_led_1_on() : ergodox_right_led_1_off();
     }
     break;
     case RGB_SLD:
@@ -565,7 +580,7 @@ void matrix_scan_user(void) {
     leader_end();
   }
 
-  if(timeout_counter > 50000){
+  if(timeout_counter > 40000){
       timeout_counter = 0;
       rgb_timed_out = 1;
   }
@@ -583,11 +598,13 @@ void matrix_scan_user(void) {
 }
 
 void leader_start(void) {
-    ergodox_right_led_3_on();
+    //ergodox_right_led_3_on();
+    leader_key_is_running = 1;
 }
 
 void leader_end(void) {
   //ergodox_right_led_1_off();
   //ergodox_right_led_2_off();
-  ergodox_right_led_3_off();
+  //ergodox_right_led_3_off();
+  leader_key_is_running = 0;
 }
