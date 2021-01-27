@@ -60,6 +60,8 @@ enum custom_keycodes {
   ST_M_enable_bunny_hop,
   ST_M_brightness_down,
   ST_M_brightness_up,
+  ST_M_hue_down,
+  ST_M_hue_up,
 };
 
 int rgb_show = 1;
@@ -71,6 +73,7 @@ int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the
 int leader_key_is_running = 0;
 
 int brightness_amount = 0;
+int hue_amount = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -126,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
     ______,             ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
-    ______,             ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ______,         ______,         ______,         ______,         ST_M_enable_bunny_hop,
+    ______,             ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ST_M_hue_down,                       ST_M_hue_up,         ______,         ______,         ST_M_enable_bunny_hop,
     ______,             ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),     LCTL(KC_K),     LCTL(KC_L),     ______,         ______,
     ______,             ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
     ______,             ______,         ______,             ______,         ______,                                                                                                         ______,         ______,         ______,         ______,         ______,
@@ -248,7 +251,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     [Layer_macros] =
             { LM_______,            LM_Blooder_Red,         LM_NeonGreen,           LM_______,              LM_______,          \
     //             y                    u                           i                    o                       p
-            LM_______,              LM_______,              LM_______,              LM_______,              LM_______,          \
+            LM_______,              LM_Blooder_Red,         LM_NeonGreen,           LM_______,              LM_______,          \
     //             h                    j                           k                    l                       ;
             KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        LM_______,          \
     //             n                    m                           ,                    .                       /
@@ -331,6 +334,19 @@ void set_layer_color(int layer) {
                 }else{
                     brightness_amount-=10;
                 }
+            }
+        }
+
+        if(hue_amount != 0){
+            int check = hsv.h + hue_amount;
+            if(check > 250){
+                check = check - 250;
+            }
+            if(check < 5){
+                check = check + 250;
+            }
+            if(check < 250 && check > 5){
+                hsv.h = check;
             }
         }
 
@@ -515,6 +531,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       brightness_amount-=10;
     }
     break;
+    case ST_M_hue_up:
+    if (record->event.pressed) {
+      hue_amount+=5;
+    }
+    break;
+    case ST_M_hue_down:
+    if (record->event.pressed) {
+      hue_amount-=5;
+    }
+    break;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
@@ -605,6 +631,7 @@ void matrix_scan_user(void) {
         rgb_timed_out = 0;
         rgb_show = 1;
         brightness_amount = 0;
+        hue_amount = 0;
         did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_E) {
