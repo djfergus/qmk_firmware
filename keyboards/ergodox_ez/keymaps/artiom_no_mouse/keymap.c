@@ -62,6 +62,7 @@ enum custom_keycodes {
   ST_M_brightness_up,
   ST_M_hue_down,
   ST_M_hue_up,
+  ST_M_toggle_main_layer_brightness
 };
 
 int rgb_show = 1;
@@ -74,6 +75,8 @@ int leader_key_is_running = 0;
 
 int brightness_amount = 0;
 int hue_amount = 0;
+
+int main_layer_brightness = 1; // can disable the main layer rgb individually
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -130,7 +133,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [Layer_macros] = LAYOUT_ergodox_pretty(
     ______,             ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
     ______,             ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ST_M_hue_down,                       ST_M_hue_up,         ______,         ______,         ST_M_enable_bunny_hop,
-    ______,             ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),     LCTL(KC_K),     LCTL(KC_L),     ______,         ______,
+    ______,             ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),                   LCTL(KC_K),               LCTL(KC_L),       ______,         ST_M_toggle_main_layer_brightness,
     ______,             ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
     ______,             ______,         ______,             ______,         ______,                                                                                                         ______,         ______,         ______,         ______,         ______,
 
@@ -319,7 +322,7 @@ void set_layer_color(int layer) {
         .s = pgm_read_byte(&ledmap[layer][i][1]),
         .v = pgm_read_byte(&ledmap[layer][i][2]),
       };
-      if (!hsv.h && !hsv.s && !hsv.v) {
+      if ((!hsv.h && !hsv.s && !hsv.v) || (layer == 0 && !main_layer_brightness)) {
           rgb_matrix_set_color( i, 0, 0, 0 );
       } else {
 
@@ -541,6 +544,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       hue_amount-=5;
     }
     break;
+    case ST_M_toggle_main_layer_brightness:
+    if (record->event.pressed) {
+      main_layer_brightness = !main_layer_brightness;
+    }
+    break;
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
@@ -632,6 +640,7 @@ void matrix_scan_user(void) {
         rgb_show = 1;
         brightness_amount = 0;
         hue_amount = 0;
+        main_layer_brightness = 1;
         did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_E) {
