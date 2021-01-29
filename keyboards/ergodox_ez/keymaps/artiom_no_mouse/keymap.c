@@ -647,6 +647,10 @@ void matrix_scan_user(void) {
       SEND_STRING(SS_LSFT("'") "t80search_bot ");
       did_leader_succeed = true;
     }
+    SEQ_ONE_KEY(KC_UP) {
+      layer_on(3);
+      did_leader_succeed = true;
+    }
     leader_end();
   }
 
