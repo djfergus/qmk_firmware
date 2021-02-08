@@ -67,6 +67,10 @@ enum custom_keycodes {
 
 int rgb_show = 1;
 int rgb_timed_out = 0;
+int timeout_counter = 0;
+uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
+int rgb_time_out_value = 3600 ;   // 100 = ~9seconds, 666= ~ 54s
+
 int use_bunnyhop = 0;
 int enable_bunnyhop = 0;
 
@@ -112,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                                                     LSFT(KC_PSCREEN),KC_PSCREEN,                            DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
-                                                                    LT(1,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(2,KC_ENTER), KC_SPACE
+                                                                    LT(1,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(2,KC_ENTER), ST_M_bunny_hop
   ),
 
 
@@ -506,6 +510,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
     case ST_M_bunny_hop:
     if (record->event.pressed) {
+        rgb_timed_out = 0;
+        timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
         use_bunnyhop = 1;
         if(!enable_bunnyhop){
             SEND_STRING(SS_DOWN(X_SPACE));
@@ -558,47 +564,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-uint32_t layer_state_set_user(uint32_t state) {
+uint32_t layer_state_set_user(uint32_t state) { return state; };
 
-//   uint8_t layer = biton32(state);
-
-//   ergodox_board_led_off();
-//   ergodox_right_led_1_off();
-//   ergodox_right_led_2_off();
-//   ergodox_right_led_3_off();
-//   switch (layer) {
-//     case 1:
-//       ergodox_right_led_1_on();
-//       break;
-//     case 2:
-//       ergodox_right_led_2_on();
-//       break;
-//     case 3:
-//       ergodox_right_led_3_on();
-//       break;
-//     case 4:
-//       ergodox_right_led_1_on();
-//       ergodox_right_led_2_on();
-//       break;
-//     case 5:
-//       ergodox_right_led_1_on();
-//       ergodox_right_led_3_on();
-//       break;
-//     case 6:
-//       ergodox_right_led_2_on();
-//       ergodox_right_led_3_on();
-//       break;
-//     case 7:
-//       ergodox_right_led_1_on();
-//       ergodox_right_led_2_on();
-//       ergodox_right_led_3_on();
-//       break;
-//     default:
-//       break;
-//   }
-  return state;
-};
-int timeout_counter = 0;
 int bunny_hop_delay_counter = 0;
 LEADER_EXTERNS();
 int did_leader_succeed;
@@ -654,11 +621,16 @@ void matrix_scan_user(void) {
     leader_end();
   }
 
-  if(timeout_counter > 40000){
-      timeout_counter = 0;
-      rgb_timed_out = 1;
+  if(rgb_sync_to_timer != g_rgb_timer){
+        rgb_sync_to_timer = g_rgb_timer;
+        if(rgb_timed_out == 0){ // update rgb timeout
+            if(timeout_counter > rgb_time_out_value){
+                timeout_counter = 0;
+                rgb_timed_out = 1;
+            }
+            timeout_counter++;
+        }
   }
-  timeout_counter++;
 
   if(enable_bunnyhop && use_bunnyhop){
        if(bunny_hop_delay_counter <= 0){
@@ -672,13 +644,9 @@ void matrix_scan_user(void) {
 }
 
 void leader_start(void) {
-    //ergodox_right_led_3_on();
     leader_key_is_running = 1;
 }
 
 void leader_end(void) {
-  //ergodox_right_led_1_off();
-  //ergodox_right_led_2_off();
-  //ergodox_right_led_3_off();
   leader_key_is_running = 0;
 }
