@@ -208,7 +208,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     //             y                      u                         i                       o                       p
             KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,     \
     //             h                      j                         k                       l                       ;
-            LM_golden_yellow,       LM_golden_yellow,       LM_golden_yellow,       LM_golden_yellow,       KM_Light_yellow,    \
+            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,    \
     //             n                      m                         ,                       .                       /
             KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,    \
     //             <-                     down                      up                      ->
