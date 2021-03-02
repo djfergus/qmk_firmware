@@ -17,7 +17,14 @@
         "xstddef": "c",
         "type_traits": "c",
         "utility": "c",
-        "ranges": "c"
+        "ranges": "c",
+        "sstream": "c",
+        "regex": "c",
+        "condition_variable": "c",
+        "string": "c",
+        "*.ipp": "c",
+        "*.tcc": "c",
+        "ratio": "c"
     },
     "[markdown]": {
         "editor.trimAutoWhitespace": false,
