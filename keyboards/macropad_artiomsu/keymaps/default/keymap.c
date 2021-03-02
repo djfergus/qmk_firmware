@@ -15,10 +15,10 @@ To flash the firmware
 sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_default.hex
 */
 
-
+#define EXPRESSIONS_BUFF_SIZE 64
 int input_count = 0;    // stores the amount of the filled in expressions_buffer.
-char expressions_buffer[64]; //stores the typed out string
-
+char expressions_buffer[EXPRESSIONS_BUFF_SIZE]; //stores the typed out string
+int decimal_point_pressision = 2; //how many decimal points to show by default, can be changed via macros bellow.
 
 
 
@@ -82,7 +82,7 @@ void te_free(te_expr *n);
 #############################################################################################
 #############################################################################################
 */
-
+void write_char_to_buff(char c);
 
 enum custom_keycodes {
     L1_1 = SAFE_RANGE,
@@ -103,7 +103,9 @@ enum custom_keycodes {
     L1_DOT,
     L1_PRINT_EQUATION,
     L1_POWER,
-    L1_MOD
+    L1_MOD,
+    L1_PRECISION_MINUS,
+    L1_PRECISION_PLUS
 };
 
 
@@ -117,8 +119,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_KP_0, KC_KP_DOT, KC_KP_EQUAL, MO(1)),
 
 	KEYMAP(
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+		KC_TRNS, KC_TRNS, KC_TRNS, L1_PRECISION_MINUS,
+		KC_TRNS, KC_TRNS, KC_TRNS, L1_PRECISION_PLUS,
 		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
 		KC_TRNS, KC_TRNS, KC_TRNS, RESET,
 		KC_TRNS, KC_TRNS, TG(2), TO(0)),
@@ -138,142 +140,122 @@ void matrix_init_user(void) {
 void matrix_scan_user(void) {
 }
 
-
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case L1_1:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '1';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('1');
             }
             break;
         case L1_2:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '2';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('2');
             }
             break;
         case L1_3:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '3';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('3');
             }
             break;
         case L1_4:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '4';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('4');
             }
             break;
         case L1_5:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '5';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('5');
             }
             break;
         case L1_6:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '6';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('6');
             }
             break;
         case L1_7:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '7';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('7');
             }
             break;
         case L1_8:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '8';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('8');
             }
             break;
         case L1_9:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '9';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('9');
             }
             break;
         case L1_0:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '0';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('0');
             }
             break;
         case L1_PLUS:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '+';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('+');
             }
             break;
         case L1_MINUS:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '-';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('-');
             }
             break;
         case L1_MULTIPLY:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '*';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('*');
             }
             break;
         case L1_SLASH:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '/';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('/');
             }
             break;
         case L1_DOT:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '.';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('.');
             }
             break;
         case L1_POWER:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '^';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('^');
             }
             break;
         case L1_MOD:
             if (record->event.pressed) {
-                expressions_buffer[input_count] = '%';
-                expressions_buffer[input_count+1] = '\0';
-                input_count++;
+                write_char_to_buff('%');
             }
             break;
         case L1_EQUALS:
             if (record->event.pressed) {
                 double result = te_interp(expressions_buffer, 0);
-                char output_string[64];
+                char output_string[EXPRESSIONS_BUFF_SIZE];
 
-                dtostrf(result, 4, 4, output_string);
+                dtostrf(result, 1, decimal_point_pressision, output_string);
                 send_string(output_string);
                 input_count = 0;
             }
             break;
         case L1_PRINT_EQUATION:
             if (record->event.pressed) {
-                send_string(expressions_buffer);
+                if(input_count>0){
+                    send_string(expressions_buffer);
+                }
+            }
+            break;
+        case L1_PRECISION_MINUS:
+            if (record->event.pressed) {
+                if(decimal_point_pressision > 0){
+                    decimal_point_pressision--;
+                }
+            }
+            break;
+        case L1_PRECISION_PLUS:
+            if (record->event.pressed) {
+                if(decimal_point_pressision < 10){
+                    decimal_point_pressision++;
+                }
             }
             break;
     }
@@ -285,7 +267,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
 
-
+void write_char_to_buff(char c){
+    if(input_count+1 < EXPRESSIONS_BUFF_SIZE){
+        expressions_buffer[input_count] = c;
+        expressions_buffer[input_count+1] = '\0';
+        input_count++;
+    }
+}
 
 
 /*
