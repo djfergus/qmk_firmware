@@ -50,6 +50,8 @@ This layout also enables auto clicking to the left mouse key, there are two mode
 1. The firmware sends left mouse clicks while the left mouse key is pressed down.
 2. The firmware sends left mouse clicks all the time until auto clicking is disabled regradless if the mouse key is pressed.
 
+There is also a gaming layer thrown in just for fun.
+
 # Compile and flash
 You will need to short pins 2 and 3 on the pro micro to enter flashing mode. 
 
