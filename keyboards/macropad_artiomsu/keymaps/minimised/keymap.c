@@ -34,6 +34,7 @@ sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artioms
 #define Layer_calc 2
 #define Layer_mouse 3
 #define Layer_gaming 4
+#define Layer_extra 5
 
 // for the calculator functionality
 #define EXPRESSIONS_BUFF_SIZE 64
@@ -159,13 +160,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_KP_7,        KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
 		KC_KP_4,        KC_KP_5,        KC_KP_6,            KC_KP_ENTER,
 		KC_KP_1,        KC_KP_2,        KC_KP_3,            KC_COMMA,
-		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        MO(Layer_shortcuts)),
+		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BSPACE)),
 
 	[Layer_shortcuts] = KEYMAP( //layer switcher and some settings
 		AUTO_CLICKER_HOLD,      KC_TRNS,         KC_TRNS,        L1_PRECISION_MINUS,
 		AUTO_CLICKER_AUTO,      KC_TRNS,         KC_TRNS,        L1_PRECISION_PLUS,
 		KC_TRNS,                KC_TRNS,         KC_TRNS,        KC_TRNS,
-		KC_TRNS,                KC_TRNS,         KC_TRNS,        RESET,
+		TO(Layer_extra),        KC_TRNS,         KC_TRNS,        RESET,
 		TO(Layer_mouse),        TO(Layer_gaming),TO(Layer_calc), TO(Layer_main)),
 
     [Layer_calc] = KEYMAP( //hardware calculator
@@ -187,7 +188,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_R,           KC_Q,           KC_W,           KC_E,
 		KC_TAB,         KC_A,           KC_S,           KC_D,
 		KC_LSHIFT,      KC_X,           KC_C,           KC_V,
-		TO(Layer_main), KC_F,        KC_LCTRL,       KC_SPACE)
+		TO(Layer_main), KC_F,        KC_LCTRL,       KC_SPACE),
+
+    [Layer_extra] = KEYMAP( //extra stuff for obs and things
+		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),     KC_TRNS,
+		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
+		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
+		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
+		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    TO(Layer_main))
 
 };
 

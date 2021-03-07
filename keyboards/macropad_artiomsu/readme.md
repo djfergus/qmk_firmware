@@ -30,7 +30,7 @@
 ```
 
 
-This is a 20 button macropad custom made by myself ArtiomSu. Checkout the Photos of the build down at the bottom.
+This is a 20 button macropad custom made by myself ArtiomSu. Checkout the [Photos](#photos) of the build down at the bottom.
 
 This macropad acts like a hardware calculator that types out the result of an equation entered directly into the numpad with the help of a modified TinyExpr library. 
 
@@ -51,6 +51,10 @@ This layout also enables auto clicking to the left mouse key, there are two mode
 2. The firmware sends left mouse clicks all the time until auto clicking is disabled regradless if the mouse key is pressed.
 
 There is also a gaming layer thrown in just for fun.
+
+And lastly there is an extras layer for keybindings for obs.
+
+To see all the layers in this layout scroll down to the [Minimised Layout Layers](#minimised-layout-layers) section
 
 # Compile and flash
 You will need to short pins 2 and 3 on the pro micro to enter flashing mode. 
@@ -242,6 +246,36 @@ To flash the firmware
                     |                              |
                     |  +---+  +---+  +---+  +---+  |
                     |  | Z |  | F |  | ^ |  | _ |  |
+                    |  +---+  +---+  +---+  +---+  |
+                    +------------------------------+
+```
+
+```
+                    +------------------------------+
+                    |        Extra Layer           |
+                    | 1 = OBS Scene 1              |
+                    | 2 = OBS Scene 2              |
+                    | 3 = OBS Scene 3              |
+                    | L = Default Layer            |
+                    +------------------------------+
+                    |  +---+  +---+  +---+  +---+  |
+                    |  | 1 |  | 2 |  | 3 |  |   |  |
+                    |  +---+  +---+  +---+  +---+  |
+                    |                              |
+                    |  +---+  +---+  +---+  +---+  |
+                    |  |   |  |   |  |   |  |   |  |
+                    |  +---+  +---+  +---+  +---+  |
+                    |                              |
+                    |  +---+  +---+  +---+  +---+  |
+                    |  |   |  |   |  |   |  |   |  |
+                    |  +---+  +---+  +---+  +---+  |
+                    |                              |
+                    |  +---+  +---+  +---+  +---+  |
+                    |  |   |  |   |  |   |  |   |  |
+                    |  +---+  +---+  +---+  +---+  |
+                    |                              |
+                    |  +---+  +---+  +---+  +---+  |
+                    |  |   |  |   |  |   |  | L |  |
                     |  +---+  +---+  +---+  +---+  |
                     +------------------------------+
 ```
