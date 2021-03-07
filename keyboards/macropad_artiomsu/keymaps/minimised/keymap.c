@@ -5,18 +5,20 @@
 #include <string.h>
 #include <limits.h>
 /*
-This layout needs to be compiled with an older avr-binutils package otherwise the firwmare is too big.
-If you dont want to do this see the minified layout, I have removed some unneeded funtions from the library.
+This layout removes unessesarry functions from the tinyexpr library,
+well the functions that are not needed for the layout as this is a fairly simple calculator.
+The reduction in size allows you to add more features to the firmware without compromising on the calculator.
 
 To compile the layout
-make clean && make macropad_artiomsu:default
+make clean && make macropad_artiomsu:minimised
 
 To find the device plug it in and run
 sudo dmesg | grep tty
 
 To flash the firmware
-sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_default.hex
+sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_minimised.hex
 */
+
 
 /*
 #############################################################################################
@@ -27,10 +29,25 @@ sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artioms
 #############################################################################################
 #############################################################################################
 */
+#define Layer_main 0
+#define Layer_shortcuts 1
+#define Layer_calc 2
+#define Layer_mouse 3
+#define Layer_gaming 4
+
+// for the calculator functionality
 #define EXPRESSIONS_BUFF_SIZE 64
 int input_count = 0;    // stores the amount of the filled in expressions_buffer.
 char expressions_buffer[EXPRESSIONS_BUFF_SIZE]; //stores the typed out string
 int decimal_point_pressision = 2; //how many decimal points to show by default, can be changed via macros bellow.
+
+// for the mouse auto clicker
+int auto_clicker_enabled = 0; // if the auto clicker is enabled for the hold action
+int auto_clicker_auto_enabled = 0; // if the auto clicker is enabled regardless of holding the mouse key.
+int auto_clicker_hold = 0; // if the mouse key is pressed down.
+int auto_clicker_timer = 0; // delay counter, delay prevents freezing the app while auto clicking
+int auto_clicker_max_timer = 100; // auto_clicker_timer resets after reaching this and a mouse click is performed when the auto_clicker_timer is 1.
+
 /*
 #############################################################################################
 #############################################################################################
@@ -40,6 +57,7 @@ int decimal_point_pressision = 2; //how many decimal points to show by default, 
 #############################################################################################
 #############################################################################################
 */
+
 
 /*
 #############################################################################################
@@ -104,6 +122,7 @@ void te_free(te_expr *n);
 void write_char_to_buff(char c);
 
 enum custom_keycodes {
+    // for the calc layer
     L1_1 = SAFE_RANGE,
     L1_2,
     L1_3,
@@ -124,32 +143,51 @@ enum custom_keycodes {
     L1_POWER,
     L1_MOD,
     L1_PRECISION_MINUS,
-    L1_PRECISION_PLUS
+    L1_PRECISION_PLUS,
+    // for mouse functionality
+    AUTO_CLICKER_HOLD,
+    AUTO_CLICKER_AUTO,
+    LEFT_MOUSE_CLICKER
 };
+
 
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-	KEYMAP(
-		KC_NUMLOCK, KC_KP_SLASH, KC_KP_ASTERISK, KC_KP_MINUS,
-		KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_PLUS,
-		KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_ENTER,
-		KC_KP_1, KC_KP_2, KC_KP_3, KC_COMMA,
-		KC_KP_0, KC_KP_DOT, KC_KP_EQUAL, MO(1)),
+	[Layer_main] = KEYMAP( //default numpad
+		KC_NUMLOCK,     KC_KP_SLASH,    KC_KP_ASTERISK,     KC_KP_MINUS,
+		KC_KP_7,        KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
+		KC_KP_4,        KC_KP_5,        KC_KP_6,            KC_KP_ENTER,
+		KC_KP_1,        KC_KP_2,        KC_KP_3,            KC_COMMA,
+		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        MO(Layer_shortcuts)),
 
-	KEYMAP(
-		KC_TRNS, KC_TRNS, KC_TRNS, L1_PRECISION_MINUS,
-		KC_TRNS, KC_TRNS, KC_TRNS, L1_PRECISION_PLUS,
-		KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-		KC_TRNS, KC_TRNS, KC_TRNS, RESET,
-		KC_TRNS, KC_TRNS, TG(2), TO(0)),
+	[Layer_shortcuts] = KEYMAP( //layer switcher and some settings
+		AUTO_CLICKER_HOLD,      KC_TRNS,         KC_TRNS,        L1_PRECISION_MINUS,
+		AUTO_CLICKER_AUTO,      KC_TRNS,         KC_TRNS,        L1_PRECISION_PLUS,
+		KC_TRNS,                KC_TRNS,         KC_TRNS,        KC_TRNS,
+		KC_TRNS,                KC_TRNS,         KC_TRNS,        RESET,
+		TO(Layer_mouse),        TO(Layer_gaming),TO(Layer_calc), TO(Layer_main)),
 
-    KEYMAP(
-		L1_PRINT_EQUATION, L1_SLASH, L1_MULTIPLY, L1_MINUS,
-		L1_7, L1_8, L1_9, L1_PLUS,
-		L1_4, L1_5, L1_6, L1_POWER,
-		L1_1, L1_2, L1_3, L1_MOD,
-		L1_0, L1_DOT, L1_EQUALS, TO(0))
+    [Layer_calc] = KEYMAP( //hardware calculator
+		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
+		L1_7,               L1_8,       L1_9,           L1_PLUS,
+		L1_4,               L1_5,       L1_6,           L1_POWER,
+		L1_1,               L1_2,       L1_3,           L1_MOD,
+		L1_0,               L1_DOT,     L1_EQUALS,      TO(Layer_main)),
+
+    [Layer_mouse] = KEYMAP( //mouse layer
+		KC_MS_ACCEL0,       KC_MS_ACCEL1,   KC_MS_ACCEL2,   KC_MS_WH_UP,
+		KC_TRNS,            KC_MS_UP,       KC_TRNS,        KC_MS_WH_DOWN,
+		KC_MS_LEFT,         KC_MS_DOWN,     KC_MS_RIGHT,    KC_MS_BTN4,
+		KC_TRNS,            KC_TRNS,        KC_TRNS,        KC_MS_BTN5,
+		LEFT_MOUSE_CLICKER, KC_MS_BTN3,     KC_MS_BTN2,     TO(Layer_main)),
+
+    [Layer_gaming] = KEYMAP( //gaming layer
+		KC_1,           KC_2,           KC_3,           KC_4,
+		KC_R,           KC_Q,           KC_W,           KC_E,
+		KC_TAB,         KC_A,           KC_S,           KC_D,
+		KC_LSHIFT,      KC_X,           KC_C,           KC_V,
+		TO(Layer_main), KC_F,        KC_LCTRL,       KC_SPACE)
 
 };
 
@@ -157,6 +195,17 @@ void matrix_init_user(void) {
 }
 
 void matrix_scan_user(void) {
+    if((auto_clicker_enabled && auto_clicker_hold) || (auto_clicker_auto_enabled)){
+        auto_clicker_timer++;
+        if(auto_clicker_timer == 1){
+            tap_code(KC_MS_BTN1);
+        }else{
+            if(auto_clicker_timer > auto_clicker_max_timer){
+                auto_clicker_timer=0;
+            }
+        }
+
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -277,6 +326,40 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
             break;
+
+        // mouse keys
+        case LEFT_MOUSE_CLICKER:
+            if(record->event.pressed){
+                if(auto_clicker_enabled){
+                    //send_string(SS_TAP(X_MS_BTN1));
+                    //tap_code(KC_MS_BTN1);
+                    auto_clicker_hold = 1;
+                }else{
+                    register_code(KC_MS_BTN1);
+                    //send_string(SS_DOWN(X_MS_BTN1));
+                }
+            }else{
+                if(auto_clicker_enabled){
+                    auto_clicker_hold = 0;
+                }else{
+                    unregister_code(KC_MS_BTN1);
+                    //send_string(SS_UP(X_MS_BTN1));
+                }
+            }
+            break;
+        case AUTO_CLICKER_HOLD:
+            if(record->event.pressed){
+                auto_clicker_enabled =!auto_clicker_enabled;
+                if(!auto_clicker_enabled){
+                    auto_clicker_hold = 0;
+                }
+            }
+            break;
+        case AUTO_CLICKER_AUTO:
+            if(record->event.pressed){
+                auto_clicker_auto_enabled =!auto_clicker_auto_enabled;
+            }
+            break;
     }
 	return true;
 }
@@ -327,8 +410,8 @@ void write_char_to_buff(char c){
 typedef double (*te_fun2)(double, double);
 
 enum {
-    TOK_NULL = TE_CLOSURE7+1, TOK_ERROR, TOK_END, TOK_SEP,
-    TOK_OPEN, TOK_CLOSE, TOK_NUMBER, TOK_VARIABLE, TOK_INFIX
+    TOK_NULL = TE_CLOSURE7+1, TOK_ERROR, TOK_END,
+    TOK_NUMBER, TOK_VARIABLE, TOK_INFIX
 };
 
 
@@ -391,68 +474,10 @@ void te_free(te_expr *n) {
 }
 
 
-static double pi(void) {return 3.14159265358979323846;}
-static double e(void) {return 2.71828182845904523536;}
-static double fac(double a) {/* simplest version of fac */
-    if (a < 0.0)
-        return NAN;
-    if (a > UINT_MAX)
-        return INFINITY;
-    unsigned int ua = (unsigned int)(a);
-    unsigned long int result = 1, i;
-    for (i = 1; i <= ua; i++) {
-        if (i > ULONG_MAX / result)
-            return INFINITY;
-        result *= i;
-    }
-    return (double)result;
-}
-static double ncr(double n, double r) {
-    if (n < 0.0 || r < 0.0 || n < r) return NAN;
-    if (n > UINT_MAX || r > UINT_MAX) return INFINITY;
-    unsigned long int un = (unsigned int)(n), ur = (unsigned int)(r), i;
-    unsigned long int result = 1;
-    if (ur > un / 2) ur = un - ur;
-    for (i = 1; i <= ur; i++) {
-        if (result > ULONG_MAX / (un - ur + i))
-            return INFINITY;
-        result *= un - ur + i;
-        result /= i;
-    }
-    return result;
-}
-static double npr(double n, double r) {return ncr(n, r) * fac(r);}
 
 static const te_variable functions[] = {
     /* must be in alphabetical order */
-    {"abs", abs,     TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"acos", acos,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"asin", asin,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"atan", atan,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"atan2", atan2,  TE_FUNCTION2 | TE_FLAG_PURE, 0},
-    {"ceil", ceil,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"cos", cos,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"cosh", cosh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"e", e,          TE_FUNCTION0 | TE_FLAG_PURE, 0},
-    {"exp", exp,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"fac", fac,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"floor", floor,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"ln", log,       TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#ifdef TE_NAT_LOG
-    {"log", log,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#else
-    {"log", log10,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-#endif
-    {"log10", log10,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"ncr", ncr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
-    {"npr", npr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
-    {"pi", pi,        TE_FUNCTION0 | TE_FLAG_PURE, 0},
     {"pow", pow,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
-    {"sin", sin,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"sinh", sinh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"sqrt", sqrt,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"tan", tan,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
-    {"tanh", tanh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {0, 0, 0, 0}
 };
 
@@ -497,8 +522,6 @@ static double sub(double a, double b) {return a - b;}
 static double mul(double a, double b) {return a * b;}
 static double divide(double a, double b) {return a / b;}
 static double negate(double a) {return -a;}
-static double comma(double a, double b) {(void)a; return b;}
-
 
 void next_token(state *s) {
     s->type = TOK_NULL;
@@ -555,9 +578,6 @@ void next_token(state *s) {
                     case '/': s->type = TOK_INFIX; s->function = divide; break;
                     case '^': s->type = TOK_INFIX; s->function = pow; break;
                     case '%': s->type = TOK_INFIX; s->function = fmod; break;
-                    case '(': s->type = TOK_OPEN; break;
-                    case ')': s->type = TOK_CLOSE; break;
-                    case ',': s->type = TOK_SEP; break;
                     case ' ': case '\t': case '\n': case '\r': break;
                     default: s->type = TOK_ERROR; break;
                 }
@@ -595,14 +615,6 @@ static te_expr *base(state *s) {
             ret->function = s->function;
             if (IS_CLOSURE(s->type)) ret->parameters[0] = s->context;
             next_token(s);
-            if (s->type == TOK_OPEN) {
-                next_token(s);
-                if (s->type != TOK_CLOSE) {
-                    s->type = TOK_ERROR;
-                } else {
-                    next_token(s);
-                }
-            }
             break;
 
         case TE_FUNCTION1:
@@ -625,34 +637,7 @@ static te_expr *base(state *s) {
             if (IS_CLOSURE(s->type)) ret->parameters[arity] = s->context;
             next_token(s);
 
-            if (s->type != TOK_OPEN) {
-                s->type = TOK_ERROR;
-            } else {
-                int i;
-                for(i = 0; i < arity; i++) {
-                    next_token(s);
-                    ret->parameters[i] = expr(s);
-                    if(s->type != TOK_SEP) {
-                        break;
-                    }
-                }
-                if(s->type != TOK_CLOSE || i != arity - 1) {
-                    s->type = TOK_ERROR;
-                } else {
-                    next_token(s);
-                }
-            }
-
-            break;
-
-        case TOK_OPEN:
-            next_token(s);
-            ret = list(s);
-            if (s->type != TOK_CLOSE) {
-                s->type = TOK_ERROR;
-            } else {
-                next_token(s);
-            }
+            s->type = TOK_ERROR;
             break;
 
         default:
@@ -686,47 +671,7 @@ static te_expr *power(state *s) {
     return ret;
 }
 
-#ifdef TE_POW_FROM_RIGHT
-static te_expr *factor(state *s) {
-    /* <factor>    =    <power> {"^" <power>} */
-    te_expr *ret = power(s);
 
-    int neg = 0;
-
-    if (ret->type == (TE_FUNCTION1 | TE_FLAG_PURE) && ret->function == negate) {
-        te_expr *se = ret->parameters[0];
-        free(ret);
-        ret = se;
-        neg = 1;
-    }
-
-    te_expr *insertion = 0;
-
-    while (s->type == TOK_INFIX && (s->function == pow)) {
-        te_fun2 t = s->function;
-        next_token(s);
-
-        if (insertion) {
-            /* Make exponentiation go right-to-left. */
-            te_expr *insert = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, insertion->parameters[1], power(s));
-            insert->function = t;
-            insertion->parameters[1] = insert;
-            insertion = insert;
-        } else {
-            ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, power(s));
-            ret->function = t;
-            insertion = ret;
-        }
-    }
-
-    if (neg) {
-        ret = NEW_EXPR(TE_FUNCTION1 | TE_FLAG_PURE, ret);
-        ret->function = negate;
-    }
-
-    return ret;
-}
-#else
 static te_expr *factor(state *s) {
     /* <factor>    =    <power> {"^" <power>} */
     te_expr *ret = power(s);
@@ -740,7 +685,6 @@ static te_expr *factor(state *s) {
 
     return ret;
 }
-#endif
 
 
 
@@ -777,13 +721,6 @@ static te_expr *expr(state *s) {
 static te_expr *list(state *s) {
     /* <list>      =    <expr> {"," <expr>} */
     te_expr *ret = expr(s);
-
-    while (s->type == TOK_SEP) {
-        next_token(s);
-        ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, expr(s));
-        ret->function = comma;
-    }
-
     return ret;
 }
 
@@ -897,35 +834,6 @@ double te_interp(const char *expression, int *error) {
     return ret;
 }
 
-static void pn (const te_expr *n, int depth) {
-    int i, arity;
-    printf("%*s", depth, "");
-
-    switch(TYPE_MASK(n->type)) {
-    case TE_CONSTANT: printf("%f\n", n->value); break;
-    case TE_VARIABLE: printf("bound %p\n", n->bound); break;
-
-    case TE_FUNCTION0: case TE_FUNCTION1: case TE_FUNCTION2: case TE_FUNCTION3:
-    case TE_FUNCTION4: case TE_FUNCTION5: case TE_FUNCTION6: case TE_FUNCTION7:
-    case TE_CLOSURE0: case TE_CLOSURE1: case TE_CLOSURE2: case TE_CLOSURE3:
-    case TE_CLOSURE4: case TE_CLOSURE5: case TE_CLOSURE6: case TE_CLOSURE7:
-         arity = ARITY(n->type);
-         printf("f%d", arity);
-         for(i = 0; i < arity; i++) {
-             printf(" %p", n->parameters[i]);
-         }
-         printf("\n");
-         for(i = 0; i < arity; i++) {
-             pn(n->parameters[i], depth + 1);
-         }
-         break;
-    }
-}
-
-
-void te_print(const te_expr *n) {
-    pn(n, 0);
-}
 
 /*
 #############################################################################################
