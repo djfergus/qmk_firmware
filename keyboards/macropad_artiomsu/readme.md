@@ -122,6 +122,7 @@ To flash the firmware
                     | + = increase precission      |
                     | - = decrease precission      |
                     | R = RESET macropad           |
+                    | 5 = Extra Layer              |
                     | 3 = Mouse Layer              |
                     | 4 = Gaming Layer             |
                     | 2 = Calc Layer               |
@@ -140,7 +141,7 @@ To flash the firmware
                     |  +---+  +---+  +---+  +---+  |
                     |                              |
                     |  +---+  +---+  +---+  +---+  |
-                    |  |   |  |   |  |   |  | R |  |
+                    |  | 5 |  |   |  |   |  | R |  |
                     |  +---+  +---+  +---+  +---+  |
                     |                              |
                     |  +---+  +---+  +---+  +---+  |
@@ -151,7 +152,7 @@ To flash the firmware
 
 ```
                     +------------------------------+
-                    |        Default layer         |
+                    |      Calculator layer        |
                     | P = Type out equation        |
                     | = = Type out Result          |
                     | L = Default Layer            |
