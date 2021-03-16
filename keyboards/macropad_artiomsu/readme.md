@@ -29,10 +29,16 @@
                     +------------------------------+
 ```
 
-
 This is a 20 button macropad custom made by myself ArtiomSu. Checkout the [Photos](#photos) of the build down at the bottom.
 
 This macropad acts like a hardware calculator that types out the result of an equation entered directly into the numpad with the help of a modified TinyExpr library. 
+
+### Videos
+[![Hardware Calculator Feature](http://img.youtube.com/vi/I5HsfuSsXSQ/0.jpg)](http://www.youtube.com/watch?v=I5HsfuSsXSQ "Hardware Calculator Feature")
+
+[![Build Guide](http://img.youtube.com/vi/f08V8f0WAPs/0.jpg)](http://www.youtube.com/watch?v=f08V8f0WAPs "Build Guide")
+
+[![Code Guide](http://img.youtube.com/vi/YMvobtEU-kc/0.jpg)](http://www.youtube.com/watch?v=YMvobtEU-kc "Code Guide")
 
 ### Default layout
 The default layout includes the full version of the library with a few changes to make it work with pro micro. 

@@ -145,6 +145,7 @@ enum custom_keycodes {
     L1_MOD,
     L1_PRECISION_MINUS,
     L1_PRECISION_PLUS,
+    L1_EXIT_LAYER,
     // for mouse functionality
     AUTO_CLICKER_HOLD,
     AUTO_CLICKER_AUTO,
@@ -174,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		L1_7,               L1_8,       L1_9,           L1_PLUS,
 		L1_4,               L1_5,       L1_6,           L1_POWER,
 		L1_1,               L1_2,       L1_3,           L1_MOD,
-		L1_0,               L1_DOT,     L1_EQUALS,      TO(Layer_main)),
+		L1_0,               L1_DOT,     L1_EQUALS,      L1_EXIT_LAYER),
 
     [Layer_mouse] = KEYMAP( //mouse layer
 		KC_MS_ACCEL0,       KC_MS_ACCEL1,   KC_MS_ACCEL2,   KC_MS_WH_UP,
@@ -332,6 +333,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if(decimal_point_pressision < 10){
                     decimal_point_pressision++;
                 }
+            }
+            break;
+        case L1_EXIT_LAYER:
+            if(record->event.pressed){
+                input_count = 0;
+                expressions_buffer[0] = '\0';
+                layer_move(Layer_main);
             }
             break;
 
