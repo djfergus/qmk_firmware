@@ -149,7 +149,10 @@ enum custom_keycodes {
     // for mouse functionality
     AUTO_CLICKER_HOLD,
     AUTO_CLICKER_AUTO,
-    LEFT_MOUSE_CLICKER
+    LEFT_MOUSE_CLICKER,
+    //other
+    COMPILE_MACRO,
+    FLASH_MACRO
 };
 
 
@@ -195,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),     KC_TRNS,
 		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
 		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
-		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
+		COMPILE_MACRO,              FLASH_MACRO,                KC_TRNS,                    KC_TRNS,
 		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    TO(Layer_main))
 
 };
@@ -374,6 +377,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case AUTO_CLICKER_AUTO:
             if(record->event.pressed){
                 auto_clicker_auto_enabled =!auto_clicker_auto_enabled;
+            }
+            break;
+
+        case COMPILE_MACRO:
+            if(record->event.pressed){
+                SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make macropad_artiomsu:minimised");
+            }
+            break;
+        case FLASH_MACRO:
+            if(record->event.pressed){
+                SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_minimised.hex");
             }
             break;
     }
