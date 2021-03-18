@@ -69,7 +69,7 @@ int rgb_show = 1;
 int rgb_timed_out = 0;
 int timeout_counter = 0;
 uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
-int rgb_time_out_value = 3600 ;   // 100 = ~9seconds, 666= ~ 54s
+int rgb_time_out_value = 7200;   // 100 = ~9seconds, 666= ~ 54s
 
 int use_bunnyhop = 0;
 int enable_bunnyhop = 0;
@@ -204,27 +204,27 @@ void keyboard_post_init_user(void) {
 const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     //             8                      9                         0                       -                       =
     [Layer_main] =
-            { KM_Light_red,         KM_Light_red,           KM_Light_red,           KM_Light_yellow,        KM_Light_yellow,    \
+            { LM_Light_orange,      KM_Light_red,           KM_dirty_green,         KM_dirty_green,         KM_dirty_green,    \
     //             y                      u                         i                       o                       p
-            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,     \
+            KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,     \
     //             h                      j                         k                       l                       ;
-            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,    \
+            KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,    \
     //             n                      m                         ,                       .                       /
-            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,    \
+            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,    \
     //             <-                     down                      up                      ->
-            KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,                            \
+            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,                            \
 
 
     //             5                      4                         3                       2                       1
-            KM_Light_red,           KM_Light_red,           KM_Light_red,           KM_Light_red,           KM_Light_red,       \
+            LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,         KM_dirty_green,       \
     //             t                      r                         e                       w                       q
-            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,     \
+            KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,     \
     //             g                      f                         d                       s                       a
-            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,     \
+            KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,     \
     //             b                      v                         c                       x                       z
-            KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,         KM_dirty_green,     \
+            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,     \
     //                                                             esc                     esc
-            KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow },
+            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange },
 
 
 
@@ -613,9 +613,13 @@ void matrix_scan_user(void) {
     SEQ_ONE_KEY(KC_E) {
       SEND_STRING(SS_LSFT("'") "t80search_bot ");
       did_leader_succeed = true;
-    }
+    } else
     SEQ_ONE_KEY(KC_UP) {
       layer_on(3);
+      did_leader_succeed = true;
+    } else
+    SEQ_TWO_KEYS(KC_C, KC_O) {
+      SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse");
       did_leader_succeed = true;
     }
     leader_end();
