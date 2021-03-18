@@ -62,7 +62,11 @@ enum custom_keycodes {
   ST_M_brightness_up,
   ST_M_hue_down,
   ST_M_hue_up,
-  ST_M_toggle_main_layer_brightness
+  ST_M_toggle_main_layer_brightness,
+  ST_M_led_timeout_30s,
+  ST_M_led_timeout_1m,
+  ST_M_led_timeout_5m,
+  ST_M_led_timeout_10m
 };
 
 int rgb_show = 1;
@@ -135,11 +139,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
-    ______,             ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
-    ______,             ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ST_M_hue_down,                       ST_M_hue_up,         ______,         ______,         ST_M_enable_bunny_hop,
-    ______,             ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),                   LCTL(KC_K),               LCTL(KC_L),       ______,         ST_M_toggle_main_layer_brightness,
-    ______,             ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
-    ______,             ______,         ______,             ______,         ______,                                                                                                         ______,         ______,         ______,         ______,         ______,
+    ST_M_led_timeout_30s,   ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
+    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ST_M_hue_down,                       ST_M_hue_up,         ______,         ______,         ST_M_enable_bunny_hop,
+    ST_M_led_timeout_5m,    ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),                   LCTL(KC_K),               LCTL(KC_L),       ______,         ST_M_toggle_main_layer_brightness,
+    ST_M_led_timeout_10m,   ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
+    ______,                 ______,         ______,             ______,         ______,                                                                                                         ______,         ______,         ______,         ______,         ______,
 
 
                                                                                                                     ______, ______,                         ______, ______,
@@ -556,9 +560,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     break;
     case RGB_SLD:
-      if (record->event.pressed) {
-        rgblight_mode(1);
-      }
+    if (record->event.pressed) {
+      rgblight_mode(1);
+    }
+    break;
+    case ST_M_led_timeout_30s:
+    if (record->event.pressed) {
+      rgb_time_out_value = 360;
+    }
+    break;
+    case ST_M_led_timeout_1m:
+    if (record->event.pressed) {
+      rgb_time_out_value = 720;
+    }
+    break;
+    case ST_M_led_timeout_5m:
+    if (record->event.pressed) {
+      rgb_time_out_value = 3600;
+    }
+    break;
+    case ST_M_led_timeout_10m:
+    if (record->event.pressed) {
+      rgb_time_out_value = 7200;
+    }
       return false;
   }
   return true;
