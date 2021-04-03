@@ -44,7 +44,7 @@
 #define LEADER_TIMEOUT 500
 
 //combos
-#define COMBO_COUNT 21
+#define COMBO_COUNT 23
 #define COMBO_TERM 50
 //#define EXTRA_EXTRA_LONG_COMBOS
 

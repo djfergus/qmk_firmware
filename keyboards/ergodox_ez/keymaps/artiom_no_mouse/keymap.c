@@ -64,6 +64,8 @@ bool main_layer_brightness = true; // can disable the main layer rgb individuall
 
 bool combos_on = true; // use combo feature by default
 
+int word_length_count = 0;
+int last_word_length=0;
 
 //do not change the following
 bool use_default_lighting = true; // do not change used inside loop
@@ -94,7 +96,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
   [Layer_main] = LAYOUT_ergodox_pretty(
-    LALT(KC_F4),        KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    LALT(KC_F4),        KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -316,7 +318,9 @@ enum combo_events {
     COMBO_ASTARISK,
     COMBO_AMPERSTAND,
     COMBO_ROOT,
-    COMBO_HASH
+    COMBO_HASH,
+    COMBO_START_WORD,
+    COMBO_DELETE_WORD
 };
 
 const uint16_t PROGMEM combo_left_square_bracket[] = {KC_S, KC_F, COMBO_END};
@@ -340,6 +344,8 @@ const uint16_t PROGMEM combo_amperstand[] = {KC_F, KC_J, COMBO_END};
 const uint16_t PROGMEM combo_astarisk[] = {KC_F, KC_K, COMBO_END};
 const uint16_t PROGMEM combo_root[] = {KC_F, KC_SCOLON, COMBO_END};
 const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
+const uint16_t PROGMEM combo_start_word[] = {KC_F, KC_LEFT, COMBO_END};
+const uint16_t PROGMEM combo_delete_word[] = {KC_F, KC_DOWN, COMBO_END};
 
 
 combo_t key_combos[COMBO_COUNT] = {
@@ -363,7 +369,9 @@ combo_t key_combos[COMBO_COUNT] = {
     [COMBO_ASTARISK] = COMBO_ACTION(combo_astarisk),
     [COMBO_AMPERSTAND] = COMBO_ACTION(combo_amperstand),
     [COMBO_ROOT] = COMBO_ACTION(combo_root),
-    [COMBO_HASH] = COMBO_ACTION(combo_hash)
+    [COMBO_HASH] = COMBO_ACTION(combo_hash),
+    [COMBO_START_WORD] = COMBO_ACTION(combo_start_word),
+    [COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word)
 
 };
 
@@ -484,8 +492,27 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
                 tap_code16(KC_NONUS_HASH);
             }
         break;
+        case COMBO_START_WORD:
+            if (pressed) {
+                last_word_length = last_word_length / 2;
+                while (last_word_length > 0){
+                    tap_code16(KC_LEFT);
+                    last_word_length--;
+                }
+            }
+        break;
+        case COMBO_DELETE_WORD:
+            if (pressed) {
+                last_word_length = last_word_length / 2;
+                while (last_word_length > 0){
+                    tap_code16(KC_BSPACE);
+                    last_word_length--;
+                }
+            }
+        break;
         }
 }
+
 
 
 void set_layer_color(int layer) {
@@ -591,6 +618,12 @@ void rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if(keycode >= 4 && keycode <= 39){
+        word_length_count++;
+    }else{
+        last_word_length = word_length_count;
+        word_length_count = 0;
+    }
   switch (keycode) {
     case ST_MACRO_SSH:
     if (record->event.pressed) {
