@@ -43,6 +43,11 @@
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 500
 
+//combos
+#define COMBO_COUNT 21
+#define COMBO_TERM 50
+//#define EXTRA_EXTRA_LONG_COMBOS
+
 // disable all rgb effects lol //decreased firmware size by a bit
 #define DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
 #define DISABLE_RGB_MATRIX_BREATHING

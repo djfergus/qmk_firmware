@@ -1,31 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 
-#define KC_MAC_UNDO LGUI(KC_Z)
-#define KC_MAC_CUT LGUI(KC_X)
-#define KC_MAC_COPY LGUI(KC_C)
-#define KC_MAC_PASTE LGUI(KC_V)
-#define KC_PC_UNDO LCTL(KC_Z)
-#define KC_PC_CUT LCTL(KC_X)
-#define KC_PC_COPY LCTL(KC_C)
-#define KC_PC_PASTE LCTL(KC_V)
-#define ES_LESS_MAC KC_GRAVE
-#define ES_GRTR_MAC LSFT(KC_GRAVE)
-#define ES_BSLS_MAC ALGR(KC_6)
-#define NO_PIPE_ALT KC_GRAVE
-#define NO_BSLS_ALT KC_EQUAL
-
-
-//defines to make the keys shorter
-#define ______      KC_TRANSPARENT
-#define C_S_Linux   LCTL(LSFT(KC_LGUI))
-#define T_copy      LSFT(KC_PC_COPY)
-#define T_paste     LSFT(KC_PC_PASTE)
-#define M_pipe      LSFT(KC_NONUS_BSLASH)
-#define M_root      LSFT(KC_NONUS_HASH)
-
-
-
+#include <stdbool.h> //for boolean
 
 // layer defines
 #define Layer_main 0
@@ -69,22 +45,30 @@ enum custom_keycodes {
   ST_M_led_timeout_10m
 };
 
-int rgb_show = 1;
-int rgb_timed_out = 0;
+bool rgb_show = true;
+bool rgb_timed_out = false;
 int timeout_counter = 0;
 uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
 int rgb_time_out_value = 7200;   // 100 = ~9seconds, 666= ~ 54s
 
-int use_bunnyhop = 0;
-int enable_bunnyhop = 0;
+bool use_bunnyhop = false;
+bool enable_bunnyhop = false;
 
 int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
-int leader_key_is_running = 0;
+bool leader_key_is_running = false;
 
 int brightness_amount = 0;
 int hue_amount = 0;
 
-int main_layer_brightness = 1; // can disable the main layer rgb individually
+bool main_layer_brightness = true; // can disable the main layer rgb individually
+
+bool combos_on = true; // use combo feature by default
+
+
+//do not change the following
+bool use_default_lighting = true; // do not change used inside loop
+extern bool g_suspend_state;
+extern rgb_config_t rgb_matrix_config;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -110,11 +94,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
   [Layer_main] = LAYOUT_ergodox_pretty(
-    LALT(KC_F4),        KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_6,                                           KC_7,           KC_8,           KC_9,           KC_0,           KC_MINUS,       KC_EQUAL,       LSFT(KC_ENTER),
-    KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           C_S_Linux,                                      KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
+    LALT(KC_F4),        KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
-    KC_LCTRL,           KC_LALT,        C_S_Linux,          LCTL(KC_LGUI),  LSFT(KC_LGUI),                                                                                                  KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       KC_LEAD,
+    KC_LCTRL,           KC_LALT,        LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),  LSFT(KC_LGUI),                                                                                                  KC_LEFT,        KC_DOWN,        KC_UP,          KC_RIGHT,       KC_LEAD,
 
 
 
@@ -125,30 +109,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [Layer_symbols] = LAYOUT_ergodox_pretty(
-    LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,          KC_F4,          KC_F5,          KC_F6,                                          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_F13,
-    ______,             KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE), T_copy,         T_paste,        KC_CIRC,                                        ______,         KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       ______,
-    ______,             KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),     KC_DLR,         KC_PERC,                                                                        KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        ______,
-    KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            M_pipe,         M_root,         KC_ASTR,        KC_CIRC,                                        ______,         KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_BSLASH,KC_LSHIFT,
-    LALT(KC_LCTRL),     ST_M_n_equal_2, KC_PC_CUT,          KC_PC_COPY,     KC_PC_PASTE,                                                                                                    LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
+    LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,                  KC_F4,              KC_F5,              KC_F6,                          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_F13,
+    _______,            KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),   LSFT(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
+    _______,            KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
+    KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),KC_ASTR,            KC_CIRC,                        _______,        KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_BSLASH,KC_LSHIFT,
+    LALT(KC_LCTRL),     ST_M_n_equal_2, LCTL(KC_X),         LCTL(KC_C),             LCTL(KC_V),                                                                                             LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
 
 
-                                                                                                                    ______, ______,                         ______, ______,
-                                                                                                                            ______,                         ______,
-                                                                                        ______, ______,                     ______,                         LSFT(KC_SCOLON),                KC_NONUS_HASH,  KC_SCOLON
+                                                                                                                    _______,_______,                        _______, _______,
+                                                                                                                            _______,                        _______,
+                                                                                        _______, _______,                   _______,                        LSFT(KC_SCOLON),                KC_NONUS_HASH,  KC_SCOLON
   ),
 
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
-    ST_M_led_timeout_30s,   ______,         ______,             DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   ______,                                         ______,         ______,         ST_M_brightness_down,         ST_M_brightness_up,         ______,         ______,         RESET,
-    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         ______,         LCTL(KC_V),     LCTL(KC_B),     ______,                                         ______,         ______,         ST_M_hue_down,                       ST_M_hue_up,         ______,         ______,         ST_M_enable_bunny_hop,
-    ST_M_led_timeout_5m,    ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                    LCTL(KC_H),     LCTL(KC_J),                   LCTL(KC_K),               LCTL(KC_L),       ______,         ST_M_toggle_main_layer_brightness,
-    ST_M_led_timeout_10m,   ST_M_all_b,     ______,             ______,         ST_M_vim_sp_e,  ST_M_vim_vs_e,  ______,                                         ______,         ______,         ______,         ST_M_double_left_angle,         ST_M_double_right_angle,         ______,         ______,
-    ______,                 ______,         ______,             ______,         ______,                                                                                                         ______,         ______,         ______,         ______,         ______,
+    ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   _______,                                    _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
+    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,         LCTL(KC_V),     LCTL(KC_B),    _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
+    ST_M_led_timeout_5m,    ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
+    ST_M_led_timeout_10m,   ST_M_all_b,     _______,            _______,        ST_M_vim_sp_e,  ST_M_vim_vs_e,  _______,                                    _______,        _______,        _______,                        ST_M_double_left_angle, ST_M_double_right_angle,    _______,         _______,
+    _______,                _______,        _______,            _______,        _______,                                                                                                    _______,                        _______,                _______,                    _______,         _______,
 
 
-                                                                                                                    ______, ______,                         ______, ______,
-                                                                                                                            ______,                         ______,
-                                                                        KC_SPACE,       LALT(KC_ENTER),                     ______,                         ST_M_double_colon,              ______, ______
+                                                                                                                _______,    _______,                        _______,        _______,
+                                                                                                                            _______,                        _______,
+                                                                        KC_SPACE,       LALT(KC_ENTER),                     _______,                        ST_M_double_colon,              _______, _______
   ),
 
 
@@ -166,9 +150,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-
-extern bool g_suspend_state;
-extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
@@ -313,62 +294,273 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 };
 
 
+//combos don't forget to edit COMBO_COUNT in config.h
+enum combo_events {
+    COMBO_LEFT_SQUARE_BRACKET,
+    COMBO_RIGHT_SQUARE_BRACKET,
+    COMBO_LEFT_CURLY_BRACKET,
+    COMBO_RIGHT_CURLY_BRACKET,
+    COMBO_LEFT_BRACKET,
+    COMBO_RIGHT_BRACKET,
+    COMBO_MINUS,
+    COMBO_EQUALS,
+    COMBO_LESS,
+    COMBO_GREATER,
+    COMBO_LESS_EQUALS,
+    COMBO_GREATER_EQUALS,
+    COMBO_LESS_EQUALS_EQUALS,
+    COMBO_GREATER_EQUALS_EQUALS,
+    COMBO_NOT_EQUALS,
+    COMBO_NOT_EQUALS_EQUALS,
+    COMBO_PIPE,
+    COMBO_ASTARISK,
+    COMBO_AMPERSTAND,
+    COMBO_ROOT,
+    COMBO_HASH
+};
+
+const uint16_t PROGMEM combo_left_square_bracket[] = {KC_S, KC_F, COMBO_END};
+const uint16_t PROGMEM combo_right_square_bracket[] = {KC_J, KC_L, COMBO_END};
+const uint16_t PROGMEM combo_left_curly_bracket[] = {KC_S, KC_D, COMBO_END};
+const uint16_t PROGMEM combo_right_curly_bracket[] = {KC_L, KC_K, COMBO_END};
+const uint16_t PROGMEM combo_left_bracket[] = {KC_D, KC_F, COMBO_END};
+const uint16_t PROGMEM combo_right_bracket[] = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM combo_equals[] = {KC_9, KC_0, COMBO_END};
+const uint16_t PROGMEM combo_minus[] = {KC_8, KC_9, COMBO_END};
+const uint16_t PROGMEM combo_less[] = {KC_U, KC_I, COMBO_END};
+const uint16_t PROGMEM combo_greater[] = {KC_I, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_less_equals[] = {KC_F, KC_U, COMBO_END};
+const uint16_t PROGMEM combo_greater_equals[] = {KC_F, KC_O, COMBO_END};
+const uint16_t PROGMEM combo_less_equals_equals[] = {KC_F, KC_Y, COMBO_END};
+const uint16_t PROGMEM combo_greater_equals_equals[] = {KC_F, KC_P, COMBO_END};
+const uint16_t PROGMEM combo_not_equals[] = {KC_J, KC_A, COMBO_END};
+const uint16_t PROGMEM combo_not_equals_equals[] = {KC_J, KC_S, COMBO_END};
+const uint16_t PROGMEM combo_pipe[] = {KC_F, KC_I, COMBO_END};
+const uint16_t PROGMEM combo_amperstand[] = {KC_F, KC_J, COMBO_END};
+const uint16_t PROGMEM combo_astarisk[] = {KC_F, KC_K, COMBO_END};
+const uint16_t PROGMEM combo_root[] = {KC_F, KC_SCOLON, COMBO_END};
+const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
+
+
+combo_t key_combos[COMBO_COUNT] = {
+    [COMBO_LEFT_SQUARE_BRACKET] = COMBO_ACTION(combo_left_square_bracket),
+    [COMBO_RIGHT_SQUARE_BRACKET] = COMBO_ACTION(combo_right_square_bracket),
+    [COMBO_LEFT_CURLY_BRACKET] = COMBO_ACTION(combo_left_curly_bracket),
+    [COMBO_RIGHT_CURLY_BRACKET] = COMBO_ACTION(combo_right_curly_bracket),
+    [COMBO_LEFT_BRACKET] = COMBO_ACTION(combo_left_bracket),
+    [COMBO_RIGHT_BRACKET] = COMBO_ACTION(combo_right_bracket),
+    [COMBO_MINUS] = COMBO_ACTION(combo_minus),
+    [COMBO_EQUALS] = COMBO_ACTION(combo_equals),
+    [COMBO_LESS] = COMBO_ACTION(combo_less),
+    [COMBO_GREATER] = COMBO_ACTION(combo_greater),
+    [COMBO_LESS_EQUALS] = COMBO_ACTION(combo_less_equals),
+    [COMBO_GREATER_EQUALS] = COMBO_ACTION(combo_greater_equals),
+    [COMBO_LESS_EQUALS_EQUALS] = COMBO_ACTION(combo_less_equals_equals),
+    [COMBO_GREATER_EQUALS_EQUALS] = COMBO_ACTION(combo_greater_equals_equals),
+    [COMBO_NOT_EQUALS] = COMBO_ACTION(combo_not_equals),
+    [COMBO_NOT_EQUALS_EQUALS] = COMBO_ACTION(combo_not_equals_equals),
+    [COMBO_PIPE] = COMBO_ACTION(combo_pipe),
+    [COMBO_ASTARISK] = COMBO_ACTION(combo_astarisk),
+    [COMBO_AMPERSTAND] = COMBO_ACTION(combo_amperstand),
+    [COMBO_ROOT] = COMBO_ACTION(combo_root),
+    [COMBO_HASH] = COMBO_ACTION(combo_hash)
+
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+
+        switch(combo_index) {
+        case COMBO_LEFT_SQUARE_BRACKET:
+            if (pressed) {
+                tap_code16(KC_LBRACKET);
+            }
+        break;
+        case COMBO_RIGHT_SQUARE_BRACKET:
+            if (pressed) {
+                tap_code16(KC_RBRACKET);
+            }
+        break;
+        case COMBO_LEFT_CURLY_BRACKET:
+            if (pressed) {
+                tap_code16(KC_LCBR);
+            }
+        break;
+        case COMBO_RIGHT_CURLY_BRACKET:
+            if (pressed) {
+                tap_code16(KC_RCBR);
+            }
+        break;
+        case COMBO_LEFT_BRACKET:
+            if (pressed) {
+                tap_code16(LSFT(KC_9));
+            }
+        break;
+        case COMBO_RIGHT_BRACKET:
+            if (pressed) {
+                tap_code16(LSFT(KC_0));
+            }
+        break;
+        case COMBO_MINUS:
+            if (pressed) {
+                tap_code16(KC_MINUS);
+            }
+        break;
+        case COMBO_EQUALS:
+            if (pressed) {
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_LESS:
+            if (pressed) {
+                tap_code16(KC_LABK);
+            }
+        break;
+        case COMBO_GREATER:
+            if (pressed) {
+                tap_code16(KC_RABK);
+            }
+        break;
+        case COMBO_LESS_EQUALS:
+            if (pressed) {
+                tap_code16(KC_LABK);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_GREATER_EQUALS:
+            if (pressed) {
+                tap_code16(KC_RABK);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_LESS_EQUALS_EQUALS:
+            if (pressed) {
+                tap_code16(KC_LABK);
+                tap_code16(KC_EQUAL);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_GREATER_EQUALS_EQUALS:
+            if (pressed) {
+                tap_code16(KC_RABK);
+                tap_code16(KC_EQUAL);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_NOT_EQUALS:
+            if (pressed) {
+                tap_code16(KC_EXLM);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_NOT_EQUALS_EQUALS:
+            if (pressed) {
+                tap_code16(KC_EXLM);
+                tap_code16(KC_EQUAL);
+                tap_code16(KC_EQUAL);
+            }
+        break;
+        case COMBO_PIPE:
+            if (pressed) {
+                tap_code16(LSFT(KC_NONUS_BSLASH));
+            }
+        break;
+        case COMBO_ASTARISK:
+            if (pressed) {
+                tap_code16(KC_ASTR);
+            }
+        break;
+        case COMBO_AMPERSTAND:
+            if (pressed) {
+                tap_code16(KC_AMPR);
+            }
+        break;
+        case COMBO_ROOT:
+            if (pressed) {
+                tap_code16(LSFT(KC_NONUS_HASH));
+            }
+        break;
+        case COMBO_HASH:
+            if (pressed) {
+                tap_code16(KC_NONUS_HASH);
+            }
+        break;
+        }
+}
+
+
 void set_layer_color(int layer) {
-  for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
-    if(enable_bunnyhop && i == 4){ //show indicator on = key
-      if(modifiers_blink_count < 50){
-        rgb_matrix_set_color( i, 250, 0, 0 );
-      }else if(modifiers_blink_count > 100){
+    if(modifiers_blink_count > 200){
         modifiers_blink_count = 0;
-      }
-      modifiers_blink_count++;
-    }else if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
-      rgb_matrix_set_color( i, 0, 0, 250 );
-    }else{
-      HSV hsv = {
-        .h = pgm_read_byte(&ledmap[layer][i][0]),
-        .s = pgm_read_byte(&ledmap[layer][i][1]),
-        .v = pgm_read_byte(&ledmap[layer][i][2]),
-      };
-      if ((!hsv.h && !hsv.s && !hsv.v) || (layer == 0 && !main_layer_brightness)) {
-          rgb_matrix_set_color( i, 0, 0, 0 );
-      } else {
-
-        if(brightness_amount != 0){
-            int check = hsv.v + brightness_amount;
-
-            if(check < 250 && check > 10){
-                hsv.v = check;
-            }else{
-                if(brightness_amount<0){
-                    brightness_amount+=10;
-                }else{
-                    brightness_amount-=10;
-                }
-            }
-        }
-
-        if(hue_amount != 0){
-            int check = hsv.h + hue_amount;
-            if(check > 250){
-                check = check - 250;
-            }
-            if(check < 5){
-                check = check + 250;
-            }
-            if(check < 250 && check > 5){
-                hsv.h = check;
-            }
-        }
-
-        RGB rgb = hsv_to_rgb( hsv );
-        float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
-        rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
-
-      }
     }
+    modifiers_blink_count++;
 
-  }
+    for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+        use_default_lighting = true;
+
+        if(enable_bunnyhop && i == 4){ //show indicator on = key
+            if(modifiers_blink_count < 100){
+                rgb_matrix_set_color( i, 237, 28, 28 );
+                use_default_lighting = false;
+            }
+        }
+
+        if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
+            rgb_matrix_set_color( i, 31, 107, 239 );
+            use_default_lighting = false;
+        }
+
+        if(combos_on && i == 47){
+            if(modifiers_blink_count < 100){
+                rgb_matrix_set_color( i, 237, 28, 28);
+                use_default_lighting = false;
+            }
+        }
+
+        if(use_default_lighting) {
+            HSV hsv = {
+                .h = pgm_read_byte(&ledmap[layer][i][0]),
+                .s = pgm_read_byte(&ledmap[layer][i][1]),
+                .v = pgm_read_byte(&ledmap[layer][i][2]),
+            };
+            if ((!hsv.h && !hsv.s && !hsv.v) || (layer == 0 && !main_layer_brightness)) {
+                rgb_matrix_set_color( i, 0, 0, 0 );
+            } else {
+
+                if(brightness_amount != 0){
+                    int check = hsv.v + brightness_amount;
+
+                    if(check < 250 && check > 10){
+                        hsv.v = check;
+                    }else{
+                        if(brightness_amount<0){
+                            brightness_amount+=10;
+                        }else{
+                            brightness_amount-=10;
+                        }
+                    }
+                }
+
+                if(hue_amount != 0){
+                    int check = hsv.h + hue_amount;
+                    if(check > 250){
+                        check = check - 250;
+                    }
+                    if(check < 5){
+                        check = check + 250;
+                    }
+                    if(check < 250 && check > 5){
+                        hsv.h = check;
+                    }
+                }
+
+                RGB rgb = hsv_to_rgb( hsv );
+                float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
+                rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
+
+            }
+        }
+
+    }
 }
 
 void rgb_matrix_indicators_user(void) {
@@ -514,15 +706,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     break;
     case ST_M_bunny_hop:
     if (record->event.pressed) {
-        rgb_timed_out = 0;
+        rgb_timed_out = false;
         timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
-        use_bunnyhop = 1;
+        use_bunnyhop = true;
         if(!enable_bunnyhop){
             SEND_STRING(SS_DOWN(X_SPACE));
         }
     }else
     {
-        use_bunnyhop = 0;
+        use_bunnyhop = false;
         if(!enable_bunnyhop){
             SEND_STRING(SS_UP(X_SPACE));
         }
@@ -593,6 +785,7 @@ uint32_t layer_state_set_user(uint32_t state) { return state; };
 int bunny_hop_delay_counter = 0;
 LEADER_EXTERNS();
 int did_leader_succeed;
+
 void matrix_scan_user(void) {
   LEADER_DICTIONARY() {
     did_leader_succeed = leading = false;
@@ -619,7 +812,7 @@ void matrix_scan_user(void) {
       did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_RIGHT) { //wake leds
-        rgb_timed_out = 0;
+        rgb_timed_out = false;
         did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_RIGHT, KC_RIGHT) { //toggle leds on/off
@@ -627,11 +820,11 @@ void matrix_scan_user(void) {
       did_leader_succeed = true;
     } else
     SEQ_THREE_KEYS(KC_RIGHT, KC_RIGHT, KC_RIGHT){ //turn on leds and wake and reset brightness
-        rgb_timed_out = 0;
-        rgb_show = 1;
+        rgb_timed_out = false;
+        rgb_show = true;
         brightness_amount = 0;
         hue_amount = 0;
-        main_layer_brightness = 1;
+        main_layer_brightness = true;
         did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_E) {
@@ -645,16 +838,20 @@ void matrix_scan_user(void) {
     SEQ_TWO_KEYS(KC_C, KC_O) {
       SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse");
       did_leader_succeed = true;
+    } else
+    SEQ_ONE_KEY(KC_LEFT){
+        combo_toggle();
+        combos_on = is_combo_enabled();
     }
     leader_end();
   }
 
   if(rgb_sync_to_timer != g_rgb_timer){
         rgb_sync_to_timer = g_rgb_timer;
-        if(rgb_timed_out == 0){ // update rgb timeout
+        if(!rgb_timed_out){ // update rgb timeout
             if(timeout_counter > rgb_time_out_value){
                 timeout_counter = 0;
-                rgb_timed_out = 1;
+                rgb_timed_out = true;
             }
             timeout_counter++;
         }
@@ -672,9 +869,9 @@ void matrix_scan_user(void) {
 }
 
 void leader_start(void) {
-    leader_key_is_running = 1;
+    leader_key_is_running = true;
 }
 
 void leader_end(void) {
-  leader_key_is_running = 0;
+    leader_key_is_running = false;
 }
