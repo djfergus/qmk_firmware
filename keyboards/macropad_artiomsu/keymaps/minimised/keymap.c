@@ -54,17 +54,29 @@ sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artioms
 
 // for the calculator functionality
 #define EXPRESSIONS_BUFF_SIZE 64
-int input_count = 0;    // stores the amount of the filled in expressions_buffer.
-char expressions_buffer[EXPRESSIONS_BUFF_SIZE]; //stores the typed out string
-int decimal_point_pressision = 2; //how many decimal points to show by default, can be changed via macros bellow.
+int input_count = 0;                            // stores the amount of the filled in expressions_buffer.
+char expressions_buffer[EXPRESSIONS_BUFF_SIZE]; // stores the typed out string
+int decimal_point_pressision = 2;               // how many decimal points to show by default, can be changed via macros bellow.
 
 // for the mouse auto clicker
-bool auto_clicker_enabled = false; // if the auto clicker is enabled for the hold action
+bool auto_clicker_enabled = false;      // if the auto clicker is enabled for the hold action
 bool auto_clicker_auto_enabled = false; // if the auto clicker is enabled regardless of holding the mouse key.
-bool auto_clicker_hold = false; // if the mouse key is pressed down.
-int auto_clicker_timer = 0; // delay counter, delay prevents freezing the app while auto clicking
-int auto_clicker_max_timer = 100; // auto_clicker_timer resets after reaching this and a mouse click is performed when the auto_clicker_timer is 1.
+bool auto_clicker_hold = false;         // if the mouse key is pressed down.
+int auto_clicker_timer = 0;             // delay counter, delay prevents freezing the app while auto clicking
+int auto_clicker_max_timer = 100;       // auto_clicker_timer resets after reaching this and a mouse click is performed when the auto_clicker_timer is 1.
 
+// for the numlock and layer leds
+bool num_lock_led_is_on = false;        // if numlock should be on
+int led_state_current = 0;              // what is the current layer temp
+bool num_lock_triggered = false;        // was the numlock pressed
+int last_led_state_current = 0;         // the latest current layer
+
+bool enable_num_lock_animation = true;  // play the numlock animation, toggled through macro.
+int count_delay = 0;                    // counter for numlock animation
+int count_delay_max = 500;              // delay for which the lights change
+int count_current_led = 0;              // which led to light up
+int count_num_leds = 4;                 // total number of leds starting at 0
+bool led_direction_left = true;         // animation direction of the leds
 /*
 #############################################################################################
 #############################################################################################
@@ -168,7 +180,8 @@ enum custom_keycodes {
     LEFT_MOUSE_CLICKER,
     //other
     COMPILE_MACRO,
-    FLASH_MACRO
+    FLASH_MACRO,
+    TOGGLE_NUM_LOCK_ANIMATION
 };
 
 
@@ -185,7 +198,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 	[Layer_shortcuts] = KEYMAP( //layer switcher and some settings
 		AUTO_CLICKER_HOLD,      KC_TRNS,         KC_TRNS,        L1_PRECISION_MINUS,
 		AUTO_CLICKER_AUTO,      KC_TRNS,         KC_TRNS,        L1_PRECISION_PLUS,
-		KC_TRNS,                KC_TRNS,         KC_TRNS,        KC_TRNS,
+		KC_TRNS,                KC_TRNS,         KC_TRNS,        TOGGLE_NUM_LOCK_ANIMATION,
 		TO(Layer_extra),        KC_TRNS,         KC_TRNS,        RESET,
 		TO(Layer_mouse),        TO(Layer_gaming),TO(Layer_calc), TO(Layer_main)),
 
@@ -219,11 +232,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-
-bool num_lock_led_is_on = false;
-int led_state_current = 0;
-bool num_lock_triggered = false;
-int last_led_state_current = 0;
 void matrix_scan_user(void) {
     if((auto_clicker_enabled && auto_clicker_hold) || (auto_clicker_auto_enabled)){
         auto_clicker_timer++;
@@ -237,53 +245,81 @@ void matrix_scan_user(void) {
     }
 
     if(led_state_current != -1 || num_lock_triggered){
-        int switch_variable = led_state_current;
         if(!num_lock_triggered){
             last_led_state_current = led_state_current;
+            switch (led_state_current)
+                {
+                    case Layer_shortcuts:
+                        LED_ALL_OFF
+                        LED_ORANGE_ON
+                        break;
+                    case Layer_calc:
+                        LED_ALL_OFF
+                        LED_WHITE_ON
+                        break;
+                    case Layer_mouse:
+                        LED_ALL_OFF
+                        LED_GREEN_ON
+                        break;
+                    case Layer_gaming:
+                        LED_ALL_OFF
+                        LED_RED_ON
+                        break;
+                    case Layer_extra:
+                        LED_ALL_OFF
+                        LED_BLUE_ON
+                        break;
+                    case Layer_main:
+                        LED_ALL_OFF
+                        break;
+                }
+            led_state_current = -1;
         }else{
             num_lock_triggered = false;
-            switch_variable = last_led_state_current;
-        }
-
-    switch (switch_variable)
-        {
-            case Layer_shortcuts:
-                LED_ALL_OFF
-                LED_ORANGE_ON
-                break;
-            case Layer_calc:
-                LED_ALL_OFF
-                LED_WHITE_ON
-                break;
-            case Layer_mouse:
-                LED_ALL_OFF
-                LED_GREEN_ON
-                break;
-            case Layer_gaming:
-                LED_ALL_OFF
-                LED_RED_ON
-                break;
-            case Layer_extra:
-                LED_ALL_OFF
-                LED_BLUE_ON
-                break;
-            case Layer_main:
-                // LED_ALL_OFF
-                if(num_lock_led_is_on){
-                    // LED_BLUE_ON
-                    // LED_GREEN_ON
-                    // LED_RED_ON
-                    // LED_WHITE_ON
-                    // LED_ORANGE_ON
-                }else{
-                    LED_ALL_OFF
-                }
-                break;
-
         }
     }
-    led_state_current = -1;
 
+    if(last_led_state_current == Layer_main && num_lock_led_is_on && enable_num_lock_animation){
+        if(count_delay >= count_delay_max){
+            count_delay = 0;
+            LED_ALL_OFF
+            switch (count_current_led){
+                case 0:
+                    LED_BLUE_ON
+                    break;
+                case 1:
+                    LED_GREEN_ON
+                    break;
+                case 2:
+                    LED_RED_ON
+                    break;
+                case 3:
+                    LED_WHITE_ON
+                    break;
+                case 4:
+                    LED_ORANGE_ON
+                    break;
+
+                default:
+                    break;
+            }
+            if(led_direction_left){
+                count_current_led--;
+                if(count_current_led < 0){
+                    count_current_led = 1;
+                    led_direction_left = false;
+                }
+            }else{
+                count_current_led++;
+                if(count_current_led > count_num_leds){
+                    count_current_led = count_num_leds - 1;
+                    led_direction_left = true;
+                }
+            }
+
+        }
+        count_delay++;
+    }
 }
 // small leg goes to ground
 void keyboard_pre_init_user(void) {
@@ -300,13 +336,10 @@ bool led_update_user(led_t led_state) {
     if(led_state.num_lock){
         num_lock_led_is_on = true;
         num_lock_triggered = true;
-        // LED_BLUE_ON
-        // LED_GREEN_ON
-        // LED_RED_ON
-        // LED_WHITE_ON
-        // LED_ORANGE_ON
     }else{
-        //LED_ALL_OFF
+        if(last_led_state_current == Layer_main){
+            LED_ALL_OFF
+        }
         num_lock_led_is_on = false;
         num_lock_triggered = true;
     }
@@ -315,40 +348,6 @@ bool led_update_user(led_t led_state) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     led_state_current = get_highest_layer(state);
-    // switch (get_highest_layer(state)) {
-    //     case Layer_shortcuts:
-    //         LED_ALL_OFF
-    //         LED_ORANGE_ON
-    //         break;
-    //     case Layer_calc:
-    //         LED_ALL_OFF
-    //         LED_WHITE_ON
-    //         break;
-    //     case Layer_mouse:
-    //         LED_ALL_OFF
-    //         LED_GREEN_ON
-    //         break;
-    //     case Layer_gaming:
-    //         LED_ALL_OFF
-    //         LED_RED_ON
-    //         break;
-    //     case Layer_extra:
-    //         LED_ALL_OFF
-    //         LED_BLUE_ON
-    //         break;
-    //     default:
-    //         // LED_ALL_OFF
-    //         if(num_lock_led_is_on){
-    //             LED_BLUE_ON
-    //             LED_GREEN_ON
-    //             LED_RED_ON
-    //             LED_WHITE_ON
-    //             LED_ORANGE_ON
-    //         }else{
-    //             LED_ALL_OFF
-    //         }
-    //         break;
-    // }
     return state;
 }
 
@@ -522,13 +521,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_minimised.hex");
             }
             break;
+        case TOGGLE_NUM_LOCK_ANIMATION:
+            if(record->event.pressed){
+                enable_num_lock_animation=!enable_num_lock_animation;
+            }
+            break;
     }
 	return true;
 }
-
-
-
-
 
 
 void write_char_to_buff(char c){

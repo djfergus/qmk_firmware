@@ -127,6 +127,7 @@ To flash the firmware
                     | B = AutoClicker Auto         |
                     | + = increase precission      |
                     | - = decrease precission      |
+                    | T = Toggle Numlock Animation |
                     | R = RESET macropad           |
                     | 5 = Extra Layer              |
                     | 3 = Mouse Layer              |
@@ -143,7 +144,7 @@ To flash the firmware
                     |  +---+  +---+  +---+  +---+  |
                     |                              |
                     |  +---+  +---+  +---+  +---+  |
-                    |  |   |  |   |  |   |  |   |  |
+                    |  |   |  |   |  |   |  | T |  |
                     |  +---+  +---+  +---+  +---+  |
                     |                              |
                     |  +---+  +---+  +---+  +---+  |
