@@ -44,8 +44,8 @@
 #define LEADER_TIMEOUT 500
 
 //combos
-#define COMBO_COUNT 23
-#define COMBO_TERM 50
+#define COMBO_COUNT 24
+#define COMBO_TERM 30
 //#define EXTRA_EXTRA_LONG_COMBOS
 
 // disable all rgb effects lol //decreased firmware size by a bit

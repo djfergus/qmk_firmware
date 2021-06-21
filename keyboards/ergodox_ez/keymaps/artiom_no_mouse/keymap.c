@@ -53,6 +53,7 @@ int rgb_time_out_value = 7200;   // 100 = ~9seconds, 666= ~ 54s
 
 bool use_bunnyhop = false;
 bool enable_bunnyhop = false;
+int bunny_hop_delay_counter = 0;
 
 int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
 bool leader_key_is_running = false;
@@ -96,7 +97,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
   [Layer_main] = LAYOUT_ergodox_pretty(
-    LALT(KC_F4),        KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -106,12 +107,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                                                                                     LSFT(KC_PSCREEN),KC_PSCREEN,                            DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
-                                                                    LT(1,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(2,KC_ENTER), ST_M_bunny_hop
+                                                                    LT(1,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(2,KC_ENTER), KC_SPACE
   ),
 
 
   [Layer_symbols] = LAYOUT_ergodox_pretty(
-    LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,                  KC_F4,              KC_F5,              KC_F6,                          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F11,         KC_F12,         KC_F13,
+    LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,                  KC_F4,              KC_F5,              KC_F11,                          KC_F12,        KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F13,
     _______,            KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),   LSFT(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
     _______,            KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
     KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),KC_ASTR,            KC_CIRC,                        _______,        KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_BSLASH,KC_LSHIFT,
@@ -320,7 +321,8 @@ enum combo_events {
     COMBO_ROOT,
     COMBO_HASH,
     COMBO_START_WORD,
-    COMBO_DELETE_WORD
+    COMBO_DELETE_WORD,
+    COMBO_ALT_F4
 };
 
 const uint16_t PROGMEM combo_left_square_bracket[] = {KC_S, KC_F, COMBO_END};
@@ -346,6 +348,7 @@ const uint16_t PROGMEM combo_root[] = {KC_F, KC_SCOLON, COMBO_END};
 const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_start_word[] = {KC_F, KC_LEFT, COMBO_END};
 const uint16_t PROGMEM combo_delete_word[] = {KC_F, KC_DOWN, COMBO_END};
+const uint16_t PROGMEM combo_alt_f4[] = {KC_F, KC_4, COMBO_END};
 
 
 combo_t key_combos[COMBO_COUNT] = {
@@ -371,7 +374,8 @@ combo_t key_combos[COMBO_COUNT] = {
     [COMBO_ROOT] = COMBO_ACTION(combo_root),
     [COMBO_HASH] = COMBO_ACTION(combo_hash),
     [COMBO_START_WORD] = COMBO_ACTION(combo_start_word),
-    [COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word)
+    [COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word),
+    [COMBO_ALT_F4] = COMBO_ACTION(combo_alt_f4)
 
 };
 
@@ -510,6 +514,10 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
                 }
             }
         break;
+        case COMBO_ALT_F4:
+            if(pressed){
+                tap_code16(LALT(KC_F4));
+            }
         }
 }
 
@@ -583,38 +591,36 @@ void set_layer_color(int layer) {
                 RGB rgb = hsv_to_rgb( hsv );
                 float f = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
                 rgb_matrix_set_color( i, f * rgb.r, f * rgb.g, f * rgb.b );
-
             }
         }
-
     }
 }
 
 void rgb_matrix_indicators_user(void) {
-  if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
-  if(rgb_show && !rgb_timed_out){
-      switch (biton32(layer_state)) {
-        case Layer_main:
-        set_layer_color(Layer_main);
-        break;
-        case Layer_symbols:
-        set_layer_color(Layer_symbols);
-        break;
-        case Layer_macros:
-        set_layer_color(Layer_macros);
-        break;
-        case Layer_gaming:
-        set_layer_color(Layer_gaming);
-        break;
-    default:
-        if (rgb_matrix_get_flags() == LED_FLAG_NONE)
+    if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
+    if(rgb_show && !rgb_timed_out){
+        switch (biton32(layer_state)) {
+            case Layer_main:
+                set_layer_color(Layer_main);
+            break;
+            case Layer_symbols:
+                set_layer_color(Layer_symbols);
+            break;
+            case Layer_macros:
+                set_layer_color(Layer_macros);
+            break;
+            case Layer_gaming:
+                set_layer_color(Layer_gaming);
+            break;
+            default:
+                if (rgb_matrix_get_flags() == LED_FLAG_NONE){
+                    rgb_matrix_set_color_all(0, 0, 0);
+                }
+            break;
+    }
+    }else{
         rgb_matrix_set_color_all(0, 0, 0);
-        break;
-  }
-  }else{
-      rgb_matrix_set_color_all(0, 0, 0);
-  }
-
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -624,198 +630,182 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         last_word_length = word_length_count;
         word_length_count = 0;
     }
-  switch (keycode) {
-    case ST_MACRO_SSH:
-    if (record->event.pressed) {
-      //SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_H));
-      SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_TAP(X_S) SS_TAP(X_S) SS_TAP(X_H));
+    rgb_timed_out = false;
+    timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
 
-    }
-    break;
-    case ST_MACRO_VIM_wq: //save and exit vim
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_Q) SS_TAP(X_ENTER));
-
-    }
-    break;
-    case ST_M_n_equal: // !=
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_1)) SS_TAP(X_EQUAL));
-
-    }
-    break;
-    case ST_M_n_equal_2: // !==
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_1)) SS_TAP(X_EQUAL) SS_TAP(X_EQUAL));
-
-    }
-    break;
-    case ST_M_l_equal: // <=
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_COMMA)) SS_TAP(X_EQUAL));
-
-    }
-    break;
-    case ST_M_g_equal:  // >=
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_DOT)) SS_TAP(X_EQUAL));
-
-    }
-    break;
-    case ST_M_vim_q: //quite vim without saving
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_Q) SS_LSFT(SS_TAP(X_1)) SS_TAP(X_ENTER));
-
-    }
-    break;
-    case ST_M_vim_w: // write only
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_ENTER));
-
-    }
-    break;
-    case ST_M_round_b: // ()
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)));
-
-    }
-    break;
-    case ST_M_angle_b: // {}
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
-
-    }
-    break;
-    case ST_M_square_b: // []
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_LBRACKET) SS_TAP(X_RBRACKET));
-
-    }
-    break;
-    case ST_M_vim_sp: // vim :sp without enter
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P));
-
-    }
-    break;
-    case ST_M_vim_vs:   // vim :vs without enter
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S));
-
-    }
-    break;
-    case ST_M_all_b: // (){}
-    if (record->event.pressed) {
-      SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)) SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
-
-    }
-    break;
-    case ST_M_vim_sp_e: // vim :sp with enter
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P) SS_TAP(X_ENTER));
-
-    }
-    break;
-    case ST_M_vim_vs_e: // vim :vs with enter
-    if (record->event.pressed) {
-      SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S) SS_TAP(X_ENTER));
-
-    }
-    break;
-    case ST_M_double_left_angle:
-    if (record->event.pressed) {
-      SEND_STRING("<<");
-    }
-    break;
-    case ST_M_double_right_angle:
-    if (record->event.pressed) {
-      SEND_STRING(">>");
-    }
-    break;
-    case ST_M_double_colon:
-    if (record->event.pressed) {
-      SEND_STRING("::");
-    }
-    break;
-    case ST_M_bunny_hop:
-    if (record->event.pressed) {
-        rgb_timed_out = false;
-        timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
-        use_bunnyhop = true;
-        if(!enable_bunnyhop){
-            SEND_STRING(SS_DOWN(X_SPACE));
-        }
-    }else
-    {
-        use_bunnyhop = false;
-        if(!enable_bunnyhop){
-            SEND_STRING(SS_UP(X_SPACE));
-        }
-    }
-    break;
-    case ST_M_enable_bunny_hop:
-    if (record->event.pressed) {
-      enable_bunnyhop = !enable_bunnyhop;
-      //enable_bunnyhop ? ergodox_right_led_1_on() : ergodox_right_led_1_off();
-    }
-    break;
-    case ST_M_brightness_up:
-    if (record->event.pressed) {
-      brightness_amount+=10;
-    }
-    break;
-    case ST_M_brightness_down:
-    if (record->event.pressed) {
-      brightness_amount-=10;
-    }
-    break;
-    case ST_M_hue_up:
-    if (record->event.pressed) {
-      hue_amount+=5;
-    }
-    break;
-    case ST_M_hue_down:
-    if (record->event.pressed) {
-      hue_amount-=5;
-    }
-    break;
-    case ST_M_toggle_main_layer_brightness:
-    if (record->event.pressed) {
-      main_layer_brightness = !main_layer_brightness;
-    }
-    break;
-    case RGB_SLD:
-    if (record->event.pressed) {
-      rgblight_mode(1);
-    }
-    break;
-    case ST_M_led_timeout_30s:
-    if (record->event.pressed) {
-      rgb_time_out_value = 360;
-    }
-    break;
-    case ST_M_led_timeout_1m:
-    if (record->event.pressed) {
-      rgb_time_out_value = 720;
-    }
-    break;
-    case ST_M_led_timeout_5m:
-    if (record->event.pressed) {
-      rgb_time_out_value = 3600;
-    }
-    break;
-    case ST_M_led_timeout_10m:
-    if (record->event.pressed) {
-      rgb_time_out_value = 7200;
-    }
-      return false;
+    switch (keycode) {
+        case ST_MACRO_SSH:
+            if (record->event.pressed) {
+                //SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_H));
+                SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_TAP(X_S) SS_TAP(X_S) SS_TAP(X_H));
+            }
+        break;
+        case ST_MACRO_VIM_wq: //save and exit vim
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_Q) SS_TAP(X_ENTER));
+            }
+        break;
+        case ST_M_n_equal: // !=
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_1)) SS_TAP(X_EQUAL));
+            }
+        break;
+        case ST_M_n_equal_2: // !==
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_1)) SS_TAP(X_EQUAL) SS_TAP(X_EQUAL));
+            }
+        break;
+        case ST_M_l_equal: // <=
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_COMMA)) SS_TAP(X_EQUAL));
+            }
+        break;
+        case ST_M_g_equal:  // >=
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_DOT)) SS_TAP(X_EQUAL));
+            }
+        break;
+        case ST_M_vim_q: //quite vim without saving
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_Q) SS_LSFT(SS_TAP(X_1)) SS_TAP(X_ENTER));
+            }
+        break;
+        case ST_M_vim_w: // write only
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_ENTER));
+            }
+        break;
+        case ST_M_round_b: // ()
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)));
+            }
+        break;
+        case ST_M_angle_b: // {}
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
+            }
+        break;
+        case ST_M_square_b: // []
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_LBRACKET) SS_TAP(X_RBRACKET));
+            }
+        break;
+        case ST_M_vim_sp: // vim :sp without enter
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P));
+            }
+        break;
+        case ST_M_vim_vs:   // vim :vs without enter
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S));
+            }
+        break;
+        case ST_M_all_b: // (){}
+            if (record->event.pressed) {
+                SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)) SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
+            }
+        break;
+        case ST_M_vim_sp_e: // vim :sp with enter
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P) SS_TAP(X_ENTER));
+            }
+        break;
+        case ST_M_vim_vs_e: // vim :vs with enter
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S) SS_TAP(X_ENTER));
+            }
+        break;
+        case ST_M_double_left_angle:
+            if (record->event.pressed) {
+                SEND_STRING("<<");
+            }
+        break;
+        case ST_M_double_right_angle:
+            if (record->event.pressed) {
+                SEND_STRING(">>");
+            }
+        break;
+        case ST_M_double_colon:
+            if (record->event.pressed) {
+                SEND_STRING("::");
+            }
+        break;
+        case ST_M_bunny_hop:
+            if (record->event.pressed) {
+                use_bunnyhop = true;
+                if(!enable_bunnyhop){
+                    SEND_STRING(SS_DOWN(X_SPACE));
+                }
+            }else
+            {
+                use_bunnyhop = false;
+                if(!enable_bunnyhop){
+                    SEND_STRING(SS_UP(X_SPACE));
+                }
+            }
+        break;
+        case ST_M_enable_bunny_hop:
+            if (record->event.pressed) {
+                enable_bunnyhop = !enable_bunnyhop;
+            }
+        break;
+        case ST_M_brightness_up:
+            if (record->event.pressed) {
+                brightness_amount+=10;
+            }
+        break;
+        case ST_M_brightness_down:
+            if (record->event.pressed) {
+                brightness_amount-=10;
+            }
+        break;
+        case ST_M_hue_up:
+            if (record->event.pressed) {
+                hue_amount+=5;
+            }
+        break;
+        case ST_M_hue_down:
+            if (record->event.pressed) {
+                hue_amount-=5;
+            }
+        break;
+        case ST_M_toggle_main_layer_brightness:
+            if (record->event.pressed) {
+                main_layer_brightness = !main_layer_brightness;
+            }
+        break;
+        case RGB_SLD:
+            if (record->event.pressed) {
+                rgblight_mode(1);
+            }
+        break;
+        case ST_M_led_timeout_30s:
+            if (record->event.pressed) {
+                rgb_time_out_value = 360;
+            }
+        break;
+        case ST_M_led_timeout_1m:
+            if (record->event.pressed) {
+                rgb_time_out_value = 720;
+            }
+        break;
+        case ST_M_led_timeout_5m:
+            if (record->event.pressed) {
+                rgb_time_out_value = 3600;
+            }
+        break;
+        case ST_M_led_timeout_10m:
+            if (record->event.pressed) {
+                rgb_time_out_value = 7200;
+            }
+        break;
+        return false;
   }
   return true;
 }
 
 uint32_t layer_state_set_user(uint32_t state) { return state; };
 
-int bunny_hop_delay_counter = 0;
 LEADER_EXTERNS();
 int did_leader_succeed;
 
