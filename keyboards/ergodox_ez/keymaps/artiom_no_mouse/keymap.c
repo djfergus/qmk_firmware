@@ -70,7 +70,7 @@ int last_word_length=0;
 
 //do not change the following
 bool use_default_lighting = true; // do not change used inside loop
-extern bool g_suspend_state;
+bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -156,6 +156,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+}
+
+void suspend_power_down_user(void) {
+    g_suspend_state = true;
+    rgb_matrix_set_suspend_state(true);
+}
+
+void suspend_wakeup_init_user(void) {
+    g_suspend_state = false;
+    rgb_matrix_set_suspend_state(false);
 }
 
 //colours                   hsv             // rgb
