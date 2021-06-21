@@ -188,42 +188,42 @@ enum custom_keycodes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-	[Layer_main] = KEYMAP( //default numpad
+	[Layer_main] = LAYOUT_MACROPAD( //default numpad
 		KC_NUMLOCK,     KC_KP_SLASH,    KC_KP_ASTERISK,     KC_KP_MINUS,
 		KC_KP_7,        KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
 		KC_KP_4,        KC_KP_5,        KC_KP_6,            KC_KP_ENTER,
 		KC_KP_1,        KC_KP_2,        KC_KP_3,            KC_COMMA,
 		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BSPACE)),
 
-	[Layer_shortcuts] = KEYMAP( //layer switcher and some settings
+	[Layer_shortcuts] = LAYOUT_MACROPAD( //layer switcher and some settings
 		AUTO_CLICKER_HOLD,      KC_TRNS,         KC_TRNS,        L1_PRECISION_MINUS,
 		AUTO_CLICKER_AUTO,      KC_TRNS,         KC_TRNS,        L1_PRECISION_PLUS,
 		KC_TRNS,                KC_TRNS,         KC_TRNS,        TOGGLE_NUM_LOCK_ANIMATION,
 		TO(Layer_extra),        KC_TRNS,         KC_TRNS,        RESET,
 		TO(Layer_mouse),        TO(Layer_gaming),TO(Layer_calc), TO(Layer_main)),
 
-    [Layer_calc] = KEYMAP( //hardware calculator
+    [Layer_calc] = LAYOUT_MACROPAD( //hardware calculator
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
 		L1_7,               L1_8,       L1_9,           L1_PLUS,
 		L1_4,               L1_5,       L1_6,           L1_POWER,
 		L1_1,               L1_2,       L1_3,           L1_MOD,
 		L1_0,               L1_DOT,     L1_EQUALS,      L1_EXIT_LAYER),
 
-    [Layer_mouse] = KEYMAP( //mouse layer
+    [Layer_mouse] = LAYOUT_MACROPAD( //mouse layer
 		KC_MS_ACCEL0,       KC_MS_ACCEL1,   KC_MS_ACCEL2,   KC_MS_WH_UP,
 		KC_TRNS,            KC_MS_UP,       KC_TRNS,        KC_MS_WH_DOWN,
 		KC_MS_LEFT,         KC_MS_DOWN,     KC_MS_RIGHT,    KC_MS_BTN4,
 		KC_TRNS,            KC_TRNS,        KC_TRNS,        KC_MS_BTN5,
 		LEFT_MOUSE_CLICKER, KC_MS_BTN3,     KC_MS_BTN2,     TO(Layer_main)),
 
-    [Layer_gaming] = KEYMAP( //gaming layer
+    [Layer_gaming] = LAYOUT_MACROPAD( //gaming layer
 		KC_1,           KC_2,           KC_3,           KC_4,
 		KC_R,           KC_Q,           KC_W,           KC_E,
 		KC_TAB,         KC_A,           KC_S,           KC_D,
 		KC_LSHIFT,      KC_X,           KC_C,           KC_V,
 		TO(Layer_main), KC_F,        KC_LCTRL,       KC_SPACE),
 
-    [Layer_extra] = KEYMAP( //extra stuff for obs and things
+    [Layer_extra] = LAYOUT_MACROPAD( //extra stuff for obs and things
 		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),     KC_TRNS,
 		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
 		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                    KC_TRNS,
