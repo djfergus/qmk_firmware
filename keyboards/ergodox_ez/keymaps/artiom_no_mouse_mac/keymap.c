@@ -49,7 +49,7 @@ bool rgb_show = true;
 bool rgb_timed_out = false;
 int timeout_counter = 0;
 uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
-int rgb_time_out_value = 7200;   // 100 = ~9seconds, 666= ~ 54s
+int rgb_time_out_value = 360; //7200;   // 100 = ~9seconds, 666= ~ 54s
 
 bool use_bunnyhop = false;
 bool enable_bunnyhop = false;
@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-                                                                                                    LSFT(KC_PSCREEN),KC_PSCREEN,                            DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
+                                                                                                    LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                                     LT(1,KC_BSPACE),LCTL_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(2,KC_ENTER), KC_SPACE
   ),
@@ -116,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,            KC_GRAVE,       KC_QUOTE,           LSFT(KC_2),             LGUI(LCTL(KC_C)),   LGUI(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
     _______,            KC_EXLM,        LSFT(KC_QUOTE),     LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
     KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            LSFT(KC_NONUS_HASH),    LSFT(KC_GRAVE),     KC_ASTR,            KC_CIRC,                        _______,        KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_HASH,  KC_LSHIFT,
-    LALT(KC_LCTRL),     ST_M_n_equal_2, LCTL(KC_X),         LGUI(KC_C),             LGUI(KC_V),                                                                                             LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
+    LALT(KC_LCTRL),     ST_M_n_equal_2, LGUI(KC_X),         LGUI(KC_C),             LGUI(KC_V),                                                                                             LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
 
 
                                                                                                                     _______,_______,                        _______, _______,
@@ -869,7 +869,7 @@ void matrix_scan_user(void) {
       did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_C, KC_O) {
-      SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse");
+      SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse_mac");
       did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_LEFT){
