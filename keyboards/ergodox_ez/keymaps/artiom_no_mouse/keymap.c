@@ -49,7 +49,7 @@ bool rgb_show = true;
 bool rgb_timed_out = false;
 int timeout_counter = 0;
 uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
-int rgb_time_out_value = 7200;   // 100 = ~9seconds, 666= ~ 54s
+int rgb_time_out_value = 360;   // 100 = ~9seconds, 666= ~ 54s
 
 bool use_bunnyhop = false;
 bool enable_bunnyhop = false;
@@ -332,7 +332,9 @@ enum combo_events {
     COMBO_HASH,
     COMBO_START_WORD,
     COMBO_DELETE_WORD,
-    COMBO_ALT_F4
+    COMBO_ALT_F4,
+    COMBO_SCROLL_UP,
+    COMBO_SCROLL_DOWN
 };
 
 const uint16_t PROGMEM combo_left_square_bracket[] = {KC_S, KC_F, COMBO_END};
@@ -359,6 +361,8 @@ const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_start_word[] = {KC_F, KC_LEFT, COMBO_END};
 const uint16_t PROGMEM combo_delete_word[] = {KC_F, KC_DOWN, COMBO_END};
 const uint16_t PROGMEM combo_alt_f4[] = {KC_F, KC_4, COMBO_END};
+const uint16_t PROGMEM combo_scroll_up[] = {KC_W, KC_E, COMBO_END};
+const uint16_t PROGMEM combo_scroll_down[] = {KC_E, KC_R, COMBO_END};
 
 
 combo_t key_combos[COMBO_COUNT] = {
@@ -385,8 +389,9 @@ combo_t key_combos[COMBO_COUNT] = {
     [COMBO_HASH] = COMBO_ACTION(combo_hash),
     [COMBO_START_WORD] = COMBO_ACTION(combo_start_word),
     [COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word),
-    [COMBO_ALT_F4] = COMBO_ACTION(combo_alt_f4)
-
+    [COMBO_ALT_F4] = COMBO_ACTION(combo_alt_f4),
+    [COMBO_SCROLL_UP] = COMBO_ACTION(combo_scroll_up),
+    [COMBO_SCROLL_DOWN] = COMBO_ACTION(combo_scroll_down)
 };
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
@@ -504,6 +509,20 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         case COMBO_HASH:
             if (pressed) {
                 tap_code16(KC_NONUS_HASH);
+            }
+        break;
+        case COMBO_SCROLL_UP:
+            if (pressed) {
+                register_code16(KC_MS_WH_UP);
+            }else{
+                unregister_code16(KC_MS_WH_UP);
+            }
+        break;
+        case COMBO_SCROLL_DOWN:
+            if (pressed) {
+                register_code16(KC_MS_WH_DOWN);
+            }else{
+                unregister_code16(KC_MS_WH_DOWN);
             }
         break;
         case COMBO_START_WORD:

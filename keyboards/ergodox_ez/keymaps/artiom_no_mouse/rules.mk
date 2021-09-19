@@ -10,7 +10,7 @@ RGB_MATRIX_ENABLE = yes
 
 #stuff I added lol
 CONSOLE_ENABLE = no
-MOUSEKEY_ENABLE = no
+MOUSEKEY_ENABLE = yes
 EXTRAKEY_ENABLE = no #audio and brightness and shiet like that
 BOOTMAGIC_ENABLE = no
 COMBO_ENABLE = yes #pretty cool allows you to press two keys at the same time which will result in another key
