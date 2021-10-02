@@ -232,9 +232,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[Layer_shortcuts] = LAYOUT_MACROPAD( //layer switcher and some settings
 		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),        L1_PRECISION_MINUS,
-		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                       L1_PRECISION_PLUS,
-		KC_TRNS,                    KC_TRNS,                    KC_TRNS,                       TOGGLE_NUM_LOCK_ANIMATION,
-		COMPILE_MACRO,              FLASH_MACRO,                KC_TRNS,                       RESET,
+		KC_F17,                     KC_F18,                     KC_F19,                        L1_PRECISION_PLUS,
+		KC_F14,                     KC_F15,                     KC_F16,                        TOGGLE_NUM_LOCK_ANIMATION,
+		COMPILE_MACRO,              FLASH_MACRO,                KC_F13,                        RESET,
 		KC_TRNS,                    TO(Layer_extra),            TO(Layer_calc),                TO(Layer_main)),
 
     [Layer_calc] = LAYOUT_MACROPAD( //hardware calculator
