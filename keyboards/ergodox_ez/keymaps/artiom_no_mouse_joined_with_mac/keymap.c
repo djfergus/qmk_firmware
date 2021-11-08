@@ -34,16 +34,10 @@ enum custom_keycodes {
   ST_M_g_equal,
   ST_M_vim_q,
   ST_M_vim_w,
-  ST_M_round_b,
-  ST_M_angle_b,
-  ST_M_square_b,
   ST_M_vim_sp,
   ST_M_vim_vs,
-  ST_M_all_b,
   ST_M_vim_sp_e,
   ST_M_vim_vs_e,
-  ST_M_double_left_angle,
-  ST_M_double_right_angle,
   ST_M_double_colon,
   ST_M_bunny_hop,
   ST_M_enable_bunny_hop,
@@ -55,7 +49,9 @@ enum custom_keycodes {
   ST_M_led_timeout_30s,
   ST_M_led_timeout_1m,
   ST_M_led_timeout_5m,
-  ST_M_led_timeout_10m
+  ST_M_led_timeout_10m,
+  ST_M_combo_toggle,
+  ST_M_mac_mode_toggle
 };
 
 bool rgb_show = true;
@@ -170,11 +166,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
-    ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2, DYN_REC_STOP,   _______,                                    _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
-    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,         LCTL(KC_V),     LCTL(KC_B),    _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
-    ST_M_led_timeout_5m,    ST_M_round_b,   ST_M_angle_b,       ST_M_square_b,  ST_M_vim_sp,    ST_M_vim_vs,                                                                LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
-    ST_M_led_timeout_10m,   ST_M_all_b,     _______,            _______,        ST_M_vim_sp_e,  ST_M_vim_vs_e,  _______,                                    _______,        _______,        _______,                        ST_M_double_left_angle, ST_M_double_right_angle,    _______,         _______,
-    _______,                _______,        _______,            _______,        _______,                                                                                                    _______,                        _______,                _______,                    _______,         _______,
+    ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2,   DYN_REC_STOP,   _______,                                    _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
+    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,            LCTL(KC_V),    LCTL(KC_B),    _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
+    ST_M_led_timeout_5m,    _______,        _______,            _______,            ST_M_vim_sp,    ST_M_vim_vs,                                                              LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
+    ST_M_led_timeout_10m,   _______,        _______,            ST_M_combo_toggle,ST_M_vim_sp_e,  ST_M_vim_vs_e,  _______,                                    _______,        _______,        ST_M_mac_mode_toggle,           _______,                _______,                    _______,         _______,
+    _______,                _______,        _______,            _______,        _______,                                                                                                      _______,                        _______,                _______,                    _______,         _______,
 
 
                                                                                                                 _______,    _______,                        _______,        _______,
@@ -408,6 +404,38 @@ const uint16_t PROGMEM combo_alt_f4[] = {KC_F, KC_4, COMBO_END};
 const uint16_t PROGMEM combo_scroll_up[] = {KC_W, KC_E, COMBO_END};
 const uint16_t PROGMEM combo_scroll_down[] = {KC_E, KC_R, COMBO_END};
 
+/* COMBOS VISUAL LAYOUT
+    +-------------+
+    | S | F | [   |
+    | J | L | ]   |
+    | S | D | {   |
+    | L | K | }   |
+    | D | F | (   |
+    | J | K | )   |
+    | 9 | 0 | =   |
+    | 8 | 9 | -   |
+    | U | I | <   |
+    | I | O | >   |
+    | F | U | <=  |
+    | F | O | >=  |
+    | F | Y | <== |
+    | F | P | >== |
+    | J | A | !=  |
+    | J | S | !== |
+    | F | I | |   |
+    | F | J | &   |
+    | F | K | *   |
+    | F | ; | ~   |
+    | F | H | #   |
+    | F | 4 | Af4 |
+    | F | < | W<< |
+    | F | d | Wdd |
+    | W | E | Sup |
+    | E | R | Sdw |
+    +-------------+
+
+*/
+
 combo_t key_combos[COMBO_COUNT] = {
     [COMBO_LEFT_SQUARE_BRACKET] = COMBO_ACTION(combo_left_square_bracket),
     [COMBO_RIGHT_SQUARE_BRACKET] = COMBO_ACTION(combo_right_square_bracket),
@@ -442,52 +470,72 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         switch(combo_index) {
         case COMBO_LEFT_SQUARE_BRACKET:
             if (pressed) {
-                tap_code16(KC_LBRACKET);
+                register_code16(KC_LBRACKET);
+            }else{
+                unregister_code16(KC_LBRACKET);
             }
         break;
         case COMBO_RIGHT_SQUARE_BRACKET:
             if (pressed) {
-                tap_code16(KC_RBRACKET);
+                register_code16(KC_RBRACKET);
+            }else{
+                unregister_code16(KC_RBRACKET);
             }
         break;
         case COMBO_LEFT_CURLY_BRACKET:
             if (pressed) {
-                tap_code16(KC_LCBR);
+                register_code16(KC_LCBR);
+            }else{
+                unregister_code16(KC_LCBR);
             }
         break;
         case COMBO_RIGHT_CURLY_BRACKET:
             if (pressed) {
-                tap_code16(KC_RCBR);
+                register_code16(KC_RCBR);
+            }else{
+                unregister_code16(KC_RCBR);
             }
         break;
         case COMBO_LEFT_BRACKET:
             if (pressed) {
-                tap_code16(LSFT(KC_9));
+                register_code16(LSFT(KC_9));
+            }else{
+                unregister_code16(LSFT(KC_9));
             }
         break;
         case COMBO_RIGHT_BRACKET:
             if (pressed) {
-                tap_code16(LSFT(KC_0));
+                register_code16(LSFT(KC_0));
+            }else{
+                unregister_code16(LSFT(KC_0));
             }
         break;
         case COMBO_MINUS:
             if (pressed) {
-                tap_code16(KC_MINUS);
+                register_code16(KC_MINUS);
+            }else{
+                unregister_code16(KC_MINUS);
             }
         break;
         case COMBO_EQUALS:
             if (pressed) {
-                tap_code16(KC_EQUAL);
+                register_code16(KC_EQUAL);
+            }else{
+                unregister_code16(KC_EQUAL);
             }
         break;
         case COMBO_LESS:
             if (pressed) {
-                tap_code16(KC_LABK);
+                register_code16(KC_LABK);
+            }else{
+                unregister_code16(KC_LABK);
             }
         break;
         case COMBO_GREATER:
             if (pressed) {
-                tap_code16(KC_RABK);
+                register_code16(KC_RABK);
+            }else{
+                unregister_code16(KC_RABK);
             }
         break;
         case COMBO_LESS_EQUALS:
@@ -531,27 +579,37 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         break;
         case COMBO_PIPE:
             if (pressed) {
-                tap_code16(LSFT(KC_NONUS_BSLASH));
+                register_code16(LSFT(KC_NONUS_BSLASH));
+            }else{
+                unregister_code16(LSFT(KC_NONUS_BSLASH));
             }
         break;
         case COMBO_ASTARISK:
             if (pressed) {
-                tap_code16(KC_ASTR);
+                register_code16(KC_ASTR);
+            }else{
+                unregister_code16(KC_ASTR);
             }
         break;
         case COMBO_AMPERSTAND:
             if (pressed) {
-                tap_code16(KC_AMPR);
+                register_code16(KC_AMPR);
+            }else{
+                unregister_code16(KC_AMPR);
             }
         break;
         case COMBO_ROOT:
             if (pressed) {
-                tap_code16(LSFT(KC_NONUS_HASH));
+                register_code16(LSFT(KC_NONUS_HASH));
+            }else{
+                unregister_code16(LSFT(KC_NONUS_HASH));
             }
         break;
         case COMBO_HASH:
             if (pressed) {
-                tap_code16(KC_NONUS_HASH);
+                register_code16(KC_NONUS_HASH);
+            }else{
+                unregister_code16(KC_NONUS_HASH);
             }
         break;
         case COMBO_SCROLL_UP:
@@ -712,8 +770,8 @@ void rgb_matrix_indicators_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if(keycode >= 4 && keycode <= 39){
         word_length_count++;
-    }else{
         last_word_length = word_length_count;
+    }else{
         word_length_count = 0;
     }
     rgb_timed_out = false;
@@ -722,7 +780,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case ST_MACRO_SSH:
             if (record->event.pressed) {
-                //SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_S) SS_DELAY(100) SS_TAP(X_H));
                 SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_TAP(X_S) SS_TAP(X_S) SS_TAP(X_H));
             }
         break;
@@ -761,21 +818,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_ENTER));
             }
         break;
-        case ST_M_round_b: // ()
-            if (record->event.pressed) {
-                SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)));
-            }
-        break;
-        case ST_M_angle_b: // {}
-            if (record->event.pressed) {
-                SEND_STRING(SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
-            }
-        break;
-        case ST_M_square_b: // []
-            if (record->event.pressed) {
-                SEND_STRING(SS_TAP(X_LBRACKET) SS_TAP(X_RBRACKET));
-            }
-        break;
         case ST_M_vim_sp: // vim :sp without enter
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P));
@@ -786,11 +828,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S));
             }
         break;
-        case ST_M_all_b: // (){}
-            if (record->event.pressed) {
-                SEND_STRING(SS_LSFT(SS_TAP(X_9)) SS_LSFT(SS_TAP(X_0)) SS_LSFT(SS_TAP(X_LBRACKET)) SS_LSFT(SS_TAP(X_RBRACKET)));
-            }
-        break;
         case ST_M_vim_sp_e: // vim :sp with enter
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P) SS_TAP(X_ENTER));
@@ -799,16 +836,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case ST_M_vim_vs_e: // vim :vs with enter
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S) SS_TAP(X_ENTER));
-            }
-        break;
-        case ST_M_double_left_angle:
-            if (record->event.pressed) {
-                SEND_STRING("<<");
-            }
-        break;
-        case ST_M_double_right_angle:
-            if (record->event.pressed) {
-                SEND_STRING(">>");
             }
         break;
         case ST_M_double_colon:
@@ -885,17 +912,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_time_out_value = 7200;
             }
         break;
+        case ST_M_mac_mode_toggle:
+            if (record->event.pressed) {
+                mac_mode = !mac_mode;
+                if(mac_mode){
+                    layer_move(Layer_mac_main);
+                }else{
+                    layer_move(Layer_main);
+                }
+            }
+        break;
+        case ST_M_combo_toggle:
+            if (record->event.pressed) {
+                combo_toggle();
+                combos_on = is_combo_enabled();
+            }
+        break;
         return false;
   }
   return true;
 }
 
 uint32_t layer_state_set_user(uint32_t state) {
-    if(state == Layer_main){ // game layer always returns to Layer_main so need to update mac_mode accordingly
-        mac_mode = false;
-    }else if(state == Layer_mac_main){
-        mac_mode = true;
-    }
+    // if(state == Layer_main){ // game layer always returns to Layer_main so need to update mac_mode accordingly. however updating it causes an issue where you can't go back to mac mode
+    //     mac_mode = false;
+    // }else if(state == Layer_mac_main){
+    //     mac_mode = true;
+    // }
     return state;
 };
 
@@ -908,7 +951,7 @@ void matrix_scan_user(void) {
 
     SEQ_ONE_KEY(KC_T) {
       // Anything you can do in a macro.
-      SEND_STRING(SS_DOWN(X_LGUI)  SS_TAP(X_ENTER) SS_UP(X_LGUI)  SS_DELAY(500) "timer ");
+      SEND_STRING(SS_DOWN(X_LGUI)  SS_TAP(X_ENTER) SS_UP(X_LGUI)  SS_DELAY(1000) "timer ");
       did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_B, KC_I) {
@@ -940,30 +983,17 @@ void matrix_scan_user(void) {
         did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_E) {
-      SEND_STRING(SS_LSFT("'") "t80search_bot ");
+      SEND_STRING(SS_LSFT("'") "t80search_bot -t");
       did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_G, KC_G) {
+      mac_mode = false; // gaming layer currently always returns to Layer_main. shouldn't be a problem since I wouldn't be launching it from mac mode ever.
       layer_move(Layer_gaming);
       did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_C, KC_O) {
       SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse_joined_with_mac");
       did_leader_succeed = true;
-    } else
-    SEQ_ONE_KEY(KC_LEFT){
-        combo_toggle();
-        combos_on = is_combo_enabled();
-        did_leader_succeed = true;
-    } else
-    SEQ_THREE_KEYS(KC_M, KC_M, KC_M){
-        mac_mode = !mac_mode;
-        if(mac_mode){
-            layer_move(Layer_mac_main);
-        }else{
-            layer_move(Layer_main);
-        }
-        did_leader_succeed = true;
     }
     leader_end();
   }
