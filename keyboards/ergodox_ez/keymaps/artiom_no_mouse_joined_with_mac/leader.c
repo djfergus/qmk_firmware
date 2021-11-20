@@ -1,7 +1,10 @@
 #include "sharedDefines.h"
+#include "pointing_device.h"
 
 int bunny_hop_delay_counter = 0;
 bool leader_key_is_running = false;
+
+uint16_t scroll_delay_timer;
 
 LEADER_EXTERNS();
 int did_leader_succeed;
@@ -77,6 +80,16 @@ void matrix_scan_user(void) {
         bunny_hop_delay_counter = rand() % 10;
        }
        bunny_hop_delay_counter --;
+  }
+
+  if(scrollwheel_up_on || scrollwheel_down_on){
+    if(timer_elapsed(scroll_delay_timer) > 100){ //call this every 100ms
+        report_mouse_t currentReport = pointing_device_get_report();
+        currentReport.v = scrollwheel_up_on ? 1 : -1;
+        pointing_device_set_report(currentReport);
+        pointing_device_send();
+        scroll_delay_timer = timer_read();
+    }
   }
 
 }

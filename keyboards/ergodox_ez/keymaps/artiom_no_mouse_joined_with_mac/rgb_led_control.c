@@ -129,6 +129,7 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
 
 void keyboard_post_init_user(void) {
+    scroll_delay_timer = timer_read();
     rgb_matrix_enable();
 }
 

@@ -85,6 +85,10 @@ extern int last_word_length;
 extern bool use_default_lighting; // do not change used inside loop
 extern bool g_suspend_state;
 
+extern bool scrollwheel_up_on;
+extern bool scrollwheel_down_on;
+extern uint16_t scroll_delay_timer;
+
 //colours                   hsv             // rgb
 #define KM_Light_red        {0,223,252}     // 252,32,31
 #define KM_Light_yellow     {31,208,234}    // 234,181,42
