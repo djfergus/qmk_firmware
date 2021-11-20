@@ -174,3 +174,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
   return true;
 }
+
+// void dynamic_macro_record_start_user(void){
+//     if(mac_mode){
+//         layer_move(Layer_mac_main);
+//     }else{
+//         layer_move(Layer_main);
+//     }
+// }
+/*
+    Fix for dymanic macro nuking the mac layer when it starts recording and ends recording might cause issues in the future?
+    qmk_firmware/quantum/process_keycode/process_dynamic_macro.c comment out layer_clear() on line 59 and line 76
+*/
