@@ -21,3 +21,5 @@ UNICODE_ENABLE = no
 BLUETOOTH_ENABLE = no
 RAW_ENABLE = no
 NKRO_ENABLE = yes
+
+SRC+= combos.c leader.c macros.c rgb_led_control.c
