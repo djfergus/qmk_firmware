@@ -7,14 +7,14 @@
 #define Layer_main 0
 #define Layer_symbols 1
 #define Layer_nums 2
-#define Layer_function_keys 3
+#define Layer_fkeys 3
 
 bool leader_key_is_running = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[Layer_main] = LAYOUT_30(
-		KC_Q,                   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   LT(Layer_function_keys,KC_P),
+		LT(Layer_fkeys,KC_Q),   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   KC_P,
 		KC_A,                   KC_S,                   KC_D,                   KC_F,                   LT(Layer_nums,KC_G),    KC_H,                       KC_J,                   KC_K,           KC_L,                   LSFT_T(KC_ENTER),
 		LCTL_T(KC_Z),           LALT_T(KC_X),           LCG_T(KC_C),            LSG_T(KC_V),            LGUI_T(KC_B),           LT(Layer_symbols,KC_SPACE), KC_N,                   KC_M,           LCSG_T(KC_DOT),         HYPR_T(KC_SLASH)
     ),
@@ -31,9 +31,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                KC_LEAD,                    _______,                _______,        _______,                KC_ESC
     ),
 
-	[Layer_function_keys] = LAYOUT_30(
-		KC_F1,                  KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  _______,
-		KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 KC_F15,                 KC_F16,                     KC_F17,                 KC_F18,         KC_F19,                 KC_F10,
+	[Layer_fkeys] = LAYOUT_30(
+		_______,                KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  KC_F10,
+		KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 KC_F15,                 KC_F16,                     KC_F17,                 KC_F18,         KC_F19,                 KC_F1,
 		KC_F21,                 KC_F22,                 KC_F23,                 KC_F24,                 _______,                _______,                    _______,                _______,        _______,                KC_F20
     ),
 
