@@ -1,32 +1,49 @@
 #include "kb.h"
 
+
+#define LCG_T(kc) MT(MOD_LCTL | MOD_LGUI, kc)                         // Left Control + GUI
+#define LCSG_T(kc) MT(MOD_LCTL | MOD_LSFT | MOD_RGUI, kc)             // Left Control + Shift + GUI
+
 #define Layer_main 0
 #define Layer_symbols 1
 #define Layer_nums 2
+#define Layer_function_keys 3
 
 bool leader_key_is_running = false;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 	[Layer_main] = LAYOUT_30(
-		KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,                       KC_U,   KC_I,   KC_O,   KC_P,
-		KC_A,   KC_S,   KC_D,   KC_F,   KC_G,   KC_H,                       KC_J,   KC_K,   KC_L,   LT(Layer_nums,KC_ENTER),
-		KC_Z,   KC_X,   KC_C,   KC_V,   KC_B,   LT(Layer_symbols,KC_SPACE), KC_N,   KC_M,   LSFT_T(KC_DOT),LCTL_T(KC_SLASH)
+		KC_Q,                   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   LT(Layer_function_keys,KC_P),
+		KC_A,                   KC_S,                   KC_D,                   KC_F,                   LT(Layer_nums,KC_G),    KC_H,                       KC_J,                   KC_K,           KC_L,                   LSFT_T(KC_ENTER),
+		LCTL_T(KC_Z),           LALT_T(KC_X),           LCG_T(KC_C),            LSG_T(KC_V),            LGUI_T(KC_B),           LT(Layer_symbols,KC_SPACE), KC_N,                   KC_M,           LCSG_T(KC_DOT),         HYPR_T(KC_SLASH)
     ),
 
 	[Layer_symbols] = LAYOUT_30(
-		KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),   LSFT(LCTL(KC_V)),       _______,        KC_PLUS,        KC_MINUS,       KC_ESC,         KC_EQUAL,
-		KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),             KC_DLR,             KC_PERC,                _______,        _______,        _______,        KC_UNDS,        KC_QUES,
-		KC_LSHIFT,      KC_AMPR,            LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),_______,                _______,        _______,        _______,        KC_COMM,         KC_NONUS_BSLASH
+		KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       _______,                    KC_PLUS,                KC_MINUS,       _______,                KC_EQUAL,
+		KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                _______,                    _______,                _______,        KC_UNDS,                KC_QUES,
+		KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    _______,                _______,                    LSFT(KC_SCOLON),        _______,        KC_COMM,                KC_NONUS_BSLASH
     ),
 
 	[Layer_nums] = LAYOUT_30(
-		KC_1,   KC_2,                   KC_3,           KC_4,           KC_5,   KC_6,   KC_7,               KC_8,   KC_9,   KC_0,
-		_______,_______,                _______,        _______,        _______,_______,_______,            _______,_______,_______,
-		KC_LGUI,LCTL(LSFT(KC_LGUI)),    LCTL(KC_LGUI),  LSFT(KC_LGUI),  KC_LEAD,KC_HYPR,LCTL(LSFT(KC_LGUI)),_______,_______,_______
+		KC_1,                   KC_2,                   KC_3,                   KC_4,                   KC_5,                   KC_6,                       KC_7,                   KC_8,           KC_9,                   KC_0,
+		DYN_REC_START1,         DYN_REC_START2,         DYN_REC_STOP,           _______,                _______,                KC_LEFT,                    KC_DOWN,                KC_UP,          KC_RIGHT,               KC_PSCREEN,
+		DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                KC_LEAD,                    _______,                _______,        _______,                KC_ESC
     ),
 
+	[Layer_function_keys] = LAYOUT_30(
+		KC_F1,                  KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  _______,
+		KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 KC_F15,                 KC_F16,                     KC_F17,                 KC_F18,         KC_F19,                 KC_F10,
+		KC_F21,                 KC_F22,                 KC_F23,                 KC_F24,                 _______,                _______,                    _______,                _______,        _______,                KC_F20
+    ),
 
+/*
+	[Layer_template] = LAYOUT_30(
+		_______,                _______,                _______,                _______,                _______,                _______,                    _______,                _______,        _______,                _______,
+		_______,                _______,                _______,                _______,                _______,                _______,                    _______,                _______,        _______,                _______,
+		_______,                _______,                _______,                _______,                _______,                _______,                    _______,                _______,        _______,                _______
+    ),
+*/
 };
 
 
