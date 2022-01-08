@@ -20,26 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ergodox_ez.h"
 
-// extern inline void ergodox_board_led_on(void);
-// extern inline void ergodox_right_led_1_on(void);
-// extern inline void ergodox_right_led_2_on(void);
-// extern inline void ergodox_right_led_3_on(void);
-// extern inline void ergodox_right_led_on(uint8_t led);
-
-// extern inline void ergodox_board_led_off(void);
-// extern inline void ergodox_right_led_1_off(void);
-// extern inline void ergodox_right_led_2_off(void);
-// extern inline void ergodox_right_led_3_off(void);
-// extern inline void ergodox_right_led_off(uint8_t led);
-
-// extern inline void ergodox_led_all_on(void);
-// extern inline void ergodox_led_all_off(void);
-
-// extern inline void ergodox_right_led_1_set(uint8_t n);
-// extern inline void ergodox_right_led_2_set(uint8_t n);
-// extern inline void ergodox_right_led_3_set(uint8_t n);
-// extern inline void ergodox_right_led_set(uint8_t led, uint8_t n);
-
 extern inline void ergodox_led_all_set(uint8_t n);
 
 keyboard_config_t keyboard_config;
@@ -75,81 +55,7 @@ void matrix_init_kb(void) {
     }
 #endif
 
-    ergodox_blink_all_leds();
-
     matrix_init_user();
-}
-
-void ergodox_blink_all_leds(void)
-{
-//     ergodox_led_all_off();
-//     ergodox_led_all_set(LED_BRIGHTNESS_DEFAULT);
-//     ergodox_right_led_1_on();
-//     _delay_ms(100);
-//     ergodox_right_led_1_off();
-//     _delay_ms(100);
-//     ergodox_right_led_2_on();
-//     _delay_ms(100);
-//     ergodox_right_led_2_off();
-//     _delay_ms(100);
-//     ergodox_right_led_3_on();
-//     _delay_ms(100);
-//     ergodox_right_led_3_off();
-//     _delay_ms(100);
-//     ergodox_right_led_2_on();
-//     _delay_ms(100);
-//     ergodox_right_led_2_off();
-//     _delay_ms(100);
-//     ergodox_right_led_1_on();
-//     _delay_ms(100);
-//     ergodox_right_led_1_off();
-//     _delay_ms(100);
-// #ifdef LEFT_LEDS
-//     ergodox_left_led_1_on();
-//     _delay_ms(50);
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-//     ergodox_left_led_2_on();
-//     _delay_ms(50);
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-//     ergodox_left_led_3_on();
-//     _delay_ms(50);
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-// #endif
-//     // ergodox_right_led_1_off();
-//     // _delay_ms(50);
-//     // ergodox_right_led_2_off();
-//     // _delay_ms(50);
-//     // ergodox_right_led_3_off();
-//     // _delay_ms(50);
-//     // ergodox_right_led_3_on();
-//     // _delay_ms(50);
-// #ifdef LEFT_LEDS
-//     _delay_ms(50);
-//     ergodox_left_led_1_off();
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-//     _delay_ms(50);
-//     ergodox_left_led_2_off();
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-//     _delay_ms(50);
-//     ergodox_left_led_3_off();
-//     if (!mcp23018_status) {
-//       mcp23018_status = ergodox_left_leds_update();
-//     }
-// #endif
-
-//     //ergodox_led_all_on();
-//     //_delay_ms(333);
-//     ergodox_led_all_off();
 }
 
 
@@ -423,48 +329,7 @@ static uint16_t loops = 0;
 static bool is_on = false;
 #endif
 
-#ifdef DYNAMIC_MACRO_ENABLE
-static bool is_dynamic_recording = false;
-static uint16_t dynamic_loop_timer;
-
-void dynamic_macro_record_start_user(void) {
-    is_dynamic_recording = true;
-    dynamic_loop_timer = timer_read();
-    ergodox_right_led_1_on();
-}
-
-void dynamic_macro_record_end_user(int8_t direction) {
-    is_dynamic_recording = false;
-    layer_state_set_user(layer_state);
-}
-#endif
 
 void matrix_scan_kb(void) {
-#ifdef DYNAMIC_MACRO_ENABLE
-    if (is_dynamic_recording) {
-        ergodox_right_led_1_off();
-        // if (timer_elapsed(dynamic_loop_timer) > 5)
-        {
-            static uint8_t counter;
-            counter++;
-            if (counter > 100) ergodox_right_led_1_on();
-            dynamic_loop_timer = timer_read();
-        }
-    }
-#endif
-
-#ifdef CAPS_LOCK_STATUS
-    led_t led_state = host_keyboard_led_state();
-    if(led_state.caps_lock) {
-        ergodox_right_led_3_on();
-    }
-    else {
-        uint8_t layer = get_highest_layer(layer_state);
-        if(layer != 1) {
-        ergodox_right_led_3_off();
-        }
-    }
-#endif
-
     matrix_scan_user();
 }

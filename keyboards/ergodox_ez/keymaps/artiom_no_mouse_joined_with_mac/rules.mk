@@ -3,7 +3,6 @@
 LTO_ENABLE = yes
 COMMAND_ENABLE = no
 DYNAMIC_MACRO_ENABLE = yes
-SRC = matrix.c
 RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = yes
 
@@ -23,4 +22,4 @@ BLUETOOTH_ENABLE = no
 RAW_ENABLE = no
 NKRO_ENABLE = yes
 
-SRC+= combos.c leader.c macros.c rgb_led_control.c
+SRC+= matrix.c combos.c leader.c macros.c rgb_led_control.c

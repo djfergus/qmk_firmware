@@ -87,7 +87,7 @@ bool matrix_scan_custom(matrix_row_t current_matrix[]) {
                 print("left side not responding\n");
             } else {
                 print("left side attached\n");
-                ergodox_blink_all_leds();
+                //ergodox_blink_all_leds();
 #ifdef RGB_MATRIX_ENABLE
                 rgb_matrix_init();  // re-init driver on reconnect
 #endif

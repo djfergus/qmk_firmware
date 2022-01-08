@@ -47,7 +47,7 @@ void matrix_scan_user(void) {
         did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_E) {
-      SEND_STRING(SS_LSFT("'") "t80search_bot -t");
+      SEND_STRING(SS_LSFT("'") "t80search_bot -t ");
       did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_G, KC_G) {
