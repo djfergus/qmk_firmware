@@ -89,6 +89,9 @@ extern bool scrollwheel_up_on;
 extern bool scrollwheel_down_on;
 extern uint16_t scroll_delay_timer;
 
+//alternative colour scheme
+#define COLORPROGKEYBOARD
+
 //colours                   hsv             // rgb
 #define KM_Light_red        {0,223,252}     // 252,32,31
 #define KM_Light_yellow     {31,208,234}    // 234,181,42
@@ -96,6 +99,8 @@ extern uint16_t scroll_delay_timer;
 #define LM_golden_yellow    {32,191,236}    // 236,191,59
 #define LM_Slight_dark_red  {255,246,238}   //238,8,23
 #define LM_Blue             {166,240,228}   //13,41,228
+#define LM_LightBlue        {150,255,204}   //0,102,204
+#define LM_DarkerBlue       {150,255,102}   //0,51,102
 #define LM_LightOrange      {0,183,238}     //238,67,66
 #define LM_Cyan             {130,255,255}   //0,249,255
 #define LM_Yellow           {42,248,240}    //240,237,6

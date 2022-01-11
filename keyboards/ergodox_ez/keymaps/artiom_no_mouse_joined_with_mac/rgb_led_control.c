@@ -19,6 +19,9 @@ bool g_suspend_state;
 extern rgb_config_t rgb_matrix_config;
 
 const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
+
+#ifndef COLORPROGKEYBOARD
+
     //             8                      9                         0                       -                       =
     [Layer_main_colour] =
             { LM_Light_orange,      KM_Light_red,           KM_dirty_green,         KM_dirty_green,         KM_dirty_green,    \
@@ -43,7 +46,33 @@ const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
     //                                                             esc                     esc
             KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange },
 
+#else
+    // PROG KEYBOARD LEDS
+    //             6                      7                         8                       9                       0
+    [Layer_main_colour] =
+            { LM_skyBlue,           LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+    //             y                      u                         i                       o                       p
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+    //             h                      j                         k                       l                       ;
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+    //             n                      m                         ,                       .                       /
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+    //                                   <-                     down                      up                      ->
+                                    LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,                            \
 
+
+    //             5                      4                         3                       2                       1
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,       \
+    //             t                      r                         e                       w                       q
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+    //             g                      f                         d                       s                       a
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+    //             b                      v                         c                       x                       z
+            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+    //                                                                                esc                     esc
+                                    LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple },
+
+#endif
 
 
     [Layer_symbols_colour] =
