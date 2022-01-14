@@ -193,17 +193,19 @@ void set_layer_color(int layer) {
             use_default_lighting = false;
         }
 
-        if(combos_on && i == 47){ // show indicator on key bellow z.
-            if(modifiers_blink_count < 100){
-                rgb_matrix_set_color( i, 237, 28, 28);
-                use_default_lighting = false;
+        if((layer == 0 && main_layer_brightness) || layer != 0){ // only show indicators on other layers if the main layer leds are turned off.
+            if(combos_on && i == 47){ // show indicator on key bellow z.
+                if(modifiers_blink_count < 100){
+                    rgb_matrix_set_color( i, 237, 28, 28);
+                    use_default_lighting = false;
+                }
             }
-        }
 
-        if(mac_mode && i == 16){ // show indicator on key m
-            if(modifiers_blink_count < 100){
-                rgb_matrix_set_color( i, 237, 28, 28);
-                use_default_lighting = false;
+            if(mac_mode && i == 16){ // show indicator on key m
+                if(modifiers_blink_count < 100){
+                    rgb_matrix_set_color( i, 237, 28, 28);
+                    use_default_lighting = false;
+                }
             }
         }
 
