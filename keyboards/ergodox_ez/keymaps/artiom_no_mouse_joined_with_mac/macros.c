@@ -5,6 +5,7 @@ bool enable_bunnyhop = false;
 
 bool combos_on = true; // use combo feature by default
 bool mac_mode = false;
+bool colemak_mode = false;
 
 int word_length_count = 0;
 int last_word_length=0;
@@ -168,6 +169,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 combo_toggle();
                 combos_on = is_combo_enabled();
+            }
+        break;
+        case ST_M_colemak_mode_toggle:
+            if (record->event.pressed) {
+                colemak_mode = !colemak_mode;
+                if(colemak_mode){
+                    layer_on(Layer_colemak);
+                }else{
+                    layer_off(Layer_colemak);
+                }
             }
         break;
         return false;

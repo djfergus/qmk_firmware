@@ -15,10 +15,11 @@
 */
 #define Layer_main 0
 #define Layer_mac_main 1
-#define Layer_symbols 2
-#define Layer_mac_symbols 3
-#define Layer_macros 4
-#define Layer_gaming 5
+#define Layer_colemak 2
+#define Layer_symbols 3
+#define Layer_mac_symbols 4
+#define Layer_macros 5
+#define Layer_gaming 6
 
 // layer Colours since they are different from layers themselves now
 #define Layer_main_colour 0
@@ -54,7 +55,8 @@ enum custom_keycodes {
   ST_M_led_timeout_5m,
   ST_M_led_timeout_10m,
   ST_M_combo_toggle,
-  ST_M_mac_mode_toggle
+  ST_M_mac_mode_toggle,
+  ST_M_colemak_mode_toggle
 };
 
 extern bool rgb_show;
@@ -89,8 +91,10 @@ extern bool scrollwheel_up_on;
 extern bool scrollwheel_down_on;
 extern uint16_t scroll_delay_timer;
 
+extern bool colemak_mode;
+
 //alternative colour scheme
-#define COLORPROGKEYBOARD
+//#define COLORPROGKEYBOARD
 
 //colours                   hsv             // rgb
 #define KM_Light_red        {0,223,252}     // 252,32,31

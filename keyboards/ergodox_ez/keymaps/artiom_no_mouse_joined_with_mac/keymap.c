@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
   [Layer_main] = LAYOUT_ergodox_pretty(
-    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           ST_M_colemak_mode_toggle,                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -60,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [Layer_mac_main] = LAYOUT_ergodox_pretty(
-    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           ST_M_colemak_mode_toggle,                       KC_PLUS,        KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -71,6 +71,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                                                     LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                     LT(Layer_mac_symbols,KC_BSPACE),LCTL_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(Layer_macros,KC_ENTER), KC_SPACE
+  ),
+
+
+
+  [Layer_colemak] = LAYOUT_ergodox_pretty(
+    _______,    _______,    _______,    _______,    _______,    _______,    _______,                   _______,     _______,    _______,    _______,    _______,    _______,    _______,
+    _______,    KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,       _______,                   _______,     KC_J,       KC_L,       KC_U,       KC_Y,       KC_SCOLON,  _______,
+    _______,    KC_A,       KC_R,       KC_S,       KC_T,       KC_G,                                               KC_M,       KC_N,       KC_E,       KC_I,       KC_O,       _______,
+    _______,    KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,       _______,                   _______,     KC_K,       KC_H,       KC_COMMA,   KC_DOT,     KC_SLASH,   _______,
+    _______,    _______,    _______,    _______,    _______,                                                                    _______,    _______,    _______,    _______,    _______,
+
+
+
+                                                                _______,    _______,                   _______,     _______,
+                                                                            _______,                   _______,
+                                                    _______,    _______,    _______,                   _______,     _______,    _______
   ),
 
 
