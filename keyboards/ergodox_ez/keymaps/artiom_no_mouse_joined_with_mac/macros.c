@@ -163,6 +163,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }else{
                     layer_move(Layer_main);
                 }
+                if(colemak_mode){ // reset the colemak mode
+                    layer_on(Layer_colemak);
+                }
             }
         break;
         case ST_M_combo_toggle:
