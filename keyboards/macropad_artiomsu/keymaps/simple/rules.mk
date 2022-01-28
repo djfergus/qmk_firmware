@@ -15,3 +15,5 @@ UNICODE_ENABLE = no
 BLUETOOTH_ENABLE = no
 RAW_ENABLE = no
 NKRO_ENABLE = no
+
+SRC+= calculator.c macros.c led_control.c
