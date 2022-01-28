@@ -53,7 +53,6 @@ enum custom_keycodes {
     L1_EXIT_LAYER,
     //other
     COMPILE_MACRO,
-    FLASH_MACRO,
     TOGGLE_NUM_LOCK_ANIMATION,
     G1,
     G2,

@@ -24,12 +24,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_KP_1,        KC_KP_2,        KC_KP_3,            KC_COMMA,
 		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BSPACE)),
 
-	[Layer_shortcuts] = LAYOUT_MACROPAD( //layer switcher and some settings
-		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),        L1_PRECISION_MINUS,
-		KC_F17,                     KC_F18,                     KC_F19,                        L1_PRECISION_PLUS,
-		KC_F14,                     KC_F15,                     KC_F16,                        TOGGLE_NUM_LOCK_ANIMATION,
-		COMPILE_MACRO,              FLASH_MACRO,                KC_F13,                        RESET,
-		KC_TRNS,                    TO(Layer_extra),            TO(Layer_calc),                TO(Layer_main)),
+	[Layer_shortcuts] = LAYOUT_MACROPAD( //internal settings, layer switching and obs shortcuts.
+		COMPILE_MACRO,              KC_F14,                     KC_F15,                        L1_PRECISION_MINUS,
+		LCTL(LALT(LSFT(KC_7))),     LCTL(LALT(LSFT(KC_8))),     LCTL(LALT(LSFT(KC_9))),        L1_PRECISION_PLUS,
+		LCTL(LALT(LSFT(KC_4))),     LCTL(LALT(LSFT(KC_5))),     LCTL(LALT(LSFT(KC_6))),        TOGGLE_NUM_LOCK_ANIMATION,
+		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),        KC_F13,
+		LCTL(LALT(LSFT(KC_0))),     TO(Layer_extra),            TO(Layer_calc),                TO(Layer_main)),
 
     [Layer_calc] = LAYOUT_MACROPAD( //hardware calculator
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
