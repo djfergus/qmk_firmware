@@ -56,7 +56,9 @@ enum custom_keycodes {
   ST_M_led_timeout_10m,
   ST_M_combo_toggle,
   ST_M_mac_mode_toggle,
-  ST_M_colemak_mode_toggle
+  ST_M_colemak_mode_toggle,
+  ST_M_Mouse_B,
+  ST_M_Mouse_F,
 };
 
 extern bool rgb_show;

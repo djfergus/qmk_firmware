@@ -184,6 +184,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
         break;
+        case ST_M_Mouse_B:
+        case ST_M_Mouse_F:
+            uint8_t mouse_btn = keycode == ST_M_Mouse_B ? MOUSE_BTN4 : MOUSE_BTN5; // These definitions can be found in report.h
+            report_mouse_t currentReport = pointing_device_get_report();
+            if (record->event.pressed) {
+                currentReport.buttons |= mouse_btn;
+            }else{
+                currentReport.buttons &= ~mouse_btn;
+            }
+            pointing_device_set_report(currentReport);
+            pointing_device_send();
+        break;
         return false;
   }
   return true;
