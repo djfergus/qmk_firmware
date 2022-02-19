@@ -20,21 +20,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 	[Layer_symbols] = LAYOUT_30(
-		KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       _______,                    KC_PLUS,                KC_MINUS,       _______,                KC_EQUAL,
-		KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                _______,                    _______,                _______,        KC_UNDS,                KC_QUES,
-		KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    _______,                _______,                    LSFT(KC_SCOLON),        _______,        KC_COMM,                KC_NONUS_BSLASH
+		KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       KC_LABK,                    KC_PLUS,                KC_MINUS,       KC_RABK,                KC_EQUAL,
+		KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                KC_ASTR,                    KC_LBRACKET,            KC_RBRACKET,    KC_UNDS,                KC_QUES,
+		KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    KC_ASTR,                _______,                    LSFT(KC_SCOLON),        KC_SCOLON,      KC_COMM,                KC_NONUS_BSLASH
     ),
 
 	[Layer_nums] = LAYOUT_30(
 		KC_1,                   KC_2,                   KC_3,                   KC_4,                   KC_5,                   KC_6,                       KC_7,                   KC_8,           KC_9,                   KC_0,
 		DYN_REC_START1,         DYN_REC_START2,         DYN_REC_STOP,           _______,                _______,                KC_LEFT,                    KC_DOWN,                KC_UP,          KC_RIGHT,               KC_PSCREEN,
-		DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                KC_LEAD,                    _______,                _______,        _______,                KC_ESC
+		DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                _______,                    _______,                _______,        KC_DELETE,              KC_ESC
     ),
 
 	[Layer_fkeys] = LAYOUT_30(
 		_______,                KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  KC_F10,
 		KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 RGB_VAI,                RGB_SAI,                    RGB_HUI,           RGB_MODE_REVERSE,    KC_F19,                 KC_F1,
-		KC_F21,                 KC_F22,                 KC_F23,                 RGB_MODE_SNAKE,         RGB_VAD,                RGB_SAD,                    RGB_HUD,           RGB_MODE_FORWARD,    RGB_TOG,                KC_F20
+		KC_LEAD,                KC_F22,                 KC_F23,                 RGB_MODE_SNAKE,         RGB_VAD,                RGB_SAD,                    RGB_HUD,           RGB_MODE_FORWARD,    RGB_TOG,                KC_F20
     ),
 
 /*

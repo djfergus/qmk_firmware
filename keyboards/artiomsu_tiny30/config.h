@@ -30,7 +30,7 @@
 #define RGB_DI_PIN D1
 #define RGBLED_NUM 55
 #define RGBLIGHT_ANIMATIONS
-#define RGBLIGHT_EFFECT_SNAKE_LENGTH 5
+#define RGBLIGHT_EFFECT_SNAKE_LENGTH 6
 
 /* key combination for command */
 //#define IS_COMMAND() ( keyboard_report->mods == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)) )
