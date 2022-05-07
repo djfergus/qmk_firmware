@@ -25,11 +25,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BSPACE)),
 
 	[Layer_shortcuts] = LAYOUT_MACROPAD( //internal settings, layer switching and obs shortcuts.
-		COMPILE_MACRO,              KC_F14,                     KC_F15,                        L1_PRECISION_MINUS,
-		LCTL(LALT(LSFT(KC_7))),     LCTL(LALT(LSFT(KC_8))),     LCTL(LALT(LSFT(KC_9))),        L1_PRECISION_PLUS,
-		LCTL(LALT(LSFT(KC_4))),     LCTL(LALT(LSFT(KC_5))),     LCTL(LALT(LSFT(KC_6))),        TOGGLE_NUM_LOCK_ANIMATION,
-		LCTL(LALT(LSFT(KC_1))),     LCTL(LALT(LSFT(KC_2))),     LCTL(LALT(LSFT(KC_3))),        KC_F13,
-		LCTL(LALT(LSFT(KC_0))),     TO(Layer_extra),            TO(Layer_calc),                TO(Layer_main)),
+		COMPILE_MACRO,              FLASH_MACRO,                KC_CALCULATOR,                  L1_PRECISION_MINUS,
+		LCTL(LSFT(KC_7)),           LCTL(LSFT(KC_8)),           LCTL(LSFT(KC_9)),              L1_PRECISION_PLUS,
+		LCTL(LSFT(KC_4)),           LCTL(LSFT(KC_5)),           LCTL(LSFT(KC_6)),              TOGGLE_NUM_LOCK_ANIMATION,
+		LCTL(LSFT(KC_1)),           LCTL(LSFT(KC_2)),           LCTL(LSFT(KC_3)),              LCTL(LSFT(KC_0)),
+		KC_PAGE_DOWN,               KC_PAGE_UP,                 TO(Layer_calc),                TO(Layer_main)),
 
     [Layer_calc] = LAYOUT_MACROPAD( //hardware calculator
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
@@ -38,10 +38,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		L1_1,               L1_2,       L1_3,           L1_MOD,
 		L1_0,               L1_DOT,     L1_EQUALS,      L1_EXIT_LAYER),
 
-    [Layer_extra] = LAYOUT_MACROPAD( // Rocket League callouts
-		G1,     G2,     G3,     G4,
-		G5,     G6,     G7,     G8,
-        G9,     G10,    G11,    G12,
-        G13,    G14,    G15,    G16,
-		G17,    G18,    G19,    TO(Layer_main))
+    // [Layer_extra] = LAYOUT_MACROPAD(
+	// 	_______,_______,_______,_______,
+	// 	_______,    KC_W,_______,_______,
+	// 	KC_A,       KC_S,       KC_D,       _______,
+	// 	_______,    KC_UP,      _______,    _______,
+	// 	KC_LEFT,    KC_DOWN,    KC_RIGHT,   TO(Layer_main))
 };
