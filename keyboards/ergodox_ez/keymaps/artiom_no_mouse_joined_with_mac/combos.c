@@ -1,5 +1,4 @@
 #include "sharedDefines.h"
-//#include "pointing_device.h"
 
 bool scrollwheel_down_on = false;
 bool scrollwheel_up_on = false;
@@ -26,8 +25,8 @@ enum combo_events {
     COMBO_AMPERSTAND,
     COMBO_ROOT,
     COMBO_HASH,
-    COMBO_START_WORD,
-    COMBO_DELETE_WORD,
+    //COMBO_START_WORD,
+    //COMBO_DELETE_WORD,
     COMBO_ALT_F4,
     COMBO_SCROLL_UP,
     COMBO_SCROLL_DOWN
@@ -54,8 +53,8 @@ const uint16_t PROGMEM combo_amperstand[] = {KC_F, KC_J, COMBO_END};
 const uint16_t PROGMEM combo_astarisk[] = {KC_F, KC_K, COMBO_END};
 const uint16_t PROGMEM combo_root[] = {KC_F, KC_SCOLON, COMBO_END};
 const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
-const uint16_t PROGMEM combo_start_word[] = {KC_F, KC_LEFT, COMBO_END};
-const uint16_t PROGMEM combo_delete_word[] = {KC_F, KC_DOWN, COMBO_END};
+//const uint16_t PROGMEM combo_start_word[] = {KC_F, KC_LEFT, COMBO_END};
+//const uint16_t PROGMEM combo_delete_word[] = {KC_F, KC_DOWN, COMBO_END};
 const uint16_t PROGMEM combo_alt_f4[] = {KC_F, KC_4, COMBO_END};
 const uint16_t PROGMEM combo_scroll_up[] = {KC_W, KC_E, COMBO_END};
 const uint16_t PROGMEM combo_scroll_down[] = {KC_E, KC_R, COMBO_END};
@@ -114,8 +113,8 @@ combo_t key_combos[COMBO_COUNT] = {
     [COMBO_AMPERSTAND] = COMBO_ACTION(combo_amperstand),
     [COMBO_ROOT] = COMBO_ACTION(combo_root),
     [COMBO_HASH] = COMBO_ACTION(combo_hash),
-    [COMBO_START_WORD] = COMBO_ACTION(combo_start_word),
-    [COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word),
+    //[COMBO_START_WORD] = COMBO_ACTION(combo_start_word),
+    //[COMBO_DELETE_WORD] = COMBO_ACTION(combo_delete_word),
     [COMBO_ALT_F4] = COMBO_ACTION(combo_alt_f4),
     [COMBO_SCROLL_UP] = COMBO_ACTION(combo_scroll_up),
     [COMBO_SCROLL_DOWN] = COMBO_ACTION(combo_scroll_down)
@@ -270,36 +269,40 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         break;
         case COMBO_SCROLL_UP:
             if (pressed) {
+                //register_code16(KC_MS_WH_UP);
                 scrollwheel_up_on = true;
             }else{
+                //unregister_code16(KC_MS_WH_UP);
                 scrollwheel_up_on = false;
             }
         break;
         case COMBO_SCROLL_DOWN:
             if (pressed) {
+                //register_code16(KC_MS_WH_DOWN);
                 scrollwheel_down_on = true;
             }else{
+                //register_code16(KC_MS_WH_DOWN);
                 scrollwheel_down_on = false;
             }
         break;
-        case COMBO_START_WORD:
-            if (pressed) {
-                last_word_length = last_word_length / 2;
-                while (last_word_length > 0){
-                    tap_code16(KC_LEFT);
-                    last_word_length--;
-                }
-            }
-        break;
-        case COMBO_DELETE_WORD:
-            if (pressed) {
-                last_word_length = last_word_length / 2;
-                while (last_word_length > 0){
-                    tap_code16(KC_BSPACE);
-                    last_word_length--;
-                }
-            }
-        break;
+        // case COMBO_START_WORD:
+        //     if (pressed) {
+        //         last_word_length = last_word_length / 2;
+        //         while (last_word_length > 0){
+        //             tap_code16(KC_LEFT);
+        //             last_word_length--;
+        //         }
+        //     }
+        // break;
+        // case COMBO_DELETE_WORD:
+        //     if (pressed) {
+        //         last_word_length = last_word_length / 2;
+        //         while (last_word_length > 0){
+        //             tap_code16(KC_BSPACE);
+        //             last_word_length--;
+        //         }
+        //     }
+        // break;
         case COMBO_ALT_F4:
             if(pressed){
                 tap_code16(LALT(KC_F4));

@@ -6,19 +6,20 @@ bool enable_bunnyhop = false;
 bool combos_on = true; // use combo feature by default
 bool mac_mode = false;
 bool colemak_mode = false;
+uint16_t rgb_timeout_counter = 0;
 
-int word_length_count = 0;
-int last_word_length=0;
+// int word_length_count = 0;
+// int last_word_length=0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if(keycode >= 4 && keycode <= 39){
-        word_length_count++;
-        last_word_length = word_length_count;
-    }else{
-        word_length_count = 0;
-    }
+    // if(keycode >= 4 && keycode <= 39){
+    //     word_length_count++;
+    //     last_word_length = word_length_count;
+    // }else{
+    //     word_length_count = 0;
+    // }
     rgb_timed_out = false;
-    timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
+    rgb_timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
 
     switch (keycode) {
         case ST_MACRO_SSH:
@@ -137,24 +138,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
         case ST_M_led_timeout_30s:
             if (record->event.pressed) {
-                rgb_time_out_value = 360;
+                rgb_time_out_value = 30000;
             }
         break;
         case ST_M_led_timeout_1m:
             if (record->event.pressed) {
-                rgb_time_out_value = 720;
+                rgb_time_out_value = 60000;
             }
         break;
-        case ST_M_led_timeout_5m:
-            if (record->event.pressed) {
-                rgb_time_out_value = 3600;
-            }
-        break;
-        case ST_M_led_timeout_10m:
-            if (record->event.pressed) {
-                rgb_time_out_value = 7200;
-            }
-        break;
+        // case ST_M_led_timeout_5m:
+        //     if (record->event.pressed) {
+        //         rgb_time_out_value = 300000;
+        //     }
+        // break;
+        // case ST_M_led_timeout_10m:
+        //     if (record->event.pressed) {
+        //         rgb_time_out_value = 600000;
+        //     }
+        // break;
         case ST_M_mac_mode_toggle:
             if (record->event.pressed) {
                 mac_mode = !mac_mode;
@@ -184,18 +185,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             }
         break;
-        case ST_M_Mouse_B:
-        case ST_M_Mouse_F:
-            uint8_t mouse_btn = keycode == ST_M_Mouse_B ? MOUSE_BTN4 : MOUSE_BTN5; // These definitions can be found in report.h
-            report_mouse_t currentReport = pointing_device_get_report();
-            if (record->event.pressed) {
-                currentReport.buttons |= mouse_btn;
-            }else{
-                currentReport.buttons &= ~mouse_btn;
-            }
-            pointing_device_set_report(currentReport);
-            pointing_device_send();
-        break;
+        //case ST_M_Mouse_B:
+        //case ST_M_Mouse_F:
+            // uint8_t mouse_btn = keycode == ST_M_Mouse_B ? MOUSE_BTN4 : MOUSE_BTN5; // These definitions can be found in report.h
+            // report_mouse_t currentReport = pointing_device_get_report();
+            // if (record->event.pressed) {
+            //     currentReport.buttons |= mouse_btn;
+            // }else{
+            //     currentReport.buttons &= ~mouse_btn;
+            // }
+            // pointing_device_set_report(currentReport);
+            // pointing_device_send();
+        //break;
         return false;
   }
   return true;

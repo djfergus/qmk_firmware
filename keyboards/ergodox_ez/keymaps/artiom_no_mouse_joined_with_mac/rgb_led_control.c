@@ -1,24 +1,23 @@
 #include "sharedDefines.h"
 
-int brightness_amount = 0;
-int hue_amount = 0;
+uint8_t brightness_amount = 0;
+uint8_t hue_amount = 0;
 
 bool main_layer_brightness = true; // can disable the main layer rgb individually
 
 bool rgb_show = true;
 bool rgb_timed_out = false;
-int timeout_counter = 0;
-uint32_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
-int rgb_time_out_value = 360;   // 100 = ~9seconds, 666= ~ 54s
+//uint16_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
+uint16_t rgb_time_out_value = 30000; // in milliseconds
 
-int modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
+uint8_t modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
 
 bool use_default_lighting = true; // do not change used inside loop
 bool g_suspend_state;
 
 extern rgb_config_t rgb_matrix_config;
 
-const uint8_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
+const uint16_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
 #ifndef COLORPROGKEYBOARD
 
@@ -172,13 +171,13 @@ void suspend_wakeup_init_user(void) {
     rgb_matrix_set_suspend_state(false);
 }
 
-void set_layer_color(int layer) {
+void set_layer_color(uint8_t layer) {
     if(modifiers_blink_count > 200){
         modifiers_blink_count = 0;
     }
     modifiers_blink_count++;
 
-    for (int i = 0; i < DRIVER_LED_TOTAL; i++) {
+    for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
         use_default_lighting = true;
 
         if(enable_bunnyhop && i == 4){ //show indicator on = key
@@ -220,7 +219,7 @@ void set_layer_color(int layer) {
             } else {
 
                 if(brightness_amount != 0){
-                    int check = hsv.v + brightness_amount;
+                    uint8_t check = hsv.v + brightness_amount;
 
                     if(check < 250 && check > 10){
                         hsv.v = check;
@@ -234,7 +233,7 @@ void set_layer_color(int layer) {
                 }
 
                 if(hue_amount != 0){
-                    int check = hsv.h + hue_amount;
+                    uint8_t check = hsv.h + hue_amount;
                     if(check > 250){
                         check = check - 250;
                     }

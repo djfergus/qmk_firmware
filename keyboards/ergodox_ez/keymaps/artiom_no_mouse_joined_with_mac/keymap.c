@@ -54,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-                                                                                                    LSFT(KC_PSCREEN),KC_PSCREEN,                            DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
+                                                                                                    LSFT(KC_PSCREEN),KC_PSCREEN,                            /*_______, _______,*/ DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                         LT(Layer_symbols,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(Layer_macros,KC_ENTER), KC_SPACE
   ),
@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-                                                                                                    LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
+                                                                                                    LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                /*_______, _______,*/ DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                     LT(Layer_mac_symbols,KC_BSPACE),LCTL_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(Layer_macros,KC_ENTER), KC_SPACE
   ),
@@ -94,8 +94,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [Layer_symbols] = LAYOUT_ergodox_pretty(
     LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,                  KC_F4,              KC_F5,              KC_F11,                          KC_F12,        KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F13,
-    ST_M_Mouse_F,       KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),   LSFT(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
-    ST_M_Mouse_B,       KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
+    KC_MS_BTN5,         KC_GRAVE,       KC_QUOTE,           LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),   LSFT(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
+    KC_MS_BTN4,         KC_EXLM,        LSFT(KC_2),         LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
     KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),KC_ASTR,            KC_CIRC,                        _______,        KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_BSLASH,KC_LSHIFT,
     LALT(KC_LCTRL),     ST_M_n_equal_2, LCTL(KC_X),         LCTL(KC_C),             LCTL(KC_V),                                                                                             LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
 
@@ -107,8 +107,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [Layer_mac_symbols] = LAYOUT_ergodox_pretty(
     LSFT(KC_GRAVE),     KC_F1,          KC_F2,              KC_F3,                  KC_F4,              KC_F5,              KC_F11,                          KC_F12,        KC_F6,          KC_F7,          KC_F8,          KC_F9,          KC_F10,         KC_F13,
-    ST_M_Mouse_F,       KC_GRAVE,       KC_QUOTE,           LSFT(KC_2),             LGUI(LCTL(KC_C)),   LGUI(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
-    ST_M_Mouse_B,       KC_EXLM,        LSFT(KC_QUOTE),     LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
+    KC_MS_BTN5,         KC_GRAVE,       KC_QUOTE,           LSFT(KC_2),             LGUI(LCTL(KC_C)),   LGUI(LCTL(KC_V)),   KC_CIRC,                        _______,        KC_LABK,        KC_PLUS,        KC_MINUS,       KC_RABK,        KC_EQUAL,       _______,
+    KC_MS_BTN4,         KC_EXLM,        LSFT(KC_QUOTE),     LSFT(KC_3),             KC_DLR,             KC_PERC,                                                            KC_ASTR,        KC_LBRACKET,    KC_RBRACKET,    KC_UNDS,        KC_QUES,        _______,
     KC_LSHIFT,          ST_M_n_equal,   KC_AMPR,            LSFT(KC_NONUS_HASH),    LSFT(KC_GRAVE),     KC_ASTR,            KC_CIRC,                        _______,        KC_AMPR,        KC_LCBR,        KC_RCBR,        KC_DOT,         KC_NONUS_HASH,  KC_LSHIFT,
     LALT(KC_LCTRL),     ST_M_n_equal_2, LGUI(KC_X),         LGUI(KC_C),             LGUI(KC_V),                                                                                             LSFT(KC_9),     LSFT(KC_0),     ST_M_l_equal,   ST_M_g_equal,   KC_LALT,
 
@@ -122,10 +122,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
     ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2,   DYN_REC_STOP,   ST_M_colemak_mode_toggle,                   _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
-    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,            LCTL(KC_V),    LCTL(KC_B),    _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
-    ST_M_led_timeout_5m,    _______,        _______,            _______,            ST_M_vim_sp,    ST_M_vim_vs,                                                              LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
-    ST_M_led_timeout_10m,   _______,        _______,            ST_M_combo_toggle,ST_M_vim_sp_e,  ST_M_vim_vs_e,  _______,                                    _______,        _______,        ST_M_mac_mode_toggle,           _______,                _______,                    _______,         _______,
-    _______,                _______,        _______,            _______,        _______,                                                                                                      _______,                        _______,                _______,                    _______,         _______,
+    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,        LCTL(KC_V),       LCTL(KC_B),     _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
+    _______,                _______,        _______,            _______,        ST_M_vim_sp,      ST_M_vim_vs,                                                                LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
+    _______,                _______,        _______,            _______,        ST_M_vim_sp_e,    ST_M_vim_vs_e,  _______,                                    _______,        _______,        ST_M_mac_mode_toggle,           _______,                _______,                    _______,         _______,
+    _______,                ST_M_combo_toggle, _______,         _______,        _______,                                                                                                      _______,                        _______,                _______,                    _______,         _______,
 
 
                                                                                                                 _______,    _______,                        _______,        _______,
@@ -148,11 +148,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-uint32_t layer_state_set_user(uint32_t state) {
-    // if(state == Layer_main){ // game layer always returns to Layer_main so need to update mac_mode accordingly. however updating it causes an issue where you can't go back to mac mode
-    //     mac_mode = false;
-    // }else if(state == Layer_mac_main){
-    //     mac_mode = true;
-    // }
-    return state;
-};
+// uint32_t layer_state_set_user(uint32_t state) {
+//     // if(state == Layer_main){ // game layer always returns to Layer_main so need to update mac_mode accordingly. however updating it causes an issue where you can't go back to mac mode
+//     //     mac_mode = false;
+//     // }else if(state == Layer_mac_main){
+//     //     mac_mode = true;
+//     // }
+//     return state;
+// };

@@ -6,26 +6,31 @@
 #undef TAPPING_TERM
 #define TAPPING_TERM 150
 
-#undef MOUSEKEY_INTERVAL
-#define MOUSEKEY_INTERVAL 10
+// #undef MOUSEKEY_INTERVAL
+// #define MOUSEKEY_INTERVAL 10
 
-#undef MOUSEKEY_MAX_SPEED
-#define MOUSEKEY_MAX_SPEED 2
+// #undef MOUSEKEY_MAX_SPEED
+// #define MOUSEKEY_MAX_SPEED 2
 
-#undef MOUSEKEY_TIME_TO_MAX
-#define MOUSEKEY_TIME_TO_MAX 1
+// #undef MOUSEKEY_TIME_TO_MAX
+// #define MOUSEKEY_TIME_TO_MAX 1
 
-#undef MOUSEKEY_WHEEL_MAX_SPEED
-#define MOUSEKEY_WHEEL_MAX_SPEED 1
+// #undef MOUSEKEY_WHEEL_MAX_SPEED
+// #define MOUSEKEY_WHEEL_MAX_SPEED 1
 
-#undef MOUSEKEY_WHEEL_TIME_TO_MAX
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 1
+// #undef MOUSEKEY_WHEEL_TIME_TO_MAX
+// #define MOUSEKEY_WHEEL_TIME_TO_MAX 1
 
-#undef MOUSEKEY_WHEEL_MAX_SPEED
-#define MOUSEKEY_WHEEL_MAX_SPEED 1
+// #undef MOUSEKEY_WHEEL_MAX_SPEED
+// #define MOUSEKEY_WHEEL_MAX_SPEED 1
 
-#undef MOUSEKEY_WHEEL_INTERVAL
-#define MOUSEKEY_WHEEL_INTERVAL 50
+// #undef MOUSEKEY_WHEEL_INTERVAL
+// #define MOUSEKEY_WHEEL_INTERVAL 50
+
+#define MK_3_SPEED
+#define MK_W_OFFSET_UNMOD 1
+#define MK_W_INTERVAL_UNMOD 20
+
 
 // my defines
 
@@ -38,16 +43,21 @@
 #define NO_PRINT
 
 // force nkro
-#define FORCE_NKRO
+//#define FORCE_NKRO
 
 // Leader key defines
 #define LEADER_PER_KEY_TIMING
 #define LEADER_TIMEOUT 500
 
 //combos
-#define COMBO_COUNT 26
+//#define COMBO_COUNT 26
+#define COMBO_COUNT 24
 #define COMBO_TERM 30
 //#define EXTRA_EXTRA_LONG_COMBOS
+
+//dynamic macros. 128 is default but we don't have not enough ram
+#define DYNAMIC_MACRO_NO_NESTING
+#define DYNAMIC_MACRO_SIZE 64
 
 // disable all rgb effects lol //decreased firmware size by a bit
 #undef RGBLIGHT_ANIMATIONS

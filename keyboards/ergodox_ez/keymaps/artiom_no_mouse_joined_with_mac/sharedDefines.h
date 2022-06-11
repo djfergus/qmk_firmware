@@ -52,38 +52,38 @@ enum custom_keycodes {
   ST_M_toggle_main_layer_brightness,
   ST_M_led_timeout_30s,
   ST_M_led_timeout_1m,
-  ST_M_led_timeout_5m,
-  ST_M_led_timeout_10m,
+  //ST_M_led_timeout_5m,
+  //ST_M_led_timeout_10m,
   ST_M_combo_toggle,
   ST_M_mac_mode_toggle,
   ST_M_colemak_mode_toggle,
-  ST_M_Mouse_B,
-  ST_M_Mouse_F,
+  //ST_M_Mouse_B,
+  //ST_M_Mouse_F,
 };
 
 extern bool rgb_show;
 extern bool rgb_timed_out;
-extern int timeout_counter;
-extern uint32_t rgb_sync_to_timer; //sync out timer to the official rgb timer.
-extern int rgb_time_out_value;   // 100 = ~9seconds, 666= ~ 54s
+extern uint16_t rgb_timeout_counter;
+//extern uint16_t rgb_sync_to_timer; //sync out timer to the official rgb timer.
+extern uint16_t rgb_time_out_value;  // in milliseconds
 
 extern bool use_bunnyhop;
 extern bool enable_bunnyhop;
-extern int bunny_hop_delay_counter;
+extern uint8_t bunny_hop_delay_counter;
 
-extern int modifiers_blink_count; // this is for stuff like enable_bunnyhop and the leader key
+extern uint8_t modifiers_blink_count; // this is for stuff like enable_bunnyhop and the leader key
 extern bool leader_key_is_running;
 
-extern int brightness_amount;
-extern int hue_amount;
+extern uint8_t brightness_amount;
+extern uint8_t hue_amount;
 
 extern bool main_layer_brightness; // can disable the main layer rgb individually
 
 extern bool combos_on; // use combo feature by default
 extern bool mac_mode;
 
-extern int word_length_count;
-extern int last_word_length;
+//extern int word_length_count;
+//extern int last_word_length;
 
 //do not change the following
 extern bool use_default_lighting; // do not change used inside loop
