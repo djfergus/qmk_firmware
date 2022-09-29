@@ -2,7 +2,7 @@
 # See rules at https://docs.qmk.fm/#/config_options?id=the-rulesmk-file
 LTO_ENABLE = yes
 COMMAND_ENABLE = no
-DYNAMIC_MACRO_ENABLE = yes # might need to turn this off later as default settings in config.h causes controller to run out of ram
+DYNAMIC_MACRO_ENABLE = no # might need to turn this off later as default settings in config.h causes controller to run out of ram
 RGBLIGHT_ENABLE = no
 RGB_MATRIX_ENABLE = yes
 
@@ -21,5 +21,6 @@ UNICODE_ENABLE = no
 BLUETOOTH_ENABLE = no
 RAW_ENABLE = no
 NKRO_ENABLE = no
+PROGRAMMABLE_BUTTON_ENABLE = no # will enable later after I finish up the rust project that consumes these
 
 SRC+= matrix.c combos.c leader.c macros.c rgb_led_control.c

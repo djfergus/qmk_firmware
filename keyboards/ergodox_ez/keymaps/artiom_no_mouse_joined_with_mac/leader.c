@@ -27,6 +27,10 @@ void matrix_scan_user(void) {
       //did_leader_succeed = true;
     } else
     SEQ_ONE_KEY(KC_C) {
+      SEND_STRING("codebin ." SS_TAP(X_ENTER));
+      //did_leader_succeed = true;
+    } else
+    SEQ_TWO_KEYS(KC_C, KC_C) {
       SEND_STRING("code ." SS_TAP(X_ENTER));
       //did_leader_succeed = true;
     } else

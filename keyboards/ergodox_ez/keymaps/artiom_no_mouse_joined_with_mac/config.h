@@ -6,6 +6,8 @@
 #undef TAPPING_TERM
 #define TAPPING_TERM 150
 
+#define LAYER_STATE_8BIT // for 8 layers, change to 16 for 16 layers when I use more than 8. (reduces firmware size)
+
 // #undef MOUSEKEY_INTERVAL
 // #define MOUSEKEY_INTERVAL 10
 
@@ -56,11 +58,11 @@
 //#define EXTRA_EXTRA_LONG_COMBOS
 
 //dynamic macros. 128 is default but we don't have not enough ram
-#define DYNAMIC_MACRO_NO_NESTING
-#define DYNAMIC_MACRO_SIZE 64
+//#define DYNAMIC_MACRO_NO_NESTING
+//#define DYNAMIC_MACRO_SIZE 64
 
 // disable all rgb effects lol //decreased firmware size by a bit
-#undef RGBLIGHT_ANIMATIONS
+//#undef RGBLIGHT_ANIMATIONS
 #undef RGBLIGHT_EFFECT_BREATHING
 #undef RGBLIGHT_EFFECT_RAINBOW_MOOD
 #undef RGBLIGHT_EFFECT_RAINBOW_SWIRL
