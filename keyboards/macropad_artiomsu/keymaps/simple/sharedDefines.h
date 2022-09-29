@@ -1,7 +1,7 @@
 #ifndef SHAREDDEFINES_H
 #define SHAREDDEFINES_H
 
-#include "kb.h"
+#include "macropad_artiomsu.h"
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <math.h>

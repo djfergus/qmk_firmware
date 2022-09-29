@@ -54,3 +54,13 @@ NKRO_ENABLE = no		# USB Nkey Rollover - if this doesn't work, see here: https://
 BACKLIGHT_ENABLE = no  # Enable keyboard backlight functionality
 AUDIO_ENABLE = no
 RGBLIGHT_ENABLE = no
+
+#LAYOUTS = artiomsu_macropad
+
+#BOOTLOADER = halfkay
+BOOTLOADER = caterina
+# Disable unsupported hardware
+AUDIO_SUPPORTED = no
+BACKLIGHT_SUPPORTED = no
+
+MOUSE_SHARED_EP = no

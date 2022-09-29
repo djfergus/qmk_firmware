@@ -17,21 +17,21 @@ sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artioms
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-	[Layer_main] = LAYOUT_MACROPAD( //default numpad
+	[Layer_main] = LAYOUT_artiomsu_macropad( //default numpad
 		KC_NUMLOCK,     KC_KP_SLASH,    KC_KP_ASTERISK,     KC_KP_MINUS,
 		KC_KP_7,        KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
 		KC_KP_4,        KC_KP_5,        KC_KP_6,            KC_KP_ENTER,
 		KC_KP_1,        KC_KP_2,        KC_KP_3,            KC_COMMA,
 		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BSPACE)),
 
-	[Layer_shortcuts] = LAYOUT_MACROPAD( //internal settings, layer switching and obs shortcuts.
+	[Layer_shortcuts] = LAYOUT_artiomsu_macropad( //internal settings, layer switching and obs shortcuts.
 		COMPILE_MACRO,              FLASH_MACRO,                KC_CALCULATOR,                  L1_PRECISION_MINUS,
 		LCTL(LSFT(KC_7)),           LCTL(LSFT(KC_8)),           LCTL(LSFT(KC_9)),              L1_PRECISION_PLUS,
 		LCTL(LSFT(KC_4)),           LCTL(LSFT(KC_5)),           LCTL(LSFT(KC_6)),              TOGGLE_NUM_LOCK_ANIMATION,
 		LCTL(LSFT(KC_1)),           LCTL(LSFT(KC_2)),           LCTL(LSFT(KC_3)),              LCTL(LSFT(KC_0)),
 		KC_PAGE_DOWN,               KC_PAGE_UP,                 TO(Layer_calc),                TO(Layer_main)),
 
-    [Layer_calc] = LAYOUT_MACROPAD( //hardware calculator
+    [Layer_calc] = LAYOUT_artiomsu_macropad( //hardware calculator
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
 		L1_7,               L1_8,       L1_9,           L1_PLUS,
 		L1_4,               L1_5,       L1_6,           L1_POWER,
