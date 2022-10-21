@@ -21,6 +21,8 @@ UNICODE_ENABLE = no
 BLUETOOTH_ENABLE = no
 RAW_ENABLE = no
 NKRO_ENABLE = no
-PROGRAMMABLE_BUTTON_ENABLE = no # will enable later after I finish up the rust project that consumes these
+PROGRAMMABLE_BUTTON_ENABLE = no # macropad uses this instead of this keyboard so no point in doing it twice.
 
-SRC+= matrix.c combos.c leader.c macros.c rgb_led_control.c
+CAPS_WORD_ENABLE = yes
+
+SRC+= secrets.c matrix.c combos.c leader.c macros.c rgb_led_control.c

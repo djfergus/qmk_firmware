@@ -46,7 +46,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
 
   [Layer_main] = LAYOUT_ergodox_pretty(
-    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    CAPS_WORD,          KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -54,13 +54,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-                                                                                                    LSFT(KC_PSCREEN),KC_PSCREEN,                            _______, _______, /*DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,*/
+                                                                                                    LSFT(KC_PSCREEN),KC_PSCREEN,                            KC_PAGE_UP, KC_PAGE_DOWN, /*DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,*/
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                         LT(Layer_symbols,KC_BSPACE),LGUI_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(Layer_macros,KC_ENTER), KC_SPACE
   ),
 
   [Layer_mac_main] = LAYOUT_ergodox_pretty(
-    KC_GRAVE,           KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
+    CAPS_WORD,          KC_1,           KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,                                       KC_EQUAL,       KC_6,           KC_7,           KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
     KC_TAB,             KC_Q,           KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),                            KC_F2,          KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
     LCTL(KC_LALT),      KC_A,           KC_S,               KC_D,           KC_F,           KC_G,                                                                           KC_H,           KC_J,           KC_K,           KC_L,           KC_SCOLON,      KC_RALT,
     KC_LSHIFT,          KC_Z,           KC_X,               KC_C,           KC_V,           KC_B,           KC_HYPR,                                        KC_F4,          KC_N,           KC_M,           KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTRL,
@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 
-                                                                                                    LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                _______, _______, /*DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,*/
+                                                                                                    LSFT(KC_PSCREEN),LCTL(LGUI(LSFT(KC_4))),                KC_PAGE_UP, KC_PAGE_DOWN, /*DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,*/
                                                                                                                         KC_HOME,                            ST_MACRO_VIM_wq,
                                                     LT(Layer_mac_symbols,KC_BSPACE),LCTL_T(KC_DELETE),           LCTL(KC_SPACE),                            LSFT_T(KC_ESCAPE),              LT(Layer_macros,KC_ENTER), KC_SPACE
   ),
@@ -121,16 +121,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
   [Layer_macros] = LAYOUT_ergodox_pretty(
-//  ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2,   DYN_REC_STOP,   ST_M_colemak_mode_toggle,                   _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
-    ST_M_led_timeout_30s,   _______,        _______,            _______,        _______,               _______,   ST_M_colemak_mode_toggle,                   _______,        _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         QK_BOOT,
-    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,        LCTL(KC_V),       LCTL(KC_B),     _______,                                    _______,        _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
-    _______,                _______,        _______,            _______,        ST_M_vim_sp,      ST_M_vim_vs,                                                                LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
-    _______,                _______,        _______,            _______,        ST_M_vim_sp_e,    ST_M_vim_vs_e,  _______,                                    _______,        _______,        ST_M_mac_mode_toggle,           _______,                _______,                    _______,         _______,
+//  ST_M_led_timeout_30s,   _______,        _______,            DYN_REC_START1, DYN_REC_START2,   DYN_REC_STOP,   ST_M_colemak_mode_toggle,                         _______,  _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         RESET,
+    ST_M_led_timeout_30s,   _______,        _______,            _______,        _______,               _______,   ST_M_colemak_mode_toggle,                      KC_KB_MUTE,  _______,        ST_M_brightness_down,           ST_M_brightness_up,     _______,                    _______,         QK_BOOT,
+    ST_M_led_timeout_1m,    ST_M_vim_q,     ST_M_vim_w,         _______,        LCTL(KC_V),       LCTL(KC_B),     _______,                                  KC_KB_VOLUME_UP,  _______,        ST_M_hue_down,                  ST_M_hue_up,            _______,                    _______,         ST_M_enable_bunny_hop,
+    ST_M_led_timeout_5m,    _______,        _______,            _______,        ST_M_vim_sp,      ST_M_vim_vs,                                                                LCTL(KC_H),     LCTL(KC_J),                     LCTL(KC_K),             LCTL(KC_L),                 _______,         ST_M_toggle_main_layer_brightness,
+    ST_M_led_timeout_10m,   _______,        _______,            _______,        ST_M_vim_sp_e,    ST_M_vim_vs_e,  _______,                                KC_KB_VOLUME_DOWN,  _______,        ST_M_mac_mode_toggle,           _______,                _______,                    _______,         _______,
     _______,                ST_M_combo_toggle, _______,         _______,        _______,                                                                                                      _______,                        _______,                _______,                    _______,         _______,
 
 
-                                                                                                                _______,    _______,                        _______,        _______,
-                                                                                                                            _______,                        _______,
+                                                                                                                _______,    _______,                        KC_BRIGHTNESS_UP, _______,
+                                                                                                                            _______,                        KC_BRIGHTNESS_DOWN,
                                                                         KC_SPACE,       LALT(KC_ENTER),                     _______,                        ST_M_double_colon,              _______, _______
   ),
 

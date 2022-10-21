@@ -6,8 +6,10 @@ bool enable_bunnyhop = false;
 bool combos_on = true; // use combo feature by default
 bool mac_mode = false;
 bool colemak_mode = false;
-uint16_t rgb_timeout_counter = 0;
+uint32_t rgb_timeout_counter = 0;
 
+
+uint16_t unlock_password_index = 0;
 // int word_length_count = 0;
 // int last_word_length=0;
 
@@ -18,6 +20,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // }else{
     //     word_length_count = 0;
     // }
+    if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH){
+        //if(keycode >= 4 && keycode <= 39){ // only lock the letter keys
+            if(record->event.pressed){
+                if(unlock_password[unlock_password_index] == keycode && record->event.pressed){
+                    unlock_password_index++;
+                }else{
+                    unlock_password_index = 0;
+                }
+            }
+            return false; // return false to block the keys.
+        //}
+    }
+
+    unlock_password_index = 0;
     rgb_timed_out = false;
     rgb_timeout_counter=0; //reset timeout counter also, so that it will always count from the time the key was pressed.
 
@@ -146,16 +162,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 rgb_time_out_value = 60000;
             }
         break;
-        // case ST_M_led_timeout_5m:
-        //     if (record->event.pressed) {
-        //         rgb_time_out_value = 300000;
-        //     }
-        // break;
-        // case ST_M_led_timeout_10m:
-        //     if (record->event.pressed) {
-        //         rgb_time_out_value = 600000;
-        //     }
-        // break;
+        case ST_M_led_timeout_5m:
+            if (record->event.pressed) {
+                rgb_time_out_value = 300000;
+            }
+        break;
+        case ST_M_led_timeout_10m:
+            if (record->event.pressed) {
+                rgb_time_out_value = 600000;
+            }
+        break;
         case ST_M_mac_mode_toggle:
             if (record->event.pressed) {
                 mac_mode = !mac_mode;

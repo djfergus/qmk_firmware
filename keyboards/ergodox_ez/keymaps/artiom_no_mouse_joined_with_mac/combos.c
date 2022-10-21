@@ -122,190 +122,194 @@ combo_t key_combos[COMBO_COUNT] = {
 
 void process_combo_event(uint16_t combo_index, bool pressed) {
 
-        switch(combo_index) {
-        case COMBO_LEFT_SQUARE_BRACKET:
-            if (pressed) {
-                register_code16(KC_LBRACKET);
-            }else{
-                unregister_code16(KC_LBRACKET);
-            }
-        break;
-        case COMBO_RIGHT_SQUARE_BRACKET:
-            if (pressed) {
-                register_code16(KC_RBRACKET);
-            }else{
-                unregister_code16(KC_RBRACKET);
-            }
-        break;
-        case COMBO_LEFT_CURLY_BRACKET:
-            if (pressed) {
-                register_code16(KC_LCBR);
-            }else{
-                unregister_code16(KC_LCBR);
-            }
-        break;
-        case COMBO_RIGHT_CURLY_BRACKET:
-            if (pressed) {
-                register_code16(KC_RCBR);
-            }else{
-                unregister_code16(KC_RCBR);
-            }
-        break;
-        case COMBO_LEFT_BRACKET:
-            if (pressed) {
-                register_code16(LSFT(KC_9));
-            }else{
-                unregister_code16(LSFT(KC_9));
-            }
-        break;
-        case COMBO_RIGHT_BRACKET:
-            if (pressed) {
-                register_code16(LSFT(KC_0));
-            }else{
-                unregister_code16(LSFT(KC_0));
-            }
-        break;
-        case COMBO_MINUS:
-            if (pressed) {
-                register_code16(KC_MINUS);
-            }else{
-                unregister_code16(KC_MINUS);
-            }
-        break;
-        case COMBO_EQUALS:
-            if (pressed) {
-                register_code16(KC_EQUAL);
-            }else{
-                unregister_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_LESS:
-            if (pressed) {
-                register_code16(KC_LABK);
-            }else{
-                unregister_code16(KC_LABK);
-            }
-        break;
-        case COMBO_GREATER:
-            if (pressed) {
-                register_code16(KC_RABK);
-            }else{
-                unregister_code16(KC_RABK);
-            }
-        break;
-        case COMBO_LESS_EQUALS:
-            if (pressed) {
-                tap_code16(KC_LABK);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_GREATER_EQUALS:
-            if (pressed) {
-                tap_code16(KC_RABK);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_LESS_EQUALS_EQUALS:
-            if (pressed) {
-                tap_code16(KC_LABK);
-                tap_code16(KC_EQUAL);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_GREATER_EQUALS_EQUALS:
-            if (pressed) {
-                tap_code16(KC_RABK);
-                tap_code16(KC_EQUAL);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_NOT_EQUALS:
-            if (pressed) {
-                tap_code16(KC_EXLM);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_NOT_EQUALS_EQUALS:
-            if (pressed) {
-                tap_code16(KC_EXLM);
-                tap_code16(KC_EQUAL);
-                tap_code16(KC_EQUAL);
-            }
-        break;
-        case COMBO_PIPE:
-            if (pressed) {
-                register_code16(LSFT(KC_NONUS_BSLASH));
-            }else{
-                unregister_code16(LSFT(KC_NONUS_BSLASH));
-            }
-        break;
-        case COMBO_ASTARISK:
-            if (pressed) {
-                register_code16(KC_ASTR);
-            }else{
-                unregister_code16(KC_ASTR);
-            }
-        break;
-        case COMBO_AMPERSTAND:
-            if (pressed) {
-                register_code16(KC_AMPR);
-            }else{
-                unregister_code16(KC_AMPR);
-            }
-        break;
-        case COMBO_ROOT:
-            if (pressed) {
-                register_code16(LSFT(KC_NONUS_HASH));
-            }else{
-                unregister_code16(LSFT(KC_NONUS_HASH));
-            }
-        break;
-        case COMBO_HASH:
-            if (pressed) {
-                register_code16(KC_NONUS_HASH);
-            }else{
-                unregister_code16(KC_NONUS_HASH);
-            }
-        break;
-        case COMBO_SCROLL_UP:
-            if (pressed) {
-                //register_code16(KC_MS_WH_UP);
-                scrollwheel_up_on = true;
-            }else{
-                //unregister_code16(KC_MS_WH_UP);
-                scrollwheel_up_on = false;
-            }
-        break;
-        case COMBO_SCROLL_DOWN:
-            if (pressed) {
-                //register_code16(KC_MS_WH_DOWN);
-                scrollwheel_down_on = true;
-            }else{
-                //register_code16(KC_MS_WH_DOWN);
-                scrollwheel_down_on = false;
-            }
-        break;
-        // case COMBO_START_WORD:
-        //     if (pressed) {
-        //         last_word_length = last_word_length / 2;
-        //         while (last_word_length > 0){
-        //             tap_code16(KC_LEFT);
-        //             last_word_length--;
-        //         }
-        //     }
-        // break;
-        // case COMBO_DELETE_WORD:
-        //     if (pressed) {
-        //         last_word_length = last_word_length / 2;
-        //         while (last_word_length > 0){
-        //             tap_code16(KC_BSPACE);
-        //             last_word_length--;
-        //         }
-        //     }
-        // break;
-        case COMBO_ALT_F4:
-            if(pressed){
-                tap_code16(LALT(KC_F4));
-            }
+    if(rgb_timed_out){
+        return;
+    }
+
+    switch(combo_index) {
+    case COMBO_LEFT_SQUARE_BRACKET:
+        if (pressed) {
+            register_code16(KC_LBRACKET);
+        }else{
+            unregister_code16(KC_LBRACKET);
         }
+    break;
+    case COMBO_RIGHT_SQUARE_BRACKET:
+        if (pressed) {
+            register_code16(KC_RBRACKET);
+        }else{
+            unregister_code16(KC_RBRACKET);
+        }
+    break;
+    case COMBO_LEFT_CURLY_BRACKET:
+        if (pressed) {
+            register_code16(KC_LCBR);
+        }else{
+            unregister_code16(KC_LCBR);
+        }
+    break;
+    case COMBO_RIGHT_CURLY_BRACKET:
+        if (pressed) {
+            register_code16(KC_RCBR);
+        }else{
+            unregister_code16(KC_RCBR);
+        }
+    break;
+    case COMBO_LEFT_BRACKET:
+        if (pressed) {
+            register_code16(LSFT(KC_9));
+        }else{
+            unregister_code16(LSFT(KC_9));
+        }
+    break;
+    case COMBO_RIGHT_BRACKET:
+        if (pressed) {
+            register_code16(LSFT(KC_0));
+        }else{
+            unregister_code16(LSFT(KC_0));
+        }
+    break;
+    case COMBO_MINUS:
+        if (pressed) {
+            register_code16(KC_MINUS);
+        }else{
+            unregister_code16(KC_MINUS);
+        }
+    break;
+    case COMBO_EQUALS:
+        if (pressed) {
+            register_code16(KC_EQUAL);
+        }else{
+            unregister_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_LESS:
+        if (pressed) {
+            register_code16(KC_LABK);
+        }else{
+            unregister_code16(KC_LABK);
+        }
+    break;
+    case COMBO_GREATER:
+        if (pressed) {
+            register_code16(KC_RABK);
+        }else{
+            unregister_code16(KC_RABK);
+        }
+    break;
+    case COMBO_LESS_EQUALS:
+        if (pressed) {
+            tap_code16(KC_LABK);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_GREATER_EQUALS:
+        if (pressed) {
+            tap_code16(KC_RABK);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_LESS_EQUALS_EQUALS:
+        if (pressed) {
+            tap_code16(KC_LABK);
+            tap_code16(KC_EQUAL);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_GREATER_EQUALS_EQUALS:
+        if (pressed) {
+            tap_code16(KC_RABK);
+            tap_code16(KC_EQUAL);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_NOT_EQUALS:
+        if (pressed) {
+            tap_code16(KC_EXLM);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_NOT_EQUALS_EQUALS:
+        if (pressed) {
+            tap_code16(KC_EXLM);
+            tap_code16(KC_EQUAL);
+            tap_code16(KC_EQUAL);
+        }
+    break;
+    case COMBO_PIPE:
+        if (pressed) {
+            register_code16(LSFT(KC_NONUS_BSLASH));
+        }else{
+            unregister_code16(LSFT(KC_NONUS_BSLASH));
+        }
+    break;
+    case COMBO_ASTARISK:
+        if (pressed) {
+            register_code16(KC_ASTR);
+        }else{
+            unregister_code16(KC_ASTR);
+        }
+    break;
+    case COMBO_AMPERSTAND:
+        if (pressed) {
+            register_code16(KC_AMPR);
+        }else{
+            unregister_code16(KC_AMPR);
+        }
+    break;
+    case COMBO_ROOT:
+        if (pressed) {
+            register_code16(LSFT(KC_NONUS_HASH));
+        }else{
+            unregister_code16(LSFT(KC_NONUS_HASH));
+        }
+    break;
+    case COMBO_HASH:
+        if (pressed) {
+            register_code16(KC_NONUS_HASH);
+        }else{
+            unregister_code16(KC_NONUS_HASH);
+        }
+    break;
+    case COMBO_SCROLL_UP:
+        if (pressed) {
+            //register_code16(KC_MS_WH_UP);
+            scrollwheel_up_on = true;
+        }else{
+            //unregister_code16(KC_MS_WH_UP);
+            scrollwheel_up_on = false;
+        }
+    break;
+    case COMBO_SCROLL_DOWN:
+        if (pressed) {
+            //register_code16(KC_MS_WH_DOWN);
+            scrollwheel_down_on = true;
+        }else{
+            //register_code16(KC_MS_WH_DOWN);
+            scrollwheel_down_on = false;
+        }
+    break;
+    // case COMBO_START_WORD:
+    //     if (pressed) {
+    //         last_word_length = last_word_length / 2;
+    //         while (last_word_length > 0){
+    //             tap_code16(KC_LEFT);
+    //             last_word_length--;
+    //         }
+    //     }
+    // break;
+    // case COMBO_DELETE_WORD:
+    //     if (pressed) {
+    //         last_word_length = last_word_length / 2;
+    //         while (last_word_length > 0){
+    //             tap_code16(KC_BSPACE);
+    //             last_word_length--;
+    //         }
+    //     }
+    // break;
+    case COMBO_ALT_F4:
+        if(pressed){
+            tap_code16(LALT(KC_F4));
+        }
+    }
 }

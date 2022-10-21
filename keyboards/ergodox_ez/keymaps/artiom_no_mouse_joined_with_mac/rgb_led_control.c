@@ -1,14 +1,14 @@
 #include "sharedDefines.h"
 
-uint8_t brightness_amount = 0;
+int8_t brightness_amount = -70;
 uint8_t hue_amount = 0;
 
 bool main_layer_brightness = true; // can disable the main layer rgb individually
 
 bool rgb_show = true;
-bool rgb_timed_out = false;
+bool rgb_timed_out = true; // set to true so that you will need to type in the password straight away
 //uint16_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
-uint16_t rgb_time_out_value = 30000; // in milliseconds
+uint32_t rgb_time_out_value = 300000; // in milliseconds // 5 minutes by default
 
 uint8_t modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
 
@@ -171,13 +171,47 @@ void suspend_wakeup_init_user(void) {
     rgb_matrix_set_suspend_state(false);
 }
 
+#ifdef SHOW_UNLOCK_ANIMATION
+// this goes in a line from a to ;. will need to extend this if using a really long password.
+const uint8_t passwordLedsSequence[9] = {47, 46, 45, 44, 20, 21, 22, 23 };
+#endif
+
 void set_layer_color(uint8_t layer) {
     if(modifiers_blink_count > 200){
         modifiers_blink_count = 0;
     }
     modifiers_blink_count++;
 
+    #ifdef SHOW_UNLOCK_ANIMATION
+        bool allowed = false;
+    #endif
+
     for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
+
+        #ifdef SHOW_UNLOCK_ANIMATION
+            allowed = false;
+
+            if(unlock_password_index != 0){
+                for(uint8_t j = 0; j < unlock_password_index; j++){
+                    if (i == passwordLedsSequence[j]) {
+                        allowed = true;
+                    }
+                }
+            }
+            if(rgb_timed_out && !allowed){
+                rgb_matrix_set_color(i, 0, 0, 0);
+                continue;
+            }
+        #endif
+
+        #ifndef SHOW_UNLOCK_ANIMATION
+            if(rgb_timed_out){
+                rgb_matrix_set_color(i, 0, 0, 0);
+                continue;
+            }
+        #endif
+
+
         use_default_lighting = true;
 
         if(enable_bunnyhop && i == 4){ //show indicator on = key
@@ -255,7 +289,7 @@ void set_layer_color(uint8_t layer) {
 
 void rgb_matrix_indicators_user(void) {
     if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
-    if(rgb_show && !rgb_timed_out){
+    if(rgb_show){
         switch (biton32(layer_state)) {
             case Layer_main:
                 set_layer_color(Layer_main_colour);

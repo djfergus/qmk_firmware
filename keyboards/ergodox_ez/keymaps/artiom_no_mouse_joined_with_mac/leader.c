@@ -59,6 +59,10 @@ void matrix_scan_user(void) {
       layer_move(Layer_gaming);
       //did_leader_succeed = true;
     } else
+    SEQ_ONE_KEY(KC_L) {
+        rgb_timed_out = true;
+        //did_leader_succeed = true;
+    } else
     SEQ_TWO_KEYS(KC_C, KC_O) {
       SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse_joined_with_mac");
       //did_leader_succeed = true;
@@ -66,7 +70,7 @@ void matrix_scan_user(void) {
     leader_end();
   }
 
-  uint16_t current_timer_value = timer_read();
+  uint32_t current_timer_value = timer_read32();
 
 //   if(rgb_sync_to_timer != current_timer_value){
 //         rgb_sync_to_timer = current_timer_value;
@@ -84,7 +88,7 @@ void matrix_scan_user(void) {
   }
 
   if(!rgb_timed_out){
-      if(timer_elapsed(rgb_timeout_counter) > rgb_time_out_value){
+      if(timer_elapsed32(rgb_timeout_counter) > rgb_time_out_value){
           rgb_timed_out = true;
           rgb_timeout_counter = current_timer_value;
       }

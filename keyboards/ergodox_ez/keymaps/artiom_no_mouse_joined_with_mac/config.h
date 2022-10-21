@@ -61,6 +61,8 @@
 //#define DYNAMIC_MACRO_NO_NESTING
 //#define DYNAMIC_MACRO_SIZE 64
 
+#define CAPS_WORD_IDLE_TIMEOUT 3000  // https://docs.qmk.fm/#/feature_caps_word?id=customizing-caps-word
+
 // disable all rgb effects lol //decreased firmware size by a bit
 //#undef RGBLIGHT_ANIMATIONS
 #undef RGBLIGHT_EFFECT_BREATHING

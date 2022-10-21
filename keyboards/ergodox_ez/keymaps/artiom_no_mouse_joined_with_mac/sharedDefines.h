@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "secrets.h"
 
 #define bool _Bool
 #define true 1
@@ -52,8 +53,8 @@ enum custom_keycodes {
   ST_M_toggle_main_layer_brightness,
   ST_M_led_timeout_30s,
   ST_M_led_timeout_1m,
-  //ST_M_led_timeout_5m,
-  //ST_M_led_timeout_10m,
+  ST_M_led_timeout_5m,
+  ST_M_led_timeout_10m,
   ST_M_combo_toggle,
   ST_M_mac_mode_toggle,
   ST_M_colemak_mode_toggle,
@@ -63,9 +64,9 @@ enum custom_keycodes {
 
 extern bool rgb_show;
 extern bool rgb_timed_out;
-extern uint16_t rgb_timeout_counter;
+extern uint32_t rgb_timeout_counter;
 //extern uint16_t rgb_sync_to_timer; //sync out timer to the official rgb timer.
-extern uint16_t rgb_time_out_value;  // in milliseconds
+extern uint32_t rgb_time_out_value;  // in milliseconds
 
 extern bool use_bunnyhop;
 extern bool enable_bunnyhop;
@@ -74,7 +75,7 @@ extern uint8_t bunny_hop_delay_counter;
 extern uint8_t modifiers_blink_count; // this is for stuff like enable_bunnyhop and the leader key
 extern bool leader_key_is_running;
 
-extern uint8_t brightness_amount;
+extern int8_t brightness_amount;
 extern uint8_t hue_amount;
 
 extern bool main_layer_brightness; // can disable the main layer rgb individually
@@ -97,6 +98,40 @@ extern bool colemak_mode;
 
 //alternative colour scheme
 //#define COLORPROGKEYBOARD
+
+//custom password to use keyboard
+//#error "Change the password before compiling and commment this line out"
+/*
+    To make this work you need to create a file called secrets.c and secrets.h
+
+    In secrets.h you need to define the following:
+    ----------------------------------------------
+    #ifndef SECRETSDEFINES_H
+    #define SECRETSDEFINES_H
+
+    #define UNLOCK_PASSWORD_LENGTH 2
+
+    #endif
+    ----------------------------------------------
+
+    In secrets.c you need to define the following:
+    ----------------------------------------------
+    #include "secrets.h"
+
+    uint16_t unlock_password[UNLOCK_PASSWORD_LENGTH] = {4, 5}; // example a, b
+    ----------------------------------------------
+
+    To get the keycodes check this following link:
+    https://gist.github.com/MightyPork/6da26e382a7ad91b5496ee55fdc73db2
+*/
+
+extern uint16_t unlock_password_index;
+extern uint16_t unlock_password[UNLOCK_PASSWORD_LENGTH];
+
+/*
+if the `#define SHOW_UNLOCK_ANIMATION` line is uncommented, the keyboard will light up an led for each correct key press. Might want to turn this off as it will be possible to guess the password eventually since you will know when you hit a correct letter.
+*/
+#define SHOW_UNLOCK_ANIMATION
 
 //colours                   hsv             // rgb
 #define KM_Light_red        {0,223,252}     // 252,32,31
