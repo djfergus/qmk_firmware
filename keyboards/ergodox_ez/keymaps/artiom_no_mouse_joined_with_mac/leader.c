@@ -61,6 +61,7 @@ void matrix_scan_user(void) {
     } else
     SEQ_ONE_KEY(KC_L) {
         rgb_timed_out = true;
+        password_bypass = false;
         //did_leader_succeed = true;
     } else
     SEQ_TWO_KEYS(KC_C, KC_O) {

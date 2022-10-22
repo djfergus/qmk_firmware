@@ -10,6 +10,7 @@ uint32_t rgb_timeout_counter = 0;
 
 
 uint16_t unlock_password_index = 0;
+bool password_bypass = false;
 // int word_length_count = 0;
 // int last_word_length=0;
 
@@ -20,7 +21,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // }else{
     //     word_length_count = 0;
     // }
-    if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH){
+    if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH && !password_bypass){
         //if(keycode >= 4 && keycode <= 39){ // only lock the letter keys
             if(record->event.pressed){
                 if(unlock_password[unlock_password_index] == keycode && record->event.pressed){
@@ -199,6 +200,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }else{
                     layer_off(Layer_colemak);
                 }
+            }
+        break;
+        case ST_M_password_bypass:
+            if (record->event.pressed) {
+                password_bypass = !password_bypass;
             }
         break;
         //case ST_M_Mouse_B:

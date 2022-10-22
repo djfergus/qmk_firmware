@@ -221,6 +221,13 @@ void set_layer_color(uint8_t layer) {
             }
         }
 
+        if(password_bypass && i == 9){
+            if(modifiers_blink_count < 100){
+                rgb_matrix_set_color( i, 237, 28, 28 );
+                use_default_lighting = false;
+            }
+        }
+
         if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
             rgb_matrix_set_color( i, 31, 107, 239 );
             use_default_lighting = false;

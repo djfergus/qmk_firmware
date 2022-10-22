@@ -58,6 +58,7 @@ enum custom_keycodes {
   ST_M_combo_toggle,
   ST_M_mac_mode_toggle,
   ST_M_colemak_mode_toggle,
+  ST_M_password_bypass,
   //ST_M_Mouse_B,
   //ST_M_Mouse_F,
 };
@@ -127,6 +128,8 @@ extern bool colemak_mode;
 
 extern uint16_t unlock_password_index;
 extern uint16_t unlock_password[UNLOCK_PASSWORD_LENGTH];
+
+extern bool password_bypass;
 
 /*
 if the `#define SHOW_UNLOCK_ANIMATION` line is uncommented, the keyboard will light up an led for each correct key press. Might want to turn this off as it will be possible to guess the password eventually since you will know when you hit a correct letter.
