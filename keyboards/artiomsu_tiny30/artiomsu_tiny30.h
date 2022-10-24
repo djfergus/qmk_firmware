@@ -1,5 +1,5 @@
-#ifndef KB_H
-#define KB_H
+#ifndef ARTIOMSU_TINY_30_H
+#define ARTIOMSU_TINY_30_H
 
 #include "quantum.h"
 
