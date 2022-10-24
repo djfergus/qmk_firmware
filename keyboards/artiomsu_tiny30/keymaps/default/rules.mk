@@ -18,4 +18,4 @@ RAW_ENABLE = no
 NKRO_ENABLE = yes
 AUTO_SHIFT_ENABLE = no
 
-SRC+= leader.c combos.c
+SRC+= leader.c combos.c lighting.c
