@@ -148,12 +148,3 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
 };
-
-// uint32_t layer_state_set_user(uint32_t state) {
-//     // if(state == Layer_main){ // game layer always returns to Layer_main so need to update mac_mode accordingly. however updating it causes an issue where you can't go back to mac mode
-//     //     mac_mode = false;
-//     // }else if(state == Layer_mac_main){
-//     //     mac_mode = true;
-//     // }
-//     return state;
-// };

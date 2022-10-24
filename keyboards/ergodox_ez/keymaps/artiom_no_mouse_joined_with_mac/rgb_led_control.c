@@ -172,8 +172,9 @@ void suspend_wakeup_init_user(void) {
 }
 
 #ifdef SHOW_UNLOCK_ANIMATION
-// this goes in a line from a to ;. will need to extend this if using a really long password.
-const uint8_t passwordLedsSequence[9] = {47, 46, 45, 44, 20, 21, 22, 23 };
+#define UNLOCK_PASSWORD_LED_SEQUENCE_LENGTH 9
+// this goes in a line from the bottom row. will need to extend this if using a really long password.
+const uint8_t passwordLedsSequence[UNLOCK_PASSWORD_LED_SEQUENCE_LENGTH] = {47, 46, 45, 44, 20, 21, 22, 23 };
 #endif
 
 void set_layer_color(uint8_t layer) {
@@ -191,7 +192,7 @@ void set_layer_color(uint8_t layer) {
         #ifdef SHOW_UNLOCK_ANIMATION
             allowed = false;
 
-            if(unlock_password_index != 0){
+            if(unlock_password_index != 0 && unlock_password_index < UNLOCK_PASSWORD_LED_SEQUENCE_LENGTH){
                 for(uint8_t j = 0; j < unlock_password_index; j++){
                     if (i == passwordLedsSequence[j]) {
                         allowed = true;
@@ -214,39 +215,25 @@ void set_layer_color(uint8_t layer) {
 
         use_default_lighting = true;
 
-        if(enable_bunnyhop && i == 4){ //show indicator on = key
+        if(
+            ((layer == 0 && main_layer_brightness) || layer != 0) &&
+            (
+                (enable_bunnyhop && i == 4) ||
+                (password_bypass && i == 9) ||
+                (combos_on && i == 47) ||
+                (mac_mode && i == 16)
+            )
+        ){
             if(modifiers_blink_count < 100){
                 rgb_matrix_set_color( i, 237, 28, 28 );
                 use_default_lighting = false;
             }
         }
 
-        if(password_bypass && i == 9){
-            if(modifiers_blink_count < 100){
-                rgb_matrix_set_color( i, 237, 28, 28 );
-                use_default_lighting = false;
-            }
-        }
 
         if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
             rgb_matrix_set_color( i, 31, 107, 239 );
             use_default_lighting = false;
-        }
-
-        if((layer == 0 && main_layer_brightness) || layer != 0){ // only show indicators on other layers if the main layer leds are turned off.
-            if(combos_on && i == 47){ // show indicator on key bellow z.
-                if(modifiers_blink_count < 100){
-                    rgb_matrix_set_color( i, 237, 28, 28);
-                    use_default_lighting = false;
-                }
-            }
-
-            if(mac_mode && i == 16){ // show indicator on key m
-                if(modifiers_blink_count < 100){
-                    rgb_matrix_set_color( i, 237, 28, 28);
-                    use_default_lighting = false;
-                }
-            }
         }
 
         if(use_default_lighting) {

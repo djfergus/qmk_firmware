@@ -73,17 +73,6 @@ void matrix_scan_user(void) {
 
   uint32_t current_timer_value = timer_read32();
 
-//   if(rgb_sync_to_timer != current_timer_value){
-//         rgb_sync_to_timer = current_timer_value;
-//         if(!rgb_timed_out){ // update rgb timeout
-//             if(timeout_counter > rgb_time_out_value){
-//                 timeout_counter = 0;
-//                 rgb_timed_out = true;
-//             }
-//             timeout_counter++;
-//         }
-//   }
-
   if(rgb_timeout_counter == 0){ // this is reset in macros
       rgb_timeout_counter = current_timer_value;
   }
@@ -95,21 +84,20 @@ void matrix_scan_user(void) {
       }
   }
 
+  // todo this needs some work rand() % 10 no longer works as expected.
+  // right not its acting af if there is no randomization at all
   if(enable_bunnyhop && use_bunnyhop){
-       if(bunny_hop_delay_counter <= 0){
-        srand(current_timer_value);
+       if(bunny_hop_delay_counter >= 10){
+        //srand(time(NULL));
+        //srand(current_timer_value);
         SEND_STRING(SS_TAP(X_SPACE));
-        bunny_hop_delay_counter = rand() % 10;
+        bunny_hop_delay_counter = rand()>>8;
        }
-       bunny_hop_delay_counter --;
+       bunny_hop_delay_counter ++;
   }
 
   if(scrollwheel_up_on || scrollwheel_down_on){
     if(timer_elapsed(scroll_delay_timer) > 100){ //call this every 100ms
-        // report_mouse_t currentReport = pointing_device_get_report();
-        // currentReport.v = scrollwheel_up_on ? 1 : -1;
-        // pointing_device_set_report(currentReport);
-        // pointing_device_send();
         register_code16(scrollwheel_up_on ? KC_MS_WH_UP : KC_MS_WH_DOWN);
         unregister_code16(scrollwheel_up_on ? KC_MS_WH_UP : KC_MS_WH_DOWN);
         scroll_delay_timer = current_timer_value;

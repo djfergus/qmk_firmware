@@ -30,7 +30,7 @@
 
 
 enum custom_keycodes {
-  RGB_SLD = EZ_SAFE_RANGE,
+  RGB_SLD = EZ_SAFE_RANGE, // do not remove this one otherwise keyboard will send random keycodes.
   ST_MACRO_SSH,
   ST_MACRO_VIM_wq,
   ST_M_n_equal,
@@ -59,8 +59,6 @@ enum custom_keycodes {
   ST_M_mac_mode_toggle,
   ST_M_colemak_mode_toggle,
   ST_M_password_bypass,
-  //ST_M_Mouse_B,
-  //ST_M_Mouse_F,
 };
 
 extern bool rgb_show;
