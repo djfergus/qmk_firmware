@@ -17,6 +17,9 @@ bool g_suspend_state;
 
 extern rgb_config_t rgb_matrix_config;
 
+bool caps_lock_on = false;
+bool num_lock_on = false;
+
 const uint16_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
 
 #ifndef COLORPROGKEYBOARD
@@ -215,26 +218,36 @@ void set_layer_color(uint8_t layer) {
 
         use_default_lighting = true;
 
+        if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
+            rgb_matrix_set_color( i, 31, 107, 239 );
+            use_default_lighting = false;
+        }
+
         if(
             ((layer == 0 && main_layer_brightness) || layer != 0) &&
             (
                 (enable_bunnyhop && i == 4) ||
                 (password_bypass && i == 9) ||
                 (combos_on && i == 47) ||
-                (mac_mode && i == 16)
+                (mac_mode && i == 16) ||
+                (caps_lock_on && i == 23) ||
+                (num_lock_on && i == 22)
             )
         ){
             if(modifiers_blink_count < 100){
+                if(num_lock_on && i == 22){
+                    rgb_matrix_set_color( i, 5,255,2 );
+                    continue;
+                }
+                if(caps_lock_on && i == 23){
+                    rgb_matrix_set_color( i, 255,0,0 );
+                    continue;
+                }
                 rgb_matrix_set_color( i, 237, 28, 28 );
-                use_default_lighting = false;
+                continue;
             }
         }
 
-
-        if(leader_key_is_running && (i == 19 || i == 22 || i == 23)){ //show leader indicator on /,top arrow,right arrow keys
-            rgb_matrix_set_color( i, 31, 107, 239 );
-            use_default_lighting = false;
-        }
 
         if(use_default_lighting) {
             HSV hsv = {
@@ -315,4 +328,10 @@ void rgb_matrix_indicators_user(void) {
     }else{
         rgb_matrix_set_color_all(0, 0, 0);
     }
+}
+
+bool led_update_user(led_t led_state) {
+    caps_lock_on = led_state.caps_lock;
+    num_lock_on = led_state.num_lock;
+    return true;
 }

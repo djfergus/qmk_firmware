@@ -95,8 +95,6 @@ extern uint16_t scroll_delay_timer;
 
 extern bool colemak_mode;
 
-//alternative colour scheme
-//#define COLORPROGKEYBOARD
 
 //custom password to use keyboard
 //#error "Change the password before compiling and commment this line out"
@@ -133,6 +131,12 @@ extern bool password_bypass;
 if the `#define SHOW_UNLOCK_ANIMATION` line is uncommented, the keyboard will light up an led for each correct key press. Might want to turn this off as it will be possible to guess the password eventually since you will know when you hit a correct letter.
 */
 #define SHOW_UNLOCK_ANIMATION
+
+extern bool caps_lock_on;
+extern bool num_lock_on;
+
+//alternative colour scheme
+//#define COLORPROGKEYBOARD
 
 //colours                   hsv             // rgb
 #define KM_Light_red        {0,223,252}     // 252,32,31
