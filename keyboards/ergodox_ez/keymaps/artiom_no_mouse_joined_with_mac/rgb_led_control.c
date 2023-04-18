@@ -319,6 +319,9 @@ bool rgb_matrix_indicators_user(void) {
             case Layer_colemak:
                 set_layer_color(Layer_main_colour);
             break;
+            case Layer_mouse:
+                set_layer_color(Layer_macros_colour);
+            break;
             default:
                 if (rgb_matrix_get_flags() == LED_FLAG_NONE){
                     rgb_matrix_set_color_all(0, 0, 0);

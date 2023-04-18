@@ -21,6 +21,7 @@
 #define Layer_mac_symbols 4
 #define Layer_macros 5
 #define Layer_gaming 6
+#define Layer_mouse 7
 
 // layer Colours since they are different from layers themselves now
 #define Layer_main_colour 0

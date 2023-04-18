@@ -23,6 +23,6 @@ RAW_ENABLE = no
 NKRO_ENABLE = no
 PROGRAMMABLE_BUTTON_ENABLE = no # macropad uses this instead of this keyboard so no point in doing it twice.
 
-CAPS_WORD_ENABLE = yes
+CAPS_WORD_ENABLE = no
 
 SRC+= secrets.c matrix.c combos.c leader.c macros.c rgb_led_control.c
