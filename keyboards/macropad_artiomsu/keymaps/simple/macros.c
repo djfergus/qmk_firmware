@@ -140,12 +140,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case COMPILE_MACRO:
             if(record->event.pressed){
-                SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && make clean && make macropad_artiomsu:simple");
+                SEND_STRING("cd /temp/GIT/qmk_firmware && make clean && make macropad_artiomsu:simple");
             }
             break;
         case FLASH_MACRO:
             if(record->event.pressed){
-                SEND_STRING("cd /media/veracrypt1/GIT/qmk_firmware && sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_simple.hex");
+                SEND_STRING("cd /temp/GIT/qmk_firmware && sudo avrdude -p atmega32u4 -P /dev/ttyACM0 -c avr109 -U flash:w:macropad_artiomsu_simple.hex");
             }
             break;
         case TOGGLE_NUM_LOCK_ANIMATION:
