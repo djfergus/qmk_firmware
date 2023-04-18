@@ -49,7 +49,7 @@ const uint16_t PROGMEM combo_not_equals_equals[] = {KC_J, KC_S, COMBO_END};
 const uint16_t PROGMEM combo_pipe[] = {KC_F, KC_I, COMBO_END};
 const uint16_t PROGMEM combo_amperstand[] = {KC_F, KC_J, COMBO_END};
 const uint16_t PROGMEM combo_astarisk[] = {KC_F, KC_K, COMBO_END};
-const uint16_t PROGMEM combo_root[] = {KC_F, KC_SCOLON, COMBO_END};
+const uint16_t PROGMEM combo_root[] = {KC_F, KC_SEMICOLON, COMBO_END};
 const uint16_t PROGMEM combo_hash[] = {KC_F, KC_H, COMBO_END};
 const uint16_t PROGMEM combo_alt_f4[] = {KC_F, KC_4, COMBO_END};
 const uint16_t PROGMEM combo_scroll_up[] = {KC_W, KC_E, COMBO_END};
@@ -120,10 +120,10 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 
     switch(combo_index) {
     case COMBO_LEFT_SQUARE_BRACKET:
-        pressed ? register_code16(KC_LBRACKET) : unregister_code16(KC_LBRACKET);
+        pressed ? register_code16(KC_LBRC) : unregister_code16(KC_LBRC);
     break;
     case COMBO_RIGHT_SQUARE_BRACKET:
-        pressed ? register_code16(KC_RBRACKET) : unregister_code16(KC_RBRACKET);
+        pressed ? register_code16(KC_RBRC) : unregister_code16(KC_RBRC);
     break;
     case COMBO_LEFT_CURLY_BRACKET:
         pressed ? register_code16(KC_LCBR) : unregister_code16(KC_LCBR);
@@ -189,7 +189,7 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         }
     break;
     case COMBO_PIPE:
-        pressed ? register_code16(LSFT(KC_NONUS_BSLASH)) : unregister_code16(LSFT(KC_NONUS_BSLASH));
+        pressed ? register_code16(LSFT(KC_NONUS_BACKSLASH)) : unregister_code16(LSFT(KC_NONUS_BACKSLASH));
     break;
     case COMBO_ASTARISK:
         pressed ? register_code16(KC_ASTR) : unregister_code16(KC_ASTR);

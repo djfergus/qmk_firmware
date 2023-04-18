@@ -34,7 +34,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_LCTL(SS_TAP(X_R)) SS_TAP(X_S) SS_TAP(X_S) SS_TAP(X_H));
         break;
         case ST_MACRO_VIM_wq: //save and exit vim
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_Q) SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_W) SS_TAP(X_Q) SS_TAP(X_ENTER));
         break;
         case ST_M_n_equal: // !=
             SEND_STRING(SS_LSFT(SS_TAP(X_1)) SS_TAP(X_EQUAL));
@@ -49,22 +49,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_LSFT(SS_TAP(X_DOT)) SS_TAP(X_EQUAL));
         break;
         case ST_M_vim_q: //quite vim without saving
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_Q) SS_LSFT(SS_TAP(X_1)) SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_Q) SS_LSFT(SS_TAP(X_1)) SS_TAP(X_ENTER));
         break;
         case ST_M_vim_w: // write only
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_W) SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE)  SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_W) SS_TAP(X_ENTER));
         break;
         case ST_M_vim_sp: // vim :sp without enter
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_S) SS_TAP(X_P));
         break;
         case ST_M_vim_vs:   // vim :vs without enter
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_V) SS_TAP(X_S));
         break;
         case ST_M_vim_sp_e: // vim :sp with enter
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_S) SS_TAP(X_P) SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_S) SS_TAP(X_P) SS_TAP(X_ENTER));
         break;
         case ST_M_vim_vs_e: // vim :vs with enter
-            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SCOLON)) SS_TAP(X_V) SS_TAP(X_S) SS_TAP(X_ENTER));
+            SEND_STRING(SS_TAP(X_ESCAPE) SS_TAP(X_ESCAPE) SS_LSFT(SS_TAP(X_SEMICOLON)) SS_TAP(X_V) SS_TAP(X_S) SS_TAP(X_ENTER));
         break;
         case ST_M_double_colon:
             SEND_STRING("::");

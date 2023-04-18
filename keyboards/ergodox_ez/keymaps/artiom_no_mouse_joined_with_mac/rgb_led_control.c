@@ -20,136 +20,136 @@ extern rgb_config_t rgb_matrix_config;
 bool caps_lock_on = false;
 bool num_lock_on = false;
 
-const uint16_t PROGMEM ledmap[][DRIVER_LED_TOTAL][3] = {
+const uint16_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][4] = {
 
 #ifndef COLORPROGKEYBOARD
 
     //             8                      9                         0                       -                       =
     [Layer_main_colour] =
-            { LM_Light_orange,      KM_Light_red,           KM_dirty_green,         KM_dirty_green,         KM_dirty_green,    \
+            { L_LM_Light_orange,      L_KM_Light_red,           L_KM_dirty_green,         L_KM_dirty_green,         L_KM_dirty_green,    \
     //             y                      u                         i                       o                       p
-            KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,     \
+            L_KM_Light_yellow,        L_LM_Light_orange,        L_KM_Light_red,           L_KM_dirty_green,         L_KM_dirty_green,     \
     //             h                      j                         k                       l                       ;
-            KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,    \
+            L_KM_dirty_green,         L_KM_Light_yellow,        L_LM_Light_orange,        L_KM_Light_red,           L_KM_dirty_green,    \
     //             n                      m                         ,                       .                       /
-            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,    \
+            L_KM_dirty_green,         L_KM_dirty_green,         L_KM_Light_yellow,        L_LM_Light_orange,        L_KM_Light_red,    \
     //             <-                     down                      up                      ->
-            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,                            \
+            L_KM_dirty_green,         L_KM_dirty_green,         L_KM_Light_yellow,        L_LM_Light_orange,                            \
 
 
     //             5                      4                         3                       2                       1
-            LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,         KM_dirty_green,       \
+            R_LM_Light_orange,        R_KM_Light_red,           R_KM_dirty_green,         R_KM_dirty_green,         R_KM_dirty_green,       \
     //             t                      r                         e                       w                       q
-            KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,         KM_dirty_green,     \
+            R_KM_Light_yellow,        R_LM_Light_orange,        R_KM_Light_red,           R_KM_dirty_green,         R_KM_dirty_green,     \
     //             g                      f                         d                       s                       a
-            KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,           KM_dirty_green,     \
+            R_KM_dirty_green,         R_KM_Light_yellow,        R_LM_Light_orange,        R_KM_Light_red,           R_KM_dirty_green,     \
     //             b                      v                         c                       x                       z
-            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange,        KM_Light_red,     \
+            R_KM_dirty_green,         R_KM_dirty_green,         R_KM_Light_yellow,        R_LM_Light_orange,        R_KM_Light_red,     \
     //                                                             esc                     esc
-            KM_dirty_green,         KM_dirty_green,         KM_Light_yellow,        LM_Light_orange },
+            R_KM_dirty_green,         R_KM_dirty_green,         R_KM_Light_yellow,        R_LM_Light_orange },
 
 #else
     // PROG KEYBOARD LEDS
     //             6                      7                         8                       9                       0
     [Layer_main_colour] =
-            { LM_skyBlue,           LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+            { L_LM_skyBlue,           L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,    \
     //             y                      u                         i                       o                       p
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,     \
     //             h                      j                         k                       l                       ;
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,    \
     //             n                      m                         ,                       .                       /
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,    \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,    \
     //                                   <-                     down                      up                      ->
-                                    LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,                            \
+                                    L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,                            \
 
 
     //             5                      4                         3                       2                       1
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,       \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,       \
     //             t                      r                         e                       w                       q
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,     \
     //             g                      f                         d                       s                       a
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,     \
     //             b                      v                         c                       x                       z
-            LM_skyBlue,             LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple,     \
+            L_LM_skyBlue,             L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple,     \
     //                                                                                esc                     esc
-                                    LM_Blue,             LM_Light_orange,        KM_dirty_green,         LM_Light_blue_purple },
+                                    L_LM_Blue,             L_LM_Light_orange,        L_KM_dirty_green,         L_LM_Light_blue_purple },
 
 #endif
 
 
     [Layer_symbols_colour] =
-            { LM_Slight_dark_red,   LM_Slight_dark_red,     LM_Slight_dark_red,     LM_Slight_dark_red,     LM_Slight_dark_red, \
+            { L_LM_Slight_dark_red,   L_LM_Slight_dark_red,     L_LM_Slight_dark_red,     L_LM_Slight_dark_red,     L_LM_Slight_dark_red, \
 
-            LM_Blue,                LM_LightOrange,         LM_LightOrange,         LM_Blue,                LM_LightOrange,     \
+            L_LM_Blue,                L_LM_LightOrange,         L_LM_LightOrange,         L_LM_Blue,                L_LM_LightOrange,     \
 
-            LM_Yellow,              LM_Light_pink,          LM_Light_pink,          LM_LightOrange,         LM_LightOrange,     \
+            L_LM_Yellow,              L_LM_Light_pink,          L_LM_Light_pink,          L_LM_LightOrange,         L_LM_LightOrange,     \
 
-            LM_Cyan,                LM_Light_pink,          LM_Light_pink,          LM_Yellow,              LM_Yellow,          \
+            L_LM_Cyan,                L_LM_Light_pink,          L_LM_Light_pink,          L_LM_Yellow,              L_LM_Yellow,          \
 
-            LM_Light_pink,          LM_Light_pink,          LM_Yellow,              LM_Yellow,                                  \
+            L_LM_Light_pink,          L_LM_Light_pink,          L_LM_Yellow,              L_LM_Yellow,                                  \
 
 
 
-            LM_Slight_dark_red,     LM_Slight_dark_red,     LM_Slight_dark_red,     LM_Slight_dark_red,     LM_Slight_dark_red, \
+            R_LM_Slight_dark_red,     R_LM_Slight_dark_red,     R_LM_Slight_dark_red,     R_LM_Slight_dark_red,     R_LM_Slight_dark_red, \
 
-            LM_White,               LM_White,               LM_Red_Blood,           LM_Yellow,              LM_Yellow,          \
+            R_LM_White,               R_LM_White,               R_LM_Red_Blood,           R_LM_Yellow,              R_LM_Yellow,          \
 
-            LM_Yellow,              LM_Yellow,              LM_Yellow,              LM_Yellow,              LM_Yellow,          \
+            R_LM_Yellow,              R_LM_Yellow,              R_LM_Yellow,              R_LM_Yellow,              R_LM_Yellow,          \
 
-            LM_Yellow,              LM_Light_orange,        KM_dirty_green,         LM_Cyan,                LM_Yellow,          \
+            R_LM_Yellow,              R_LM_Light_orange,        R_KM_dirty_green,         R_LM_Cyan,                R_LM_Yellow,          \
 
-            LM_White,               LM_White,               LM_White,               LM_Yellow },
+            R_LM_White,               R_LM_White,               R_LM_White,               R_LM_Yellow },
 
 
 
     //             8                    9                           0                    -                       =
     [Layer_macros_colour] =
-            { LM_______,            LM_Blooder_Red,         LM_NeonGreen,           LM_______,              LM_______,          \
+            { L_LM_______,            L_LM_Blooder_Red,         L_LM_NeonGreen,           L_LM_______,              L_LM_______,          \
     //             y                    u                           i                    o                       p
-            LM_______,              LM_Blooder_Red,         LM_NeonGreen,           LM_______,              LM_______,          \
+            L_LM_______,              L_LM_Blooder_Red,         L_LM_NeonGreen,           L_LM_______,              L_LM_______,          \
     //             h                    j                           k                    l                       ;
-            KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        KM_Light_yellow,        LM_______,          \
+            L_KM_Light_yellow,        L_KM_Light_yellow,        L_KM_Light_yellow,        L_KM_Light_yellow,        L_LM_______,          \
     //             n                    m                           ,                    .                       /
-            LM_______,              LM_______,              LM_______,              LM_______,              LM_______,          \
+            L_LM_______,              L_LM_______,              L_LM_______,              L_LM_______,              L_LM_______,          \
     //             <-                   down                        up                   ->
-            LM_______,              LM_______,              LM_______,              LM_______,                                  \
+            L_LM_______,              L_LM_______,              L_LM_______,              L_LM_______,                                  \
 
 
     //             5                    4                           3                    2                       1
-            LM_Blooder_Red,         LM_NeonGreen,           LM_NeonGreen,           LM_______,              LM_______,          \
+            R_LM_Blooder_Red,         R_LM_NeonGreen,           R_LM_NeonGreen,           R_LM_______,              R_LM_______,          \
     //             t                    r                           e                    w                       q
-            KM_dirty_green,         KM_dirty_green,         LM_______,              LM_Light_blue_purple,   KM_Light_red,       \
+            R_KM_dirty_green,         R_KM_dirty_green,         R_LM_______,              R_LM_Light_blue_purple,   R_KM_Light_red,       \
     //             g                    f                          d                    s                       a
-            KM_dirty_green,         KM_dirty_green,         LM_Light_pink,          LM_Light_pink,          LM_Light_pink,      \
+            R_KM_dirty_green,         R_KM_dirty_green,         R_LM_Light_pink,          R_LM_Light_pink,          R_LM_Light_pink,      \
     //             b                    v                           c                    x                       z
-            KM_dirty_green,         KM_dirty_green,         LM_______,              LM_______,              LM_Light_pink,      \
+            R_KM_dirty_green,         R_KM_dirty_green,         R_LM_______,              R_LM_______,              R_LM_Light_pink,      \
     //                                                          esc                  esc
-            LM_______,              LM_______,              LM_______,              LM_______ },
+            R_LM_______,              R_LM_______,              R_LM_______,              R_LM_______ },
 
 
 
     [Layer_gaming_colour] =
-            { LM_LightBrown,        LM_LightBrown,          LM_LightBrown,          LM_LightBrown,          LM_LightBrown,      \
+            { L_LM_LightBrown,        L_LM_LightBrown,          L_LM_LightBrown,          L_LM_LightBrown,          L_LM_LightBrown,      \
 
-            LM_Light_orange,        LM_White,               LM_White,               LM_White,               LM_White,           \
+            L_LM_Light_orange,        L_LM_White,               L_LM_White,               L_LM_White,               L_LM_White,           \
 
-            LM_Orange,              LM_White,               LM_White,               LM_White,               LM_White,           \
+            L_LM_Orange,              L_LM_White,               L_LM_White,               L_LM_White,               L_LM_White,           \
 
-            LM_Blooder_Red,         LM_White,               LM_White,               LM_White,               KM_Light_red,       \
+            L_LM_Blooder_Red,         L_LM_White,               L_LM_White,               L_LM_White,               L_KM_Light_red,       \
 
-            LM_White,               LM_White,               KM_Light_red,           KM_Light_red,                               \
+            L_LM_White,               L_LM_White,               L_KM_Light_red,           L_KM_Light_red,                               \
 
 
 
-            LM_Orange,              LM_Orange,              LM_Orange,              LM_Orange,              LM_Orange,          \
+            R_LM_Orange,              R_LM_Orange,              R_LM_Orange,              R_LM_Orange,              R_LM_Orange,          \
 
-            LM_NeonGreen,           LM_skyBlue,             KM_Light_red,           LM_Cyan,                LM_Orange,          \
+            R_LM_NeonGreen,           R_LM_skyBlue,             R_KM_Light_red,           R_LM_Cyan,                R_LM_Orange,          \
 
-            LM_Yellow,              KM_Light_red,           KM_Light_red,           KM_Light_red,           LM_Orange,          \
+            R_LM_Yellow,              R_KM_Light_red,           R_KM_Light_red,           R_KM_Light_red,           R_LM_Orange,          \
 
-            LM_LightBrown,          LM_Toirquise,           LM_Toirquise,           LM_Toirquise,           LM_skyBlue,         \
+            R_LM_LightBrown,          R_LM_Toirquise,           R_LM_Toirquise,           R_LM_Toirquise,           R_LM_skyBlue,         \
 
-            LM_Purple,              LM_Purple,              LM_Light_orange,        LM_Purple },
+            R_LM_Purple,              R_LM_Purple,              R_LM_Light_orange,        R_LM_Purple },
 
 
 
@@ -190,7 +190,7 @@ void set_layer_color(uint8_t layer) {
         bool allowed = false;
     #endif
 
-    for (uint8_t i = 0; i < DRIVER_LED_TOTAL; i++) {
+    for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
 
         #ifdef SHOW_UNLOCK_ANIMATION
             allowed = false;
@@ -251,9 +251,9 @@ void set_layer_color(uint8_t layer) {
 
         if(use_default_lighting) {
             HSV hsv = {
-                .h = pgm_read_byte(&ledmap[layer][i][0]),
-                .s = pgm_read_byte(&ledmap[layer][i][1]),
-                .v = pgm_read_byte(&ledmap[layer][i][2]),
+                .h = pgm_read_byte(&ledmap[layer][i][1]),
+                .s = pgm_read_byte(&ledmap[layer][i][2]),
+                .v = pgm_read_byte(&ledmap[layer][i][3]),
             };
             if ((!hsv.h && !hsv.s && !hsv.v) || (layer == 0 && !main_layer_brightness)) {
                 rgb_matrix_set_color( i, 0, 0, 0 );
@@ -294,8 +294,8 @@ void set_layer_color(uint8_t layer) {
     }
 }
 
-void rgb_matrix_indicators_user(void) {
-    if (g_suspend_state || keyboard_config.disable_layer_led) { return; }
+bool rgb_matrix_indicators_user(void) {
+    if (g_suspend_state || keyboard_config.disable_layer_led) { return false; }
     if(rgb_show){
         switch (biton32(layer_state)) {
             case Layer_main:
@@ -328,6 +328,7 @@ void rgb_matrix_indicators_user(void) {
     }else{
         rgb_matrix_set_color_all(0, 0, 0);
     }
+    return true;
 }
 
 bool led_update_user(led_t led_state) {

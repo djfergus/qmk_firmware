@@ -30,7 +30,8 @@
 
 
 enum custom_keycodes {
-  RGB_SLD = EZ_SAFE_RANGE, // do not remove this one otherwise keyboard will send random keycodes.
+  //RGB_SLD = EZ_SAFE_RANGE, // do not remove this one otherwise keyboard will send random keycodes.
+  RGB_SLD = SAFE_RANGE, // do not remove this one otherwise keyboard will send random keycodes.
   ST_MACRO_SSH,
   ST_MACRO_VIM_wq,
   ST_M_n_equal,
@@ -139,34 +140,61 @@ extern bool num_lock_on;
 //#define COLORPROGKEYBOARD
 
 //colours                   hsv             // rgb
-#define KM_Light_red        {0,223,252}     // 252,32,31
-#define KM_Light_yellow     {31,208,234}    // 234,181,42
-#define KM_dirty_green      {97,231,230}    // 21,230,76
-#define LM_golden_yellow    {32,191,236}    // 236,191,59
-#define LM_Slight_dark_red  {255,246,238}   //238,8,23
-#define LM_Blue             {166,240,228}   //13,41,228
-#define LM_LightBlue        {150,255,204}   //0,102,204
-#define LM_DarkerBlue       {150,255,102}   //0,51,102
-#define LM_LightOrange      {0,183,238}     //238,67,66
-#define LM_Cyan             {130,255,255}   //0,249,255
-#define LM_Yellow           {42,248,240}    //240,237,6
-#define LM_______           {0,0,0}         //no colour
-#define LM_Light_pink       {216,123,238}   // 238,122,235
-#define LM_White            {0,0,255}       // 255,255,255
-#define LM_Red_Blood        {6,240,224}     // 224,43,13
-#define LM_NeonGreen        {82,247,246}    // 28,246,7
-#define LM_LighterBlue      {178,231,238}   // 53,22,238
-#define LM_darker_Yellow    {36,230,248}    // 248,213,24
-#define LM_Light_orange     {31,255,255}    // 255,186,0
-#define LM_Blooder_Red      {0,242,205}     // 205,11,10
-#define LM_LightBrown       {19,150,185}    // 185,125,75
-#define LM_Orange           {13,237,253}    // 253,90,17
-#define LM_skyBlue          {124,62,253}    // 190,253,246
-#define LM_Toirquise        {115,255,248}   // 0,248,169
-#define LM_Purple           {195,255,251}   // 136,0,251
-#define LM_Light_blue_purple {178,183,238}   // 92,66,238
+#define L_KM_Light_red        {0, 0,223,252}     // 252,32,31
+#define L_KM_Light_yellow     {0, 31,208,234}    // 234,181,42
+#define L_KM_dirty_green      {0, 97,231,230}    // 21,230,76
+#define L_LM_golden_yellow    {0, 32,191,236}    // 236,191,59
+#define L_LM_Slight_dark_red  {0, 255,246,238}   //238,8,23
+#define L_LM_Blue             {0, 166,240,228}   //13,41,228
+#define L_LM_LightBlue        {0, 150,255,204}   //0,102,204
+#define L_LM_DarkerBlue       {0, 150,255,102}   //0,51,102
+#define L_LM_LightOrange      {0, 0,183,238}     //238,67,66
+#define L_LM_Cyan             {0, 130,255,255}   //0,249,255
+#define L_LM_Yellow           {0, 42,248,240}    //240,237,6
+#define L_LM_______           {0, 0,0,0}         //no colour
+#define L_LM_Light_pink       {0, 216,123,238}   // 238,122,235
+#define L_LM_White            {0, 0,0,255}       // 255,255,255
+#define L_LM_Red_Blood        {0, 6,240,224}     // 224,43,13
+#define L_LM_NeonGreen        {0, 82,247,246}    // 28,246,7
+#define L_LM_LighterBlue      {0, 178,231,238}   // 53,22,238
+#define L_LM_darker_Yellow    {0, 36,230,248}    // 248,213,24
+#define L_LM_Light_orange     {0, 31,255,255}    // 255,186,0
+#define L_LM_Blooder_Red      {0, 0,242,205}     // 205,11,10
+#define L_LM_LightBrown       {0, 19,150,185}    // 185,125,75
+#define L_LM_Orange           {0, 13,237,253}    // 253,90,17
+#define L_LM_skyBlue          {0, 124,62,253}    // 190,253,246
+#define L_LM_Toirquise        {0, 115,255,248}   // 0,248,169
+#define L_LM_Purple           {0, 195,255,251}   // 136,0,251
+#define L_LM_Light_blue_purple {0, 178,183,238}   // 92,66,238
 
+#define R_KM_Light_red        {1, 0,223,252}     // 252,32,31
+#define R_KM_Light_yellow     {1, 31,208,234}    // 234,181,42
+#define R_KM_dirty_green      {1, 97,231,230}    // 21,230,76
+#define R_LM_golden_yellow    {1, 32,191,236}    // 236,191,59
+#define R_LM_Slight_dark_red  {1, 255,246,238}   //238,8,23
+#define R_LM_Blue             {1, 166,240,228}   //13,41,228
+#define R_LM_LightBlue        {1, 150,255,204}   //0,102,204
+#define R_LM_DarkerBlue       {1, 150,255,102}   //0,51,102
+#define R_LM_LightOrange      {1, 0,183,238}     //238,67,66
+#define R_LM_Cyan             {1, 130,255,255}   //0,249,255
+#define R_LM_Yellow           {1, 42,248,240}    //240,237,6
+#define R_LM_______           {1, 0,0,0}         //no colour
+#define R_LM_Light_pink       {1, 216,123,238}   // 238,122,235
+#define R_LM_White            {1, 0,0,255}       // 255,255,255
+#define R_LM_Red_Blood        {1, 6,240,224}     // 224,43,13
+#define R_LM_NeonGreen        {1, 82,247,246}    // 28,246,7
+#define R_LM_LighterBlue      {1, 178,231,238}   // 53,22,238
+#define R_LM_darker_Yellow    {1, 36,230,248}    // 248,213,24
+#define R_LM_Light_orange     {1, 31,255,255}    // 255,186,0
+#define R_LM_Blooder_Red      {1, 0,242,205}     // 205,11,10
+#define R_LM_LightBrown       {1, 19,150,185}    // 185,125,75
+#define R_LM_Orange           {1, 13,237,253}    // 253,90,17
+#define R_LM_skyBlue          {1, 124,62,253}    // 190,253,246
+#define R_LM_Toirquise        {1, 115,255,248}   // 0,248,169
+#define R_LM_Purple           {1, 195,255,251}   // 136,0,251
+#define R_LM_Light_blue_purple {1, 178,183,238}   // 92,66,238
 
-#define KM_TEST {214,253,245} //pink
+#define L_KM_TEST {0,214,253,245} //pink
+#define R_KM_TEST {1,214,253,245} //pink
 
 #endif
