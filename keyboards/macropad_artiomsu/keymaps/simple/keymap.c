@@ -25,11 +25,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		KC_KP_0,        KC_KP_DOT,      KC_KP_EQUAL,        LT(Layer_shortcuts, KC_BACKSPACE)),
 
 	[Layer_shortcuts] = LAYOUT_artiomsu_macropad( //internal settings, layer switching and obs shortcuts.
-		COMPILE_MACRO,              FLASH_MACRO,                KC_CALCULATOR,                 L1_PRECISION_MINUS,
+		COMPILE_MACRO,              FLASH_MACRO,                PB_10,                         L1_PRECISION_MINUS,
 		PB_7,                       PB_8,                       PB_9,                          L1_PRECISION_PLUS,
 		PB_4,                       PB_5,                       PB_6,                          TOGGLE_NUM_LOCK_ANIMATION,
 		PB_1,                       PB_2,                       PB_3,                          PB_20,
-		PB_10,                      PB_11,                      TO(Layer_calc),                TO(Layer_main)),
+		KC_F2,                      PB_11,                      TO(Layer_calc),                TO(Layer_main)),
 
     [Layer_calc] = LAYOUT_artiomsu_macropad( //hardware calculator
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
