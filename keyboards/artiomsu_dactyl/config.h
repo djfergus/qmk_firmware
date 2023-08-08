@@ -20,7 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // WS2812 RGB LED strip input and number of LEDs
 #define RGBLED_NUM 36
-//#define RGBLED_SPLIT 36
+#define RGBLIGHT_SPLIT
+//#define RGBLED_SPLIT { 36, 36 }
 
 #define SERIAL_USART_FULL_DUPLEX
 #define SERIAL_USART_DRIVER SIOD0
@@ -29,12 +30,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SERIAL_PIO_USE_PIO0 // use state machine 0 for serial split
 #define WS2812_PIO_USE_PIO1 // use state machine 1 for rgb
 
-#define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_LED_STATE_ENABLE
-#define SPLIT_MODS_ENABLE
+//#define SPLIT_TRANSPORT_MIRROR // if this one is enabled the led modes dont sync // This mirrors the master side matrix to the slave side for features that react or require knowledge of master side key presses on the slave side. The purpose of this feature is to support cosmetic use of key events (e.g. RGB reacting to keypresses).
+#define SPLIT_LAYER_STATE_ENABLE // This enables syncing of the layer state between both halves of the split keyboard. The main purpose of this feature is to enable support for use of things like OLED display of the currently active layer.
+#define SPLIT_LED_STATE_ENABLE // This enables syncing of the Host LED status (caps lock, num lock, etc) between both halves of the split keyboard. The main purpose of this feature is to enable support for use of things like OLED display of the Host LED status.
+#define SPLIT_MODS_ENABLE // This enables transmitting modifier state (normal, weak and oneshot) to the non primary side of the split keyboard. The purpose of this feature is to support cosmetic use of modifer state (e.g. displaying status on an OLED screen).
+#define SPLIT_ACTIVITY_ENABLE // This synchronizes the activity timestamps between sides of the split keyboard, allowing for activity timeouts to occur.
 
-#define MASTER_LEFT
-//#define MASTER_RIGHT
+//#define MASTER_LEFT
+#define MASTER_RIGHT
 
 //#define EE_HANDS
 
