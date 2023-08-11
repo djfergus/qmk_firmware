@@ -9,6 +9,7 @@ uint16_t scroll_delay_timer;
 
 void leader_start_user(void) {
     leader_key_is_running = true;
+    rgblight_set_layer_state(11, leader_key_is_running);
 }
 
 void leader_end_user(void) {
@@ -70,6 +71,7 @@ void leader_end_user(void) {
       //did_leader_succeed = true;
     }
     leader_key_is_running = false;
+    rgblight_set_layer_state(11, leader_key_is_running);
 }
 
 void matrix_scan_user(void) {

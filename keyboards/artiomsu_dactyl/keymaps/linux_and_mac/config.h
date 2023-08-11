@@ -61,4 +61,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define CAPS_WORD_IDLE_TIMEOUT 3000  // https://docs.qmk.fm/#/feature_caps_word?id=customizing-caps-word
 
-//#define COMBOS_WORKING // uncomment this when combos are working
+#define RGBLIGHT_SLEEP // swithed off when the host goes to sleep
+
+#define RGBLIGHT_LAYERS // These make it easy to use your underglow LEDs as status indicators to show which keyboard layer is currently active, or the state of caps lock, all without disrupting any animations
+
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF // Normally lighting layers are not shown when RGB Lighting is disabled (e.g. with RGB_TOG keycode). If you would like lighting layers to work even when the RGB Lighting is otherwise off
+
+// so use qmk flash -kb artiomsu_dactyl -km linux_and_mac -bl uf2-split-right
+// qmk flash -kb artiomsu_dactyl -km linux_and_mac -bl uf2-split-left
+#define EE_HANDS
+
+#define RGBLIGHT_MAX_LAYERS 12
+#define RGBLIGHT_LAYER_BLINK
+
+// #undef RGBLED_NUM
+// #undef RGBLIGHT_SPLIT
+
+// #define RGBLED_NUM 36
+// #define RGBLED_SPLIT

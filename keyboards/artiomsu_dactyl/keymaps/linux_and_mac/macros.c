@@ -111,10 +111,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
         break;
         case ST_M_combo_toggle:
-            #ifdef COMBOS_WORKING
-                combo_toggle();
-                combos_on = is_combo_enabled();
-            #endif
+            combo_toggle();
+            combos_on = is_combo_enabled();
         break;
         case ST_M_colemak_mode_toggle:
             colemak_mode = !colemak_mode;

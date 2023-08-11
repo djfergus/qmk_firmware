@@ -8,7 +8,7 @@ CONSOLE_ENABLE = no         # Console for debug
 COMMAND_ENABLE = no        # Commands for debug and configuration
 NKRO_ENABLE = no            # Enable N-Key Rollover
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
-COMBO_ENABLE = no			# combo feature
+COMBO_ENABLE = yes			# combo feature
 LEADER_ENABLE = yes			# leader key
 
 RGBLIGHT_ENABLE = yes        # Enable keyboard RGB underglow
@@ -18,4 +18,8 @@ AUDIO_ENABLE = no           # Audio output
 SPLIT_KEYBOARD = yes
 SERIAL_DRIVER = vendor
 
-SRC+= secrets.c combos.c leader.c macros.c rgb_led_control.c
+# note to self, combos must be removed from SRC
+INTROSPECTION_KEYMAP_C = combos.c # if you are wondering wtf is this. see here https://github.com/qmk/qmk_firmware/issues/21137#issuecomment-1577898767
+
+#SRC+= secrets.c combos.c leader.c macros.c rgb_led_control.c
+SRC+= secrets.c leader.c macros.c rgb_led_control.c

@@ -4,9 +4,6 @@ bool scrollwheel_down_on = false;
 bool scrollwheel_up_on = false;
 //combos don't forget to edit COMBO_COUNT in config.h
 
-
-#ifdef COMBOS_WORKING
-
 enum combo_events {
     COMBO_LEFT_SQUARE_BRACKET,
     COMBO_RIGHT_SQUARE_BRACKET,
@@ -219,5 +216,3 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         }
     }
 }
-
-#endif

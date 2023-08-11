@@ -20,10 +20,78 @@ bool g_suspend_state;
 bool caps_lock_on = false;
 bool num_lock_on = false;
 
+const rgblight_segment_t PROGMEM led_l_capslock[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 1, HSV_RED}       // Light 1 LEDs, starting with LED 0
+);
+
+const rgblight_segment_t PROGMEM led_l_numlock[] = RGBLIGHT_LAYER_SEGMENTS(
+    {1, 1, HSV_SPRINGGREEN}       // Light 1 LEDs, starting with LED 1
+);
+
+const rgblight_segment_t PROGMEM led_l_mac_main[] = RGBLIGHT_LAYER_SEGMENTS(
+    {2, 1,
+    21, 255, 170} // orange
+);
+
+const rgblight_segment_t PROGMEM led_l_colemac[] = RGBLIGHT_LAYER_SEGMENTS(
+    {3, 1, HSV_TEAL}
+);
+
+const rgblight_segment_t PROGMEM led_l_symbols[] = RGBLIGHT_LAYER_SEGMENTS(
+    {4, 1,
+    181, 255, 170} // purple
+);
+
+const rgblight_segment_t PROGMEM led_l_macros[] = RGBLIGHT_LAYER_SEGMENTS(
+    {5, 1, HSV_BLUE}
+);
+
+const rgblight_segment_t PROGMEM led_l_gaming[] = RGBLIGHT_LAYER_SEGMENTS(
+    {6, 1, HSV_YELLOW}
+);
+
+const rgblight_segment_t PROGMEM led_l_mouse[] = RGBLIGHT_LAYER_SEGMENTS(
+    {7, 1, HSV_WHITE}
+);
+
+const rgblight_segment_t PROGMEM led_l_on_combos[] = RGBLIGHT_LAYER_SEGMENTS(
+    {31, 1, HSV_RED}
+);
+
+const rgblight_segment_t PROGMEM led_l_on_password_bypass[] = RGBLIGHT_LAYER_SEGMENTS(
+    {30, 1, HSV_ORANGE}
+);
+
+const rgblight_segment_t PROGMEM led_l_on_bunny_hopping[] = RGBLIGHT_LAYER_SEGMENTS(
+    {29, 1, HSV_PURPLE}
+);
+
+const rgblight_segment_t PROGMEM led_l_on_leader[] = RGBLIGHT_LAYER_SEGMENTS(
+    {30, 6, HSV_BLUE}
+);
+
+// don't forget to increase RGBLIGHT_MAX_LAYERS in config.h
+const rgblight_segment_t* const PROGMEM led_all_layers[] = RGBLIGHT_LAYERS_LIST(
+    led_l_capslock,
+    led_l_numlock,
+    led_l_mac_main,
+    led_l_colemac,
+    led_l_symbols,
+    led_l_macros,
+    led_l_gaming,
+    led_l_mouse,
+
+    led_l_on_combos,
+    led_l_on_password_bypass,
+    led_l_on_bunny_hopping,
+    led_l_on_leader
+);
+
 
 void keyboard_post_init_user(void) {
     scroll_delay_timer = timer_read();
     //rgb_matrix_enable();
+    rgblight_layers = led_all_layers;
 }
 
 void suspend_power_down_user(void) {
@@ -196,8 +264,59 @@ const uint8_t passwordLedsSequence[UNLOCK_PASSWORD_LED_SEQUENCE_LENGTH] = {47, 4
 //     return true;
 // }
 
+layer_state_t layer_state_set_user(layer_state_t state) {
+    // rgblight_sethsv_range(HSV_RED , 0, (uint8_t)RGBLED_NUM / 2); //master
+    // rgblight_sethsv_range(HSV_BLUE, (uint8_t)RGBLED_NUM / 2, (uint8_t)RGBLED_NUM); // slave
+
+    // switch (biton32(layer_state)) {
+    //     case Layer_main:
+    //         rgblight_sethsv_range(HSV_RED , 0, (uint8_t)RGBLED_NUM / 2); //master
+    //         rgblight_sethsv_range(HSV_BLUE, (uint8_t)RGBLED_NUM / 2, (uint8_t)RGBLED_NUM); // slave
+    //     break;
+    //     case Layer_symbols:
+    //     break;
+    //     case Layer_macros:
+    //         rgblight_sethsv_range(HSV_GREEN , 0, (uint8_t)RGBLED_NUM / 2); //master
+    //         rgblight_sethsv_range(HSV_PURPLE, (uint8_t)RGBLED_NUM / 2, (uint8_t)RGBLED_NUM); // slave
+    //     break;
+    //     case Layer_gaming:
+    //     break;
+    //     case Layer_mac_main:
+    //     break;
+    //     case Layer_mac_symbols:
+    //     break;
+    //     case Layer_colemak:
+    //     break;
+    //     case Layer_mouse:
+    //     break;
+    //     default:
+    //     break;
+    // }
+
+    rgblight_set_layer_state(2, layer_state_cmp(state, Layer_mac_main));
+    rgblight_set_layer_state(3, layer_state_cmp(state, Layer_colemak));
+    rgblight_set_layer_state(4, layer_state_cmp(state, Layer_symbols) || layer_state_cmp(state, Layer_mac_symbols));
+    rgblight_set_layer_state(5, layer_state_cmp(state, Layer_macros));
+    rgblight_set_layer_state(6, layer_state_cmp(state, Layer_gaming));
+    rgblight_set_layer_state(7, layer_state_cmp(state, Layer_mouse));
+
+    //rgblight_set_layer_state(8, combos_on);
+    if(combos_on){
+        rgblight_blink_layer_repeat(8, 1000, 5);
+    }
+    rgblight_set_layer_state(9, password_bypass);
+    rgblight_set_layer_state(10, enable_bunnyhop);
+    //rgblight_set_layer_state(11, leader_key_is_running); moved to leader.c
+
+    return state;
+}
+
 bool led_update_user(led_t led_state) {
     caps_lock_on = led_state.caps_lock;
     num_lock_on = led_state.num_lock;
+
+    rgblight_set_layer_state(0, caps_lock_on);
+    rgblight_set_layer_state(1, num_lock_on);
+
     return true;
 }
