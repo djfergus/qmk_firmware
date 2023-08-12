@@ -19,7 +19,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 // WS2812 RGB LED strip input and number of LEDs
-#define RGBLED_NUM 36
+/* RGB light config
+    36 LEDs for notifications using 144/m led strip
+    30 LEDs around the bottom of the board using 60/m led strip
+    43 LEDs pointing up, in a grid
+*/
+#define RGBLED_NUM 109
 #define RGBLIGHT_SPLIT
 //#define RGBLED_SPLIT { 36, 36 }
 
