@@ -54,6 +54,10 @@ const rgblight_segment_t PROGMEM led_l_mouse[] = RGBLIGHT_LAYER_SEGMENTS(
     {7, 1, HSV_WHITE}
 );
 
+const rgblight_segment_t PROGMEM led_l_nav[] = RGBLIGHT_LAYER_SEGMENTS(
+    {13, 1, HSV_BLUE}
+);
+
 const rgblight_segment_t PROGMEM led_l_on_combos[] = RGBLIGHT_LAYER_SEGMENTS(
     {31, 1, HSV_RED}
 );
@@ -70,6 +74,10 @@ const rgblight_segment_t PROGMEM led_l_on_leader[] = RGBLIGHT_LAYER_SEGMENTS(
     {30, 6, HSV_BLUE}
 );
 
+const rgblight_segment_t PROGMEM led_l_on_dynamic_macros_rec[] = RGBLIGHT_LAYER_SEGMENTS(
+    {65, 43, HSV_GREEN}
+);
+
 // don't forget to increase RGBLIGHT_MAX_LAYERS in config.h
 const rgblight_segment_t* const PROGMEM led_all_layers[] = RGBLIGHT_LAYERS_LIST(
     led_l_capslock,
@@ -80,11 +88,13 @@ const rgblight_segment_t* const PROGMEM led_all_layers[] = RGBLIGHT_LAYERS_LIST(
     led_l_macros,
     led_l_gaming,
     led_l_mouse,
+    led_l_nav,
 
     led_l_on_combos,
     led_l_on_password_bypass,
     led_l_on_bunny_hopping,
-    led_l_on_leader
+    led_l_on_leader,
+    led_l_on_dynamic_macros_rec
 );
 
 
@@ -299,14 +309,20 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(5, layer_state_cmp(state, Layer_macros));
     rgblight_set_layer_state(6, layer_state_cmp(state, Layer_gaming));
     rgblight_set_layer_state(7, layer_state_cmp(state, Layer_mouse));
+    rgblight_set_layer_state(8, layer_state_cmp(state, Layer_nav));
 
-    //rgblight_set_layer_state(8, combos_on);
+    //rgblight_set_layer_state(9, combos_on);
     if(combos_on){
-        rgblight_blink_layer_repeat(8, 1000, 5);
+        rgblight_blink_layer_repeat(9, 1000, 5);
     }
-    rgblight_set_layer_state(9, password_bypass);
-    rgblight_set_layer_state(10, enable_bunnyhop);
-    //rgblight_set_layer_state(11, leader_key_is_running); moved to leader.c
+    rgblight_set_layer_state(10, password_bypass);
+    rgblight_set_layer_state(11, enable_bunnyhop);
+    //rgblight_set_layer_state(12, leader_key_is_running); moved to leader.c
+    if(dynamic_macro_recording){
+        rgblight_blink_layer_repeat(13, 800, 10);
+    }else{
+        rgblight_unblink_layer(13);
+    }
 
     return state;
 }

@@ -33,7 +33,7 @@ For the actual pins to use in qmk, they need to be the GPIO equivelent. See the 
 |2| wrist wrests. I 3d printed these too | - | - | Yes but recommended |
 |1| 10 Pin rainbow ribbon cable | €7 | Amazon | Yes |
 |1| WS2812B 144/m led strip (1m) | €12 | Amazon | Yes |
-|1| WS2812B 60/m led strip (2m) | €8 | Ebay | Yes |
+|1| WS2812B 60/m led strip (3m) | €12 | Ebay | Yes |
 |100| Wires, (try get the breadboard jumper Arduino kind so we can easily connect it to the controller) | €11 | Amazon | No |
 |1| Soldering Iron, Solder Wire | - | - | No |
 |1| Hotglue Gun and sticks | - | - | Yes but recommended |
@@ -87,9 +87,31 @@ Now you can try flashing the qmk firmware onto the board. And check if all of th
 You can compile the test firmware. See the QMK tips section down bellow for testing tips.
 
 ![step_9](/public/images/step_9.jpg)
+Loosely hook up the led strip for testing
 
 #### Step 10
 ![step_10](/public/images/step_10.jpg)
+Hot glue the first led strip and row wires
+
+#### Step 11
+![step_11](/public/images/step_11.jpg)
+Using 30 LEDs from the 60/m LED strip. Wire then up around the bottom of the case. 
+
+#### Step 12
+![step_12](/public/images/step_12.jpg)
+Using 43 LEDs from the 60/m LED strip. Wire up a grid like so.
+
+#### Step 13
+![step_13](/public/images/step_13.jpg)
+
+#### Step 14
+![step_14](/public/images/step_14.jpg)
+
+#### Step 15
+![step_15](/public/images/step_15.jpg)
+
+#### Step 16
+![step_16](/public/images/step_16.jpg)
 
 
 # QMK tips

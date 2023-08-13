@@ -22,6 +22,7 @@
 #define Layer_macros 5
 #define Layer_gaming 6
 #define Layer_mouse 7
+#define Layer_nav 8
 
 // layer Colours since they are different from layers themselves now
 #define Layer_main_colour 0
@@ -95,6 +96,7 @@ extern uint16_t scroll_delay_timer;
 
 extern bool colemak_mode;
 
+extern bool dynamic_macro_recording;
 
 //custom password to use keyboard
 //#error "Change the password before compiling and commment this line out"

@@ -71,7 +71,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // qmk flash -kb artiomsu_dactyl -km linux_and_mac -bl uf2-split-left
 #define EE_HANDS
 
-#define RGBLIGHT_MAX_LAYERS 12
+#define RGBLIGHT_MAX_LAYERS 14
 #define RGBLIGHT_LAYER_BLINK
 
 // #undef RGBLED_NUM

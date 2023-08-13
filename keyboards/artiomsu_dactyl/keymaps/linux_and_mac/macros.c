@@ -11,6 +11,15 @@ uint32_t rgb_timeout_counter = 0;
 
 uint16_t unlock_password_index = 0;
 bool password_bypass = false;
+bool dynamic_macro_recording = false;
+
+void dynamic_macro_record_start_user(int8_t direction){
+    dynamic_macro_recording = true;//direction != 0;
+}
+
+void dynamic_macro_record_end_user(int8_t direction){
+    dynamic_macro_recording = false;
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH && !password_bypass){

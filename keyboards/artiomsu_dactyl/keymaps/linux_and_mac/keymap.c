@@ -7,10 +7,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,                 KC_Q,               KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),
         LT(Layer_mouse,KC_TAB), KC_A,               KC_S,               KC_D,           KC_F,           KC_G,           KC_HYPR,
         KC_LSFT,                KC_Z,               KC_X,               KC_C,           KC_V,           KC_B,
-        KC_LCTL, /*KC_LALT,*/   LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
+        KC_LCTL,                LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
 
         LT(Layer_symbols,KC_BACKSPACE), LGUI_T(KC_DELETE),
-        KC_HOME, LSFT(KC_PRINT_SCREEN),
+        LCTL_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
         LCTL(KC_SPACE), KC_PRINT_SCREEN,
 
         //# right hand ###################################################################################################################
@@ -18,11 +18,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F2,                  KC_Y,               KC_U,               KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
         KC_F4,                  KC_H,               KC_J,               KC_K,           KC_L,           KC_SEMICOLON,   KC_RALT,
                                 KC_N,               KC_M,               KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTL,
-                                                    /*KC_LEFT,*/        KC_DOWN,        KC_UP,          KC_RIGHT,       QK_LEAD,
+                                                                        KC_DOWN,        KC_UP,          KC_LALT,         QK_LEAD,
 
-        LT(Layer_macros,KC_ENTER), KC_SPACE,
-        KC_PAGE_UP, ST_MACRO_VIM_wq,
-        KC_PAGE_DOWN, LSFT_T(KC_ESCAPE)
+        LT(Layer_macros,KC_ENTER), LT(Layer_nav,KC_SPACE),
+        KC_PAGE_UP, LSFT_T(KC_ESCAPE),
+        KC_PAGE_DOWN, ST_MACRO_VIM_wq
     ),
     [Layer_mac_main] = LAYOUT_5x7(
         // left hand
@@ -30,10 +30,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,                 KC_Q,               KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),
         LT(Layer_mouse,KC_TAB), KC_A,               KC_S,               KC_D,           KC_F,           KC_G,           KC_HYPR,
         KC_LSFT,                KC_Z,               KC_X,               KC_C,           KC_V,           KC_B,
-        KC_LGUI,  /*KC_LALT,*/  LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
+        KC_LGUI,                LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
 
         LT(Layer_mac_symbols,KC_BACKSPACE), LCTL_T(KC_DELETE),
-        KC_HOME, LSFT(KC_PRINT_SCREEN),
+        LCTL_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
         LCTL(KC_SPACE), LCTL(LGUI(LSFT(KC_4))),
 
         //# right hand ###################################################################################################################
@@ -41,11 +41,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F2,                  KC_Y,               KC_U,               KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
         KC_F4,                  KC_H,               KC_J,               KC_K,           KC_L,           KC_SEMICOLON,   KC_RALT,
                                 KC_N,               KC_M,               KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTL,
-                                                    /*KC_LEFT,*/        KC_DOWN,        KC_UP,          KC_RIGHT,       QK_LEAD,
+                                                                        KC_DOWN,        KC_UP,          KC_LALT,         QK_LEAD,
 
-        LT(Layer_macros,KC_ENTER), KC_SPACE,
-        KC_PAGE_UP, ST_MACRO_VIM_wq,
-        KC_PAGE_DOWN, LSFT_T(KC_ESCAPE)
+        LT(Layer_macros,KC_ENTER), LT(Layer_nav, KC_SPACE),
+        KC_PAGE_UP, LSFT_T(KC_ESCAPE),
+        KC_PAGE_DOWN, ST_MACRO_VIM_wq
     ),
     [Layer_colemak] = LAYOUT_5x7(
         // left hand
@@ -87,7 +87,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,            KC_LABK,        KC_PLUS,            KC_MINUS,                   KC_RABK,            KC_EQUAL,           _______,
         _______,            KC_ASTR,        KC_LBRC,            KC_RBRC,                    KC_UNDS,            KC_QUES,            _______,
                             KC_AMPR,        KC_LCBR,            KC_RCBR,                    KC_DOT,             KC_NONUS_BACKSLASH, KC_LSFT,
-                                            /*LSFT(KC_9),*/     LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
+                                                                LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
 
         KC_NONUS_HASH, KC_SEMICOLON,
         _______, _______,
@@ -110,7 +110,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,            KC_LABK,        KC_PLUS,            KC_MINUS,                   KC_RABK,            KC_EQUAL,           _______,
         _______,            KC_ASTR,        KC_LBRC,            KC_RBRC,                    KC_UNDS,            KC_QUES,            _______,
                             KC_AMPR,        KC_LCBR,            KC_RCBR,                    KC_DOT,             KC_NONUS_HASH,      KC_LSFT,
-                                            /*LSFT(KC_9),*/     LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
+                                                                LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
 
         LALT(KC_3), KC_SEMICOLON,
         _______, _______,
@@ -183,6 +183,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
         KC_MS_BTN2, KC_MS_BTN1,
         _______,    KC_MS_BTN3,
+        _______,    _______
+    ),
+    [Layer_nav] = LAYOUT_5x7(
+        // left hand
+        DM_RSTP,    DM_REC1,    DM_REC2,    _______,    _______,    _______,        _______,
+        _______,    DM_PLY1,    DM_PLY2,    _______,    _______,    _______,        _______,
+        _______,    _______,    _______,    _______,    _______,    _______,        _______,
+        _______,    _______,    _______,    _______,    _______,    _______,
+        _______,    _______,    _______,    _______,
+
+        _______,    _______,
+        _______,    _______,
+        _______,    _______,
+
+        //# right hand ###################################################################################################################
+        _______,    _______,    _______,    _______,    _______,    _______,            _______,
+        _______,    _______,    _______,    _______,    _______,    _______,            _______,
+        _______,    KC_LEFT,    KC_DOWN,    KC_UP,      KC_RIGHT,   _______,            _______,
+                    _______,    LSFT(KC_9), LSFT(KC_0), _______,    _______,            _______,
+                                            _______,    _______,    _______,            _______,
+
+        _______,    _______,
+        _______,    _______,
         _______,    _______
     )
 };

@@ -9,7 +9,7 @@ uint16_t scroll_delay_timer;
 
 void leader_start_user(void) {
     leader_key_is_running = true;
-    rgblight_set_layer_state(11, leader_key_is_running);
+    rgblight_set_layer_state(12, leader_key_is_running);
 }
 
 void leader_end_user(void) {
@@ -67,11 +67,11 @@ void leader_end_user(void) {
         //did_leader_succeed = true;
     } else if
     (leader_sequence_two_keys(KC_C, KC_O)) {
-      SEND_STRING("cd /temp/GIT/qmk_firmware && make clean && make ergodox_ez:artiom_no_mouse_joined_with_mac");
+      SEND_STRING("cd /temp/GIT/qmk_firmware && make clean && qmk flash -kb artiomsu_dactyl -km linux_and_mac -bl uf2-split-right");
       //did_leader_succeed = true;
     }
     leader_key_is_running = false;
-    rgblight_set_layer_state(11, leader_key_is_running);
+    rgblight_set_layer_state(12, leader_key_is_running);
 }
 
 void matrix_scan_user(void) {
