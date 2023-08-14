@@ -57,4 +57,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_EFFECT_TWINKLE
 
 
-#define RGBLIGHT_EFFECT_SNAKE_LENGTH 5
+#define RGBLIGHT_EFFECT_SNAKE_LENGTH 8

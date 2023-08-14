@@ -90,8 +90,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                 LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
 
         KC_NONUS_HASH, KC_SEMICOLON,
-        _______, _______,
-        LSFT(KC_SEMICOLON), _______
+        _______, LSFT(KC_SEMICOLON),
+        _______, _______
     ),
     [Layer_mac_symbols] = LAYOUT_5x7(
         // left hand
@@ -113,8 +113,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                                 LSFT(KC_0),                 ST_M_l_equal,       ST_M_g_equal,       KC_LALT,
 
         LALT(KC_3), KC_SEMICOLON,
-        _______, _______,
-        LSFT(KC_SEMICOLON), _______
+        _______, LSFT(KC_SEMICOLON),
+        _______, _______
     ),
     [Layer_macros] = LAYOUT_5x7(
         // left hand
@@ -131,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         //# right hand ###################################################################################################################
         KC_KB_MUTE,             _______,            ST_M_brightness_down,       ST_M_brightness_up,     _______,          _______,                  QK_BOOT,
         KC_KB_VOLUME_UP,        _______,            ST_M_hue_down,              ST_M_hue_up,            _______,          ST_M_password_bypass,     ST_M_enable_bunny_hop,
-        KC_KB_VOLUME_DOWN,      LCTL(KC_H),         LCTL(KC_J),                 LCTL(KC_K),             LCTL(KC_L),       _______,                  ST_M_toggle_main_layer_brightness,
+        KC_KB_VOLUME_DOWN,      LCTL(KC_H),         LCTL(KC_J),                 LCTL(KC_K),             LCTL(KC_L),       _______,                  _______,
                                 _______,            ST_M_mac_mode_toggle,       _______,                _______,          _______,                  _______,
                                                                                 _______,                _______,          _______,                  _______,
 
@@ -175,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    KC_MS_ACCEL2,
 
         //# right hand ###################################################################################################################
-        _______,    _______,    _______,    _______,    _______,    _______,            RGB_TOG,
+        _______,    _______,    _______,    _______,    _______,    _______,            ST_M_toggle_rgb,
         _______,    _______,    _______,    _______,    _______,    RGB_MODE_FORWARD,   RGB_MODE_REVERSE,
         _______,    KC_MS_LEFT, KC_MS_DOWN, KC_MS_UP,   KC_MS_RIGHT,RGB_HUI,            RGB_HUD,
                     _______,    _______,    _______,    _______,    RGB_SAI,            RGB_SAD,

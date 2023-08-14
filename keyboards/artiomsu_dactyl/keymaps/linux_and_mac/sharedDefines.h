@@ -51,7 +51,7 @@ enum custom_keycodes {
   ST_M_brightness_up,
   ST_M_hue_down,
   ST_M_hue_up,
-  ST_M_toggle_main_layer_brightness,
+  ST_M_toggle_rgb,
   ST_M_led_timeout_30s,
   ST_M_led_timeout_1m,
   ST_M_led_timeout_5m,
@@ -78,8 +78,6 @@ extern bool leader_key_is_running;
 extern int8_t brightness_amount;
 extern uint8_t hue_amount;
 
-extern bool main_layer_brightness; // can disable the main layer rgb individually
-
 extern bool combos_on; // use combo feature by default
 extern bool mac_mode;
 
@@ -95,8 +93,6 @@ extern bool scrollwheel_down_on;
 extern uint16_t scroll_delay_timer;
 
 extern bool colemak_mode;
-
-extern bool dynamic_macro_recording;
 
 //custom password to use keyboard
 //#error "Change the password before compiling and commment this line out"

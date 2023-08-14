@@ -71,8 +71,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // qmk flash -kb artiomsu_dactyl -km linux_and_mac -bl uf2-split-left
 #define EE_HANDS
 
-#define RGBLIGHT_MAX_LAYERS 14
+#define RGBLIGHT_MAX_LAYERS 16
 #define RGBLIGHT_LAYER_BLINK
+#define RGBLIGHT_LAYERS_RETAIN_VAL //Usually lighting layers apply their configured brightness once activated. If you would like lighting layers to retain the currently used brightness (as returned by rgblight_get_val()),
 
 // #undef RGBLED_NUM
 // #undef RGBLIGHT_SPLIT

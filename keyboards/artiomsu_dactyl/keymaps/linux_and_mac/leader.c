@@ -49,7 +49,6 @@ void leader_end_user(void) {
         rgb_show = true;
         brightness_amount = 0;
         hue_amount = 0;
-        main_layer_brightness = true;
         //did_leader_succeed = true;
     } else if
     (leader_sequence_one_key(KC_E)) {
@@ -74,6 +73,10 @@ void leader_end_user(void) {
     rgblight_set_layer_state(12, leader_key_is_running);
 }
 
+//uint8_t last_known_rgb_val = 100;
+uint8_t last_known_mode = RGBLIGHT_MODE_STATIC_LIGHT;
+//uint8_t last_known_rgb_sat = 0;
+
 void matrix_scan_user(void) {
   uint32_t current_timer_value = timer_read32();
 
@@ -86,6 +89,46 @@ void matrix_scan_user(void) {
           rgb_timed_out = true;
           rgb_timeout_counter = current_timer_value;
       }
+  }
+
+  //rgblight_set_layer_state(14, rgb_timed_out);
+
+  //rgblight_setrgb_range(RGB_BLACK, 0, 34);
+  if(rgb_timed_out){
+
+    if(rgblight_is_enabled()){
+    //if(rgblight_get_sat()){
+    //if(rgblight_get_mode() != RGBLIGHT_MODE_STATIC_LIGHT){
+        rgblight_disable_noeeprom();
+        //last_known_rgb_val = rgblight_get_val();
+        //last_known_rgb_sat = rgblight_get_sat();
+        //last_known_mode = rgblight_get_mode();
+        //rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+        //rgblight_unblink_all_but_layer(0);
+        //rgblight_unblink_layer(0);
+        //rgblight_sethsv_noeeprom(HSV_BLACK);
+
+        //rgblight_setrgb_range(RGB_BLACK, 0, 34);
+        //rgblight_sethsv_eeprom_helper(rgblight_get_hue(), 0, rgblight_get_val(), false);
+    }
+  }else{
+    if(!rgblight_is_enabled()){
+    //if(!rgblight_get_sat()){
+    //if(rgblight_get_mode() == RGBLIGHT_MODE_STATIC_LIGHT){
+        if(rgb_show){
+            rgblight_enable_noeeprom();
+        }
+        //rgblight_mode_noeeprom(last_known_mode);
+        //rgblight_sethsv_eeprom_helper(rgblight_get_hue(), rgblight_get_sat(), last_known_rgb_val, false);
+        //rgblight_sethsv_eeprom_helper(rgblight_get_hue(), last_known_rgb_sat, rgblight_get_val(), false);
+    }else{
+        if(!rgb_show){
+            // bit of a hack here but works for now..
+            rgblight_unblink_all_but_layer(0);
+            rgblight_set_layer_state(7, false);
+            rgblight_disable_noeeprom();
+        }
+    }
   }
 
   // todo this needs some work rand() % 10 no longer works as expected.

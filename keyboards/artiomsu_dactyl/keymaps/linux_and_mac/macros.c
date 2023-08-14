@@ -11,27 +11,28 @@ uint32_t rgb_timeout_counter = 0;
 
 uint16_t unlock_password_index = 0;
 bool password_bypass = false;
-bool dynamic_macro_recording = false;
 
 void dynamic_macro_record_start_user(int8_t direction){
-    dynamic_macro_recording = true;//direction != 0;
+    rgblight_blink_layer_repeat(13, 800, 10);
 }
 
 void dynamic_macro_record_end_user(int8_t direction){
-    dynamic_macro_recording = false;
+    rgblight_unblink_layer(13);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH && !password_bypass){
-    //     if(record->event.pressed){
-    //         if(unlock_password[unlock_password_index] == keycode && record->event.pressed){
-    //             unlock_password_index++;
-    //         }else{
-    //             unlock_password_index = 0;
-    //         }
-    //     }
-    //     return false; // return false to block the keys.
-    // }
+    if(rgb_timed_out && unlock_password_index < UNLOCK_PASSWORD_LENGTH && !password_bypass){
+        if(record->event.pressed){
+            if(unlock_password[unlock_password_index] == keycode && record->event.pressed){
+                unlock_password_index++;
+            }else{
+                unlock_password_index = 0;
+            }
+        }
+        rgblight_set_layer_state(15, true);
+        return false; // return false to block the keys.
+    }
+    rgblight_set_layer_state(15, false);
 
     unlock_password_index = 0;
     rgb_timed_out = false;
@@ -93,8 +94,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case ST_M_hue_down:
             hue_amount-=5;
         break;
-        case ST_M_toggle_main_layer_brightness:
-            main_layer_brightness = !main_layer_brightness;
+        case ST_M_toggle_rgb:
+            rgb_show = !rgb_show;
+            //rgb_show ? rgblight_enable_noeeprom() : rgblight_disable_noeeprom();
         break;
         case ST_M_led_timeout_30s:
             rgb_time_out_value = 30000;
