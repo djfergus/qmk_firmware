@@ -33,7 +33,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LGUI,                LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
 
         LT(Layer_mac_symbols,KC_BACKSPACE), LCTL_T(KC_DELETE),
-        LCTL_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
+        LGUI_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
         LCTL(KC_SPACE), LCTL(LGUI(LSFT(KC_4))),
 
         //# right hand ###################################################################################################################
@@ -129,8 +129,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______,    _______,
 
         //# right hand ###################################################################################################################
-        KC_KB_MUTE,             _______,            ST_M_brightness_down,       ST_M_brightness_up,     _______,          _______,                  QK_BOOT,
-        KC_KB_VOLUME_UP,        _______,            ST_M_hue_down,              ST_M_hue_up,            _______,          ST_M_password_bypass,     ST_M_enable_bunny_hop,
+        KC_KB_MUTE,             _______,            _______,                    _______,                _______,          _______,                  QK_BOOT,
+        KC_KB_VOLUME_UP,        _______,            _______,                    _______,                _______,          ST_M_password_bypass,     ST_M_enable_bunny_hop,
         KC_KB_VOLUME_DOWN,      LCTL(KC_H),         LCTL(KC_J),                 LCTL(KC_K),             LCTL(KC_L),       _______,                  _______,
                                 _______,            ST_M_mac_mode_toggle,       _______,                _______,          _______,                  _______,
                                                                                 _______,                _______,          _______,                  _______,
@@ -164,22 +164,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [Layer_mouse] = LAYOUT_5x7(
         // left hand
-        QK_BOOT,    _______,    _______,    _______,    _______,    _______,        _______,
-        _______,    _______,    _______,    _______,    _______,    _______,        _______,
-        _______,    _______,    _______,    _______,    _______,    _______,        _______,
-        _______,    _______,    _______,    _______,    _______,    _______,
-        _______,    _______,    _______,    _______,
+        QK_BOOT,    _______,    _______,            _______,        _______,    _______,            _______,
+        _______,    _______,    _______,            _______,        _______,    ST_M_rgb_twinkle,   _______,
+        _______,    _______,    ST_M_rgb_snake,     ST_M_rgb_knight,_______,    _______,            _______,
+        _______,    _______,    _______,            _______,        KC_NUM,     KC_CAPS,
+        _______,    _______,    _______,            _______,
 
         KC_MS_ACCEL0,KC_MS_ACCEL1,
         _______,    _______,
         _______,    KC_MS_ACCEL2,
 
         //# right hand ###################################################################################################################
-        _______,    _______,    _______,    _______,    _______,    _______,            ST_M_toggle_rgb,
-        _______,    _______,    _______,    _______,    _______,    RGB_MODE_FORWARD,   RGB_MODE_REVERSE,
-        _______,    KC_MS_LEFT, KC_MS_DOWN, KC_MS_UP,   KC_MS_RIGHT,RGB_HUI,            RGB_HUD,
-                    _______,    _______,    _______,    _______,    RGB_SAI,            RGB_SAD,
-                                            _______,    _______,    RGB_VAI,            RGB_VAD,
+        _______,    _______,    _______,            _______,        _______,    _______,            ST_M_toggle_rgb,
+        _______,    _______,    _______,            _______,        _______,    ST_M_mode_up,       ST_M_mode_down,
+        _______,    KC_MS_LEFT, KC_MS_DOWN,         KC_MS_UP,       KC_MS_RIGHT,ST_M_hue_up,        ST_M_hue_down,
+                    _______,    _______,            _______,        _______,    ST_M_sat_up,        ST_M_sat_down,
+                                                    _______,        _______,    ST_M_brightness_up, ST_M_brightness_down,
 
         KC_MS_BTN2, KC_MS_BTN1,
         _______,    KC_MS_BTN3,

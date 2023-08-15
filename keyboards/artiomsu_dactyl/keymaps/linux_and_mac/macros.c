@@ -11,12 +11,15 @@ uint32_t rgb_timeout_counter = 0;
 
 uint16_t unlock_password_index = 0;
 bool password_bypass = false;
+bool dynamic_macro_recording = false;
 
 void dynamic_macro_record_start_user(int8_t direction){
+    dynamic_macro_recording = true;
     rgblight_blink_layer_repeat(13, 800, 10);
 }
 
 void dynamic_macro_record_end_user(int8_t direction){
+    dynamic_macro_recording = false;
     rgblight_unblink_layer(13);
 }
 
@@ -83,16 +86,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             enable_bunnyhop = !enable_bunnyhop;
         break;
         case ST_M_brightness_up:
-            brightness_amount+=10;
+            //brightness_amount+=10;
+            rgblight_increase_val_noeeprom();
         break;
         case ST_M_brightness_down:
-            brightness_amount-=10;
+            //brightness_amount-=10;
+            rgblight_decrease_val_noeeprom();
         break;
         case ST_M_hue_up:
-            hue_amount+=5;
+            //hue_amount+=5;
+            rgblight_increase_hue_noeeprom();
         break;
         case ST_M_hue_down:
-            hue_amount-=5;
+            //hue_amount-=5;
+            rgblight_decrease_hue_noeeprom();
+        break;
+        case ST_M_sat_up:
+            rgblight_increase_sat_noeeprom();
+        break;
+        case ST_M_sat_down:
+            rgblight_decrease_sat_noeeprom();
+        break;
+        case ST_M_mode_up:
+            rgblight_step_noeeprom();
+        break;
+        case ST_M_mode_down:
+            rgblight_step_reverse_noeeprom();
+        break;
+        case ST_M_rgb_snake:
+            rgblight_mode_noeeprom(RGBLIGHT_MODE_SNAKE + 1);
+        break;
+        case ST_M_rgb_twinkle:
+            rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
+        break;
+        case ST_M_rgb_knight:
+            rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);
         break;
         case ST_M_toggle_rgb:
             rgb_show = !rgb_show;

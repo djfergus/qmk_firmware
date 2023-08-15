@@ -51,6 +51,10 @@ enum custom_keycodes {
   ST_M_brightness_up,
   ST_M_hue_down,
   ST_M_hue_up,
+  ST_M_sat_down,
+  ST_M_sat_up,
+  ST_M_mode_down,
+  ST_M_mode_up,
   ST_M_toggle_rgb,
   ST_M_led_timeout_30s,
   ST_M_led_timeout_1m,
@@ -60,6 +64,9 @@ enum custom_keycodes {
   ST_M_mac_mode_toggle,
   ST_M_colemak_mode_toggle,
   ST_M_password_bypass,
+  ST_M_rgb_snake,
+  ST_M_rgb_twinkle,
+  ST_M_rgb_knight
 };
 
 extern bool rgb_show;
@@ -132,5 +139,6 @@ if the `#define SHOW_UNLOCK_ANIMATION` line is uncommented, the keyboard will li
 
 extern bool caps_lock_on;
 extern bool num_lock_on;
+extern bool dynamic_macro_recording;
 
 #endif

@@ -74,6 +74,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_MAX_LAYERS 16
 #define RGBLIGHT_LAYER_BLINK
 #define RGBLIGHT_LAYERS_RETAIN_VAL //Usually lighting layers apply their configured brightness once activated. If you would like lighting layers to retain the currently used brightness (as returned by rgblight_get_val()),
+#define RGBLIGHT_DISABLE_KEYCODES //If defined, disables the ability to control RGB Light from the keycodes. You must use code functions to control the feature
 
 // #undef RGBLED_NUM
 // #undef RGBLIGHT_SPLIT
