@@ -7,18 +7,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,                 KC_Q,               KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),
         LT(Layer_mouse,KC_TAB), KC_A,               KC_S,               KC_D,           KC_F,           KC_G,           KC_HYPR,
         KC_LSFT,                KC_Z,               KC_X,               KC_C,           KC_V,           KC_B,
-        KC_LCTL,                LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
+        KC_LCTL,                KC_LALT,            LCTL(KC_LGUI),      LSFT(KC_LGUI),
 
         LT(Layer_symbols,KC_BACKSPACE), LGUI_T(KC_DELETE),
         LCTL_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
         LCTL(KC_SPACE), KC_PRINT_SCREEN,
 
         //# right hand ###################################################################################################################
-        KC_EQUAL,               KC_6,               KC_7,               KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
-        KC_F2,                  KC_Y,               KC_U,               KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
-        KC_F4,                  KC_H,               KC_J,               KC_K,           KC_L,           KC_SEMICOLON,   KC_RALT,
-                                KC_N,               KC_M,               KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTL,
-                                                                        KC_DOWN,        KC_UP,          KC_LALT,         QK_LEAD,
+        KC_EQUAL,               KC_6,               KC_7,               KC_8,               KC_9,           KC_0,           LSFT(KC_ENTER),
+        KC_F2,                  KC_Y,               KC_U,               KC_I,               KC_O,           KC_P,           ST_MACRO_SSH,
+        KC_F4,                  KC_H,               KC_J,               KC_K,               KC_L,           KC_SEMICOLON,   KC_RALT,
+                                KC_N,               KC_M,               KC_COMMA,           KC_DOT,         KC_SLASH,       KC_RCTL,
+                                                                        LCTL(LSFT(KC_LGUI)),XXXXXXX,        XXXXXXX,        QK_LEAD,
 
         LT(Layer_macros,KC_ENTER), LT(Layer_nav,KC_SPACE),
         KC_PAGE_UP, LSFT_T(KC_ESCAPE),
@@ -26,22 +26,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [Layer_mac_main] = LAYOUT_5x7(
         // left hand
-        LCTL(KC_LALT),          KC_1,               KC_2,               KC_3,           KC_4,           KC_5,           KC_MINUS,
-        KC_TAB,                 KC_Q,               KC_W,               KC_E,           KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),
-        LT(Layer_mouse,KC_TAB), KC_A,               KC_S,               KC_D,           KC_F,           KC_G,           KC_HYPR,
-        KC_LSFT,                KC_Z,               KC_X,               KC_C,           KC_V,           KC_B,
-        KC_LGUI,                LCTL(LSFT(KC_LGUI)),LCTL(KC_LGUI),      LSFT(KC_LGUI),
+        LCTL(KC_LALT),          KC_1,               KC_2,               KC_3,               KC_4,           KC_5,           KC_MINUS,
+        KC_TAB,                 KC_Q,               KC_W,               KC_E,               KC_R,           KC_T,           LCTL(LSFT(KC_LGUI)),
+        LT(Layer_mouse,KC_TAB), KC_A,               KC_S,               KC_D,               KC_F,           KC_G,           KC_HYPR,
+        KC_LSFT,                KC_Z,               KC_X,               KC_C,               KC_V,           KC_B,
+        KC_LGUI,                KC_LALT,            LCTL(KC_LGUI),      LSFT(KC_LGUI),
 
         LT(Layer_mac_symbols,KC_BACKSPACE), LCTL_T(KC_DELETE),
         LGUI_T(KC_HOME), LSFT(KC_PRINT_SCREEN),
         LCTL(KC_SPACE), LCTL(LGUI(LSFT(KC_4))),
 
         //# right hand ###################################################################################################################
-        KC_EQUAL,               KC_6,               KC_7,               KC_8,           KC_9,           KC_0,           LSFT(KC_ENTER),
-        KC_F2,                  KC_Y,               KC_U,               KC_I,           KC_O,           KC_P,           ST_MACRO_SSH,
-        KC_F4,                  KC_H,               KC_J,               KC_K,           KC_L,           KC_SEMICOLON,   KC_RALT,
-                                KC_N,               KC_M,               KC_COMMA,       KC_DOT,         KC_SLASH,       KC_RCTL,
-                                                                        KC_DOWN,        KC_UP,          KC_LALT,         QK_LEAD,
+        KC_EQUAL,               KC_6,               KC_7,               KC_8,               KC_9,           KC_0,           LSFT(KC_ENTER),
+        KC_F2,                  KC_Y,               KC_U,               KC_I,               KC_O,           KC_P,           ST_MACRO_SSH,
+        KC_F4,                  KC_H,               KC_J,               KC_K,               KC_L,           KC_SEMICOLON,   KC_RALT,
+                                KC_N,               KC_M,               KC_COMMA,           KC_DOT,         KC_SLASH,       KC_RCTL,
+                                                                        LCTL(LSFT(KC_LGUI)),XXXXXXX,        XXXXXXX,        QK_LEAD,
 
         LT(Layer_macros,KC_ENTER), LT(Layer_nav, KC_SPACE),
         KC_PAGE_UP, LSFT_T(KC_ESCAPE),
@@ -156,7 +156,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_F6,          KC_KP_ASTERISK, KC_KP_7,        KC_KP_8,        KC_KP_9,        KC_KP_MINUS,    KC_END,
         KC_F5,          KC_KP_SLASH,    KC_KP_4,        KC_KP_5,        KC_KP_6,        KC_KP_PLUS,     KC_DELETE,
                         KC_KP_ENTER,    KC_KP_1,        KC_KP_2,        KC_KP_3,        KC_UP,          TO(Layer_main),
-                                                        KC_KP_0,        KC_KP_DOT,      KC_LEFT,        KC_DOWN,        //KC_RIGHT,
+                                                        KC_KP_0,        KC_LEFT,        KC_DOWN,        KC_RIGHT,
 
         KC_NUM_LOCK, KC_INSERT,
         KC_F4,    KC_F2,
