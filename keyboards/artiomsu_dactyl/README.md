@@ -1,6 +1,6 @@
 # RP 2040 Handwired Dactyl Manuform 5x7 by ArtiomSu
 
-![header1](/public/images/header.jpg)
+![header1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/header.jpg)
 
 This is using the raspberry pi pico micro controller on both halves of the keyboard. 
 
@@ -45,7 +45,7 @@ So overall the pico will be the go to controller for qmk from now on.
 # Wiring Diagram
 I didn't find any decent wiring diagram for the 5x7 form factor and it took me some time to figure it out. So here is a diagram I created.  
 
-![wiring_diagram](/public/images/wiring.png)
+![wiring_diagram](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/wiring.png)
 
 Make sure to take note of the differences on the wiring of the ttrs jack and columns between the two sides.
 
@@ -86,39 +86,39 @@ I used 109 led in each half of the keyboard which is a bit obsurd but by god it 
 
 #### Step 1
 Wire up the diodes. Take note of the direction, make sure it is the same as the diagram.
-![step_1](/public/images/step_1.jpg)
+![step_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_1.jpg)
 
 #### Step 2
 Wire up the columns as per the diagram.
-![step_2](/public/images/step_2.jpg)
+![step_2](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_2.jpg)
 
 #### Step 3
 Wire up the rows as per the diagram.
-![step_3](/public/images/step_3.jpg)
+![step_3](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_3.jpg)
 
 #### Step 4
 Extend the connectors so that we can easily plug into the controller.
-![step_4](/public/images/step_4.jpg)
+![step_4](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_4.jpg)
 
 #### Step 5
 This step assumes you have soldered on the connectors to both the micro controller and the ttrs breakout board.
 
 Now just wire them up as in the diagram.
-![step_5](/public/images/step_5.jpg)
+![step_5](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_5.jpg)
 
 #### Step 6
 Prepare the first led strip. This will be powered by the Stemma QT port at the bottom of the kb 2040 micro controller. 
 
 Also add connectors for the second led strip.
-![step_6](/public/images/step_6.jpg)
+![step_6](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_6.jpg)
 
 #### Step 7
 Secure the connections with hotglue
-![step_7](/public/images/step_7.jpg)
+![step_7](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_7.jpg)
 
 #### Step 8
 Hook up the columns and rows to the controller as per the diagram.
-![step_8](/public/images/step_8.jpg)
+![step_8](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_8.jpg)
 
 #### Step 9
 The led strip can be left hanging loose for now.
@@ -127,37 +127,37 @@ Now you can try flashing the qmk firmware onto the board. And check if all of th
 
 You can compile the test firmware. See the QMK tips section down bellow for testing tips.
 
-![step_9](/public/images/step_9.jpg)
+![step_9](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_9.jpg)
 Loosely hook up the led strip for testing
 
 #### Step 10
-![step_10](/public/images/step_10.jpg)
+![step_10](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_10.jpg)
 Hot glue the first led strip and row wires
 
 #### Step 11
-![step_11](/public/images/step_11.jpg)
+![step_11](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_11.jpg)
 Using 30 LEDs from the 60/m LED strip. Wire them up around the bottom of the case. 
 
 #### Step 12
-![step_12](/public/images/step_12.jpg)
+![step_12](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_12.jpg)
 Using 43 LEDs from the 60/m LED strip. Wire up a grid like so.
 
 #### Step 13
-![step_13](/public/images/step_13.jpg)
+![step_13](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_13.jpg)
 Attach the led grid
 
 #### Step 14
-![step_14](/public/images/step_14.jpg)
+![step_14](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_14.jpg)
 Solder the bypass as we need more current.
 
 This is that tiny pad right under the usb c connector that says `USB -> RAW`. This will bypass the fuse and let us use all the current available from the USB port.
 
 #### Step 15
-![step_15](/public/images/step_15.jpg)
+![step_15](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_15.jpg)
 Create these jumpers to split the raw pin
 
 #### Step 16
-![step_16](/public/images/step_16.jpg)
+![step_16](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/step_16.jpg)
 Raw pin for leds and ttrs jack is now shared.
 
 So the 5v for the leds and the 5v for the ttrs jack are both taken from the raw pin.
@@ -257,12 +257,12 @@ I created this in blender form scratch by importing the case and roughly followi
 
 What you see here is version 5, so it does take a good number of itterations to get it to how you like it.
 
-![wrist_rest_1](/public/images/wrist_rest_1.jpg)
+![wrist_rest_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/wrist_rest_1.jpg)
 
-![wrist_rest_2](/public/images/wrist_rest_2.jpg)
+![wrist_rest_2](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/wrist_rest_2.jpg)
 Attach the feet if it is slippery.
 
-![wrist_rest_3](/public/images/wrist_rest_3.jpg)
+![wrist_rest_3](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/wrist_rest_3.jpg)
 Here you can see how flexible it is. I'm not using a lot of force to press it down in this photo.
 
 ### Bottom Cover
@@ -276,18 +276,18 @@ This was printed with 10% infill too, since it only a few millimeters tall so it
 
 The bottom cover was basically created by copying the bottom of the model in blender and performing some extrusions.
 
-![bottom_cover_cutout_1](/public/images/bottom_cover_cutout_1.jpg)
+![bottom_cover_cutout_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/bottom_cover_cutout_1.jpg)
 
-![bottom_cover_cutout_2](/public/images/bottom_cover_cutout_2.jpg)
+![bottom_cover_cutout_2](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/bottom_cover_cutout_2.jpg)
 
-![bottom_cover_full_1](/public/images/bottom_cover_full_1.jpg)
+![bottom_cover_full_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/bottom_cover_full_1.jpg)
 
-![bottom_cover_full_2](/public/images/bottom_cover_full_2.jpg)
+![bottom_cover_full_2](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/bottom_cover_full_2.jpg)
 
 
 # Photos
-![photo1](/public/images/photos_1.jpg)
-![photo2](/public/images/photos_2.jpg)
-![photo3](/public/images/photos_3.jpg)
-![photo4](/public/images/photos_4.jpg)
-![photo5](/public/images/photos_5.jpg)
+![photo1](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/photos_1.jpg)
+![photo2](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/photos_2.jpg)
+![photo3](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/photos_3.jpg)
+![photo4](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/photos_4.jpg)
+![photo5](https://github.com/ArtiomSu/qmk_firmware/raw/artiom_dactyl/keyboards/artiomsu_dactyl/public/images/photos_5.jpg)
