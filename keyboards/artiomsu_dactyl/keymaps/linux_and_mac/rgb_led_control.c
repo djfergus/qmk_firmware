@@ -17,6 +17,7 @@ bool g_suspend_state;
 
 bool caps_lock_on = false;
 bool num_lock_on = false;
+//bool isLeft = is_keyboard_left(); doesn't work for leds, since the state is synced externally, but will leave it here for future reference.
 
 #define LAYER_NUM_LEDS_INDIC 10
 
@@ -122,6 +123,10 @@ const rgblight_segment_t* const PROGMEM led_all_layers[] = RGBLIGHT_LAYERS_LIST(
 void keyboard_post_init_user(void) {
     scroll_delay_timer = timer_read();
     rgblight_layers = led_all_layers;
+    // set this to sync the state of the two halves since we are not using eeprom.
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
+    //rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_sethsv_noeeprom(13, 250, 20);
 }
 
 void suspend_power_down_user(void) {
