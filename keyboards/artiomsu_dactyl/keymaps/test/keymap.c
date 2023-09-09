@@ -18,7 +18,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_Y,   KC_A,    KC_S,    KC_D,   KC_F,   KC_G,   KC_8,
         KC_U,   KC_Z,    KC_X,    KC_C,   KC_V,   KC_B,
         KC_I,   KC_O,    KC_P,    KC_H,
-                                    MO(_RGBTEST), MO(_CLEAR),
+                                    KC_A, KC_B,
+                                    //MO(_RGBTEST), MO(_CLEAR),
                                     KC_L, KC_N,
                                     KC_M, KC_DOT,
         // right hand
