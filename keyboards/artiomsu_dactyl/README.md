@@ -207,8 +207,22 @@ Make sure to checkout the [split keyboard](https://github.com/qmk/qmk_firmware/b
 
 If you are using led lighting checkout [this section](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_rgblight.md#lighting-layers)
 
-# Build video
-coming soon
+# Build videos
+[Dactyl Manuform RP 2040 Build Part 1 | Soldering Micro Contollers And Jacks](https://www.youtube.com/watch?v=SH30g5IgDSc)
+
+[Dactyl Manuform RP 2040 Build Part 2 | LED strips](https://www.youtube.com/watch?v=pt-6UTvO6-A)
+
+[Dactyl Manuform RP 2040 Build Part 3 | Diodes](https://www.youtube.com/watch?v=Vyib0i9I5N0)
+
+[Dactyl Manuform RP 2040 Build Part 4 | Switches and Diodes](https://www.youtube.com/watch?v=efsJ9erwwJ0)
+
+[Dactyl Manuform RP 2040 Build Part 5 | Rows](https://www.youtube.com/watch?v=QlJTeLKdx9E)
+
+[Dactyl Manuform RP 2040 Build Part 6 | Columns](https://www.youtube.com/watch?v=Ufe2N9i5dcQ)
+
+[Dactyl Manuform RP 2040 Build Part 7 | QMK Flashing and Testing](https://www.youtube.com/watch?v=5NNjv0asuOE)
+
+[Dactyl Manuform RP 2040 Build Part 8 | Final assembly LED strips](https://www.youtube.com/watch?v=q52N-qa9q9w)
 
 # 3D Printing / Design
 These should be printable on any printer with a print area of 200x200 mm.
