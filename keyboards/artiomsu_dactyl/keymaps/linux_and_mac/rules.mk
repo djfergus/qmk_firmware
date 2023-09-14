@@ -13,7 +13,7 @@ LEADER_ENABLE = yes			# leader key
 DYNAMIC_MACRO_ENABLE = yes  # dynamic macro feature
 
 RGBLIGHT_ENABLE = yes        # Enable keyboard RGB underglow
-RGBLIGHT_DRIVER = WS2812
+RGBLIGHT_DRIVER = ws2812
 WS2812_DRIVER = vendor
 AUDIO_ENABLE = no           # Audio output
 SPLIT_KEYBOARD = yes
