@@ -1,0 +1,28 @@
+{
+    "keyboard_name": "MacroPad_ArtiomSu",
+    "manufacturer": "Artiom",
+    "url": "",
+    "maintainer": "ArtiomSu",
+    "usb": {
+        "vid": "0x445D",
+        "pid": "0x3538",
+        "device_version": "0.0.1"
+    },
+    "ws2812": {
+        "pin": "GP29"
+    },
+    "matrix_pins": {
+        "cols": ["GP15"],
+        "rows": ["GP16"]
+    },
+    "diode_direction": "COL2ROW",
+    "processor": "RP2040",
+    "bootloader": "rp2040",
+    "layouts": {
+        "LAYOUT_artiomsu_macropad": {
+            "layout": [
+                {"matrix": [0, 0], "x": 0, "y": 0}
+            ]
+        }
+    }
+}
