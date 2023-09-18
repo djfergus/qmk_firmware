@@ -26,6 +26,6 @@
 #define I2C1_SCL_PIN GP13
 
 #define OLED_BRIGHTNESS 220 // 255 max
-#define ENCODERS_PAD_A { GP0 }
-#define ENCODERS_PAD_B { GP1 }
+#define ENCODERS_PAD_A { GP0, GP4, GP8, GP17 }
+#define ENCODERS_PAD_B { GP1, GP5, GP9, GP16 }
 #define ENCODER_RESOLUTION 4

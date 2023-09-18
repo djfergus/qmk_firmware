@@ -4,7 +4,12 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_artiomsu_macropad(
-        KC_0
+        KC_A, KC_B, KC_C, KC_D,
+        KC_E, KC_F, KC_G, KC_H,
+        KC_I, KC_J, KC_K, KC_L,
+        KC_M, KC_N, KC_O,
+        KC_P, KC_Q, KC_R,
+        KC_S, KC_T, KC_U
     )
 };
 
@@ -25,12 +30,37 @@ bool oled_task_user(void) {
 }
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) { /* First encoder */
-        if (clockwise) {
-            tap_code(KC_1);
-        } else {
-            tap_code(KC_2);
-        }
+    switch (index){
+        case 0:
+            if (clockwise) {
+                tap_code(KC_1);
+            } else {
+                tap_code(KC_2);
+            }
+            break;
+        case 1:
+            if (clockwise) {
+                tap_code(KC_3);
+            } else {
+                tap_code(KC_4);
+            }
+            break;
+        case 2:
+            if (clockwise) {
+                tap_code(KC_5);
+            } else {
+                tap_code(KC_6);
+            }
+            break;
+        case 3:
+            if (clockwise) {
+                tap_code(KC_7);
+            } else {
+                tap_code(KC_8);
+            }
+            break;
+        default:
+            return true;
     }
     return false;
 }
