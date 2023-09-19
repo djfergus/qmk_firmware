@@ -9,11 +9,7 @@
         "device_version": "0.0.1"
     },
     "ws2812": {
-        "pin": "GP29"
-    },
-    "matrix_pins_ignore": {
-        "cols": ["GP11", "GP10", "GP7", "GP6"],
-        "rows": ["GP18", "GP19", "GP20", "GP21", "GP22", "GP26"]
+        "pin": "GP28"
     },
     "matrix_pins": {
         "cols": ["GP6", "GP7", "GP10", "GP11"],

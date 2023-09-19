@@ -2,7 +2,8 @@
 #pragma once
 
 
-#define RGBLED_NUM 1
+#define RGBLED_NUM 30
+//#define WS2812_DI_PIN GP28 use the one in info.json
 
 #define WS2812_PIO_USE_PIO1 // use state machine 1 for rgb
 
@@ -26,6 +27,7 @@
 #define I2C1_SCL_PIN GP13
 
 #define OLED_BRIGHTNESS 220 // 255 max
-#define ENCODERS_PAD_A { GP0, GP4, GP8, GP17 }
-#define ENCODERS_PAD_B { GP1, GP5, GP9, GP16 }
-#define ENCODER_RESOLUTION 4
+#define ENCODERS_PAD_A { GP17, GP8, GP4, GP0 }
+#define ENCODERS_PAD_B { GP16, GP9, GP5, GP1 }
+#define ENCODER_RESOLUTIONS {3, 4, 3, 4}
+#define ENCODER_DIRECTION_FLIP

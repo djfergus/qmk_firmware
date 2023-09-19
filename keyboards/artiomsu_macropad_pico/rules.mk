@@ -10,7 +10,6 @@ RGBLIGHT_DRIVER = ws2812
 WS2812_DRIVER = vendor
 AUDIO_ENABLE = no           # Audio output
 SPLIT_KEYBOARD = no
-SERIAL_DRIVER = vendor
 
 OLED_ENABLE = yes
 OPT_DEFS += -DHAL_USE_I2C=TRUE
