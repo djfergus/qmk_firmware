@@ -1,5 +1,7 @@
 # Macropad Pico
 
+![step_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/header.jpg)
+
 This is a pico port of my [macropad](https://github.com/ArtiomSu/qmk_firmware/tree/macropad_artiomsu/keyboards/macropad_artiomsu) with additional features aswell as using the raspberry pi pico instead of the arduino pro micro
 
 # Sections
@@ -53,7 +55,50 @@ So overall the pico will be the go to controller for qmk from now on.
 
 For the volume knobs I got them from [here](https://www.thingiverse.com/thing:4206617) make sure to use the 20mm one. 
 
-# Build Videos
+#### Step 1
+Connect up the 3 pins to each rotary encoder and test them to make sure they work using the simple qmk firmware.
+![step_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_1.jpg)
+
+#### Step 2
+Plug in all the switches, make sure they are in the same direction
+![step_2](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_2.jpg)
+
+#### Step 3
+Secure the Switches with hotglue
+![step_3](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_3.jpg)
+
+#### Step 4
+Add the diodes. Make sure they are all facing down and don't forget to include the rotaty encoders.
+![step_4](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_4.jpg)
+
+#### Step 5
+Wire up the rows.
+![step_5](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_5.jpg)
+
+#### Step 6
+Wire up the columns
+![step_6](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_6.jpg)
+
+#### Step 7
+Extend the rows. Now you can test to see if the switches function ok with qmk. Wire then up using the pin layout inside info.json
+![step_7](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_7.jpg)
+
+#### Step 8
+Glue in the OLED display. Connect it to the 3v output on the pico, can use 5v if you want but I'm using that for the leds and didn't want to splice wires together.
+![step_8](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_8.jpg)
+
+#### Step 9
+Prepare the led strip. There is 6 sections with 5 leds each.
+![step_9](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_9.jpg)
+
+#### Step 10
+Glue in the led strip grid. Connect it to 5v output on the pico.
+![step_10](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_10.jpg)
+
+
+# Build Video
+
+coming soon.
 
 # QMK Tips
 
@@ -77,3 +122,7 @@ The 2 pin side is just the regular switch.
 The 3 pin side, has the ground pin in the middle. And the two pins on the side would plug into any GPIO pins you want
 
 # Photos
+
+![photo1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_1.jpg)
+
+
