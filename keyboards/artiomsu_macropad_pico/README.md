@@ -1,8 +1,8 @@
 # Macropad Pico
 
-![step_1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/header.jpg)
+![header](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/header.jpg)
 
-This is a pico port of my [macropad](https://github.com/ArtiomSu/qmk_firmware/tree/macropad_artiomsu/keyboards/macropad_artiomsu) with additional features aswell as using the raspberry pi pico instead of the arduino pro micro
+This is a remake of my first [macropad](https://github.com/ArtiomSu/qmk_firmware/tree/macropad_artiomsu/keyboards/macropad_artiomsu) with additional features aswell as using the raspberry pi pico instead of the arduino pro micro
 
 # Sections
 [Pico Vs Pro Micro](#why-the-raspberry-pi-pico-rp-2040-instead-of-the-usual-pro-micro)
@@ -103,6 +103,8 @@ coming soon.
 # QMK Tips
 
 [RP 2040 Pinout](https://github.com/qmk/qmk_firmware/blob/master/docs/platformdev_rp2040.md)
+
+[OLED docs](https://github.com/qmk/qmk_firmware/blob/master/docs/feature_oled_driver.md)
 
 OLED Setup stolen from [here](https://learn.adafruit.com/using-qmk-on-rp2040-microcontrollers/kb2040-one-key-keyboard-with-oled-display) 
 

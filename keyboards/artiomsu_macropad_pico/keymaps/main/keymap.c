@@ -3,7 +3,7 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [Layer_main] = LAYOUT_artiomsu_macropad(
-        LT(Layer_shortcuts, KC_BACKSPACE), KC_F2, TO(Layer_calc), QK_BOOT,
+        LT(Layer_shortcuts, KC_AUDIO_MUTE), KC_KP_EQUAL, TO(Layer_calc), KC_BACKSPACE,
         KC_NUM_LOCK,     KC_KP_SLASH,    KC_KP_ASTERISK,     KC_KP_MINUS,
         KC_KP_7,         KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
         KC_KP_4,         KC_KP_5,        KC_KP_6,
@@ -11,7 +11,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_KP_0,         KC_KP_DOT,      KC_KP_ENTER
     ),
     [Layer_shortcuts] = LAYOUT_artiomsu_macropad(
-		TO(Layer_main),  PB_23,          PB_24,              FLASH_MACRO,
+		TO(Layer_main),  KC_F2,          QK_BOOT,            FLASH_MACRO,
         PB_10,           PB_11,          PB_12,              PB_13,
 		PB_7,            PB_8,           PB_9,               PB_14,
 		PB_4,            PB_5,           PB_6,
@@ -19,7 +19,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 		PB_20,           PB_21,          PB_22
     ),
     [Layer_calc] = LAYOUT_artiomsu_macropad( //hardware calculator
-        L1_EXIT_LAYER,      L1_POWER,   L1_MOD,         KC_T, // put delete macro here later
+        L1_EXIT_LAYER,      L1_POWER,   L1_MOD,         L1_DELETE,
 		L1_PRINT_EQUATION,  L1_SLASH,   L1_MULTIPLY,    L1_MINUS,
 		L1_7,               L1_8,       L1_9,           L1_PLUS,
 		L1_4,               L1_5,       L1_6,
@@ -43,24 +43,18 @@ bool encoder_update_user_Layer_calc(uint8_t index, bool clockwise) {
             }
             break;
         case 1:
-            if (clockwise) {
-                tap_code(KC_3);
-            } else {
-                tap_code(KC_4);
-            }
+            if (clockwise) {} else {}
             break;
         case 2:
-            if (clockwise) {
-                tap_code(KC_5);
-            } else {
-                tap_code(KC_6);
-            }
+            if (clockwise) {    write_char_to_buff('('); }
+            else {              write_char_to_buff(')'); }
             break;
         case 3:
-            if (clockwise) {
-                tap_code(KC_7);
-            } else {
-                tap_code(KC_8);
+            if (clockwise) {}
+            else {
+                // delete the buffer
+                expressions_buffer[0] = '\0';
+                input_count = 0;
             }
             break;
         default:
@@ -69,45 +63,60 @@ bool encoder_update_user_Layer_calc(uint8_t index, bool clockwise) {
     return false;
 }
 
+bool encoder_update_user_Layer_main(uint8_t index, bool clockwise) {
+    switch (index){
+        case 0:
+            if (clockwise) {    tap_code(KC_AUDIO_VOL_UP);
+            } else {            tap_code(KC_AUDIO_VOL_DOWN);}
+            break;
+        case 1:
+            if (clockwise) {    rgblight_increase_val_noeeprom();
+            } else {            rgblight_decrease_val_noeeprom();}
+            break;
+        case 2:
+            if (clockwise) {    rgblight_increase_hue_noeeprom();
+            } else {            rgblight_decrease_hue_noeeprom();}
+            break;
+        case 3:
+            if (clockwise) {    rgblight_step_noeeprom();
+            } else {            rgblight_step_reverse_noeeprom();}
+            break;
+        default:
+            return true;
+    }
+    return false;
+}
+
+bool encoder_update_user_Layer_shortcuts(uint8_t index, bool clockwise) {
+    switch (index){
+        case 0:
+            if (clockwise) {    rgblight_mode_noeeprom(RGBLIGHT_MODE_SNAKE + 1);
+            } else {            }
+            break;
+        case 1:
+            if (clockwise) {    rgblight_increase_sat_noeeprom();
+            } else {            rgblight_decrease_sat_noeeprom();}
+            break;
+        case 2:
+            if (clockwise) {    rgblight_increase_speed_noeeprom();
+            } else {            rgblight_decrease_speed_noeeprom();}
+            break;
+        case 3:
+            if (clockwise) {    rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
+            } else {            rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL + 1);}
+            break;
+        default:
+            return true;
+    }
+    return false;
+}
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     switch (get_highest_layer(layer_state)) {
         case Layer_main:
+            return encoder_update_user_Layer_main(index, clockwise);
         case Layer_shortcuts:
-            switch (index){
-                case 0:
-                    if (clockwise) {
-                        tap_code(KC_1);
-                    } else {
-                        tap_code(KC_2);
-                    }
-                    break;
-                case 1:
-                    if (clockwise) {
-                        rgblight_increase_val_noeeprom();
-                    } else {
-                        rgblight_decrease_val_noeeprom();
-                    }
-                    break;
-                case 2:
-                    if (clockwise) {
-                        rgblight_increase_hue_noeeprom();
-                    } else {
-                        rgblight_decrease_hue_noeeprom();
-                    }
-                    break;
-                case 3:
-                    if (clockwise) {
-                        rgblight_step_noeeprom();
-                    } else {
-                        rgblight_step_reverse_noeeprom();
-                    }
-                    break;
-                default:
-                    return true;
-            }
-            return false;
-        break;
+            return encoder_update_user_Layer_shortcuts(index, clockwise);
         case Layer_calc:
             return encoder_update_user_Layer_calc(index, clockwise);
         default:

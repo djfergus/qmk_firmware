@@ -32,20 +32,62 @@ static void render_logo(void) {
     oled_write_P(qmk_logo, false);
 }
 
-void oled_clear_whole_screen(void){
-    uint8_t width = oled_max_chars();
-    //uint8_t height = oled_max_lines();
+// void oled_clear_whole_screen(void){
+//     uint8_t width = oled_max_chars();
+//     //uint8_t height = oled_max_lines();
 
-    char buff[width];
-    uint8_t i = 0;
-    for(i = 0; i<width; i++){
-        buff[i]='#';
-    }
-    buff[width-1] = '\n';
-    buff[width] = '\0';
-    oled_set_cursor(0, 0);
-    oled_write(buff, false);
-    oled_set_cursor(0, 0);
+//     char buff[width];
+//     uint8_t i = 0;
+//     for(i = 0; i<width; i++){
+//         buff[i]='#';
+//     }
+//     buff[width-1] = '\n';
+//     buff[width] = '\0';
+//     oled_set_cursor(0, 0);
+//     oled_write(buff, false);
+//     oled_set_cursor(0, 0);
+// }
+
+void oled_write_led_state(void){
+    led_t led_state = host_keyboard_led_state();
+    uint8_t buff_size = oled_max_chars();
+    char buff[buff_size];
+    // sprintf(buff, " Num[%c] Cap[%c] Scrl[%c]", // doesn't look great imo but another option
+    //     led_state.num_lock ? 'Y' : 'N',
+    //     led_state.caps_lock ? 'Y' : 'N',
+    //     led_state.scroll_lock ? 'Y' : 'N'
+    // );
+    snprintf(buff, buff_size, "%s%s%s%s",
+        led_state.num_lock ? " NUM" : " ",
+        led_state.caps_lock ? " CAPS" : " ",
+        led_state.scroll_lock ? " SCROLL" : " ",
+        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+    );
+    oled_write_P(buff, false);
+}
+
+void oled_write_led_status(void){
+    uint8_t buff_size = oled_max_chars();
+    char buff[buff_size];
+    snprintf(buff, buff_size, " ArtiomSu Mode-> %d %s",
+        rgblight_get_mode(),
+        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+    );
+    oled_write_P(buff, false);
+    char buff2[buff_size];
+    snprintf(buff2, buff_size, "\n Hue-> %d Sat-> %d %s",
+        rgblight_get_hue(),
+        rgblight_get_sat(),
+        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+    );
+    oled_write_P(buff2, false);
+    char buff3[buff_size];
+    snprintf(buff3, buff_size, "\n Val-> %d Spd-> %d %s",
+        rgblight_get_val(),
+        rgblight_get_speed(),
+        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+    );
+    oled_write_P(buff3, false);
 }
 
 bool oled_task_user(void) {
@@ -53,24 +95,35 @@ bool oled_task_user(void) {
     //oled_advance_page(true);
     switch (get_highest_layer(layer_state)) {
         case Layer_main:
-            render_logo();
+            //render_logo();
+            oled_write_led_status();
+            oled_write_P(PSTR("\n"), false);
             break;
         case Layer_shortcuts:
-            oled_write_P(PSTR("Shortcuts\n"), false);
+            oled_write_P(PSTR(" Shortcuts\n"), false);
+            oled_write_P(PSTR(" F2 BOOT FLASH\n"), false);
+            oled_write_P(PSTR(" S Sat Speed T/R\n"), false);
             break;
         case Layer_calc:
             //oled_advance_page(true);
             //oled_clear();
             //oled_set_cursor(0, 0);
             //oled_clear_whole_screen();
-            oled_write_P(PSTR("Calculator\n"), false);
+            oled_write_P(PSTR(" Calculator\n"), false);
             char pres[32];
-            sprintf(pres, "Precision %d\n", decimal_point_pressision);
+            sprintf(pres, " Precision %d\n", decimal_point_pressision);
             oled_write_P(pres, false);
-            oled_write_P(expressions_buffer, false);
+            if(expressions_buffer[0] == '\0'){
+                oled_write_P(" Enter Your Equation", false);
+            }else{
+                oled_write_P(" ", false);
+                oled_write_P(expressions_buffer, false);
+            }
             oled_write_P(PSTR("\n"), false);
             break;
-
+        default:
+            render_logo();
     }
+    oled_write_led_state();
     return false;
 }

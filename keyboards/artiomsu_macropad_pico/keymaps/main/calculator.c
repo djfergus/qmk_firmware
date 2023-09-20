@@ -43,7 +43,6 @@ void te_print(const te_expr *n);
 /* This is safe to call on NULL pointers. */
 void te_free(te_expr *n);
 
-
 #ifndef NAN
 #define NAN (0.0/0.0)
 #endif
@@ -56,8 +55,8 @@ void te_free(te_expr *n);
 typedef double (*te_fun2)(double, double);
 
 enum {
-    TOK_NULL = TE_CLOSURE7+1, TOK_ERROR, TOK_END,
-    TOK_NUMBER, TOK_VARIABLE, TOK_INFIX
+    TOK_NULL = TE_CLOSURE7+1, TOK_ERROR, TOK_END, TOK_SEP,
+    TOK_OPEN, TOK_CLOSE, TOK_NUMBER, TOK_VARIABLE, TOK_INFIX
 };
 
 
@@ -120,10 +119,68 @@ void te_free(te_expr *n) {
 }
 
 
+static double pi(void) {return 3.14159265358979323846;}
+static double e(void) {return 2.71828182845904523536;}
+static double fac(double a) {/* simplest version of fac */
+    if (a < 0.0)
+        return NAN;
+    if (a > UINT_MAX)
+        return INFINITY;
+    unsigned int ua = (unsigned int)(a);
+    unsigned long int result = 1, i;
+    for (i = 1; i <= ua; i++) {
+        if (i > ULONG_MAX / result)
+            return INFINITY;
+        result *= i;
+    }
+    return (double)result;
+}
+static double ncr(double n, double r) {
+    if (n < 0.0 || r < 0.0 || n < r) return NAN;
+    if (n > UINT_MAX || r > UINT_MAX) return INFINITY;
+    unsigned long int un = (unsigned int)(n), ur = (unsigned int)(r), i;
+    unsigned long int result = 1;
+    if (ur > un / 2) ur = un - ur;
+    for (i = 1; i <= ur; i++) {
+        if (result > ULONG_MAX / (un - ur + i))
+            return INFINITY;
+        result *= un - ur + i;
+        result /= i;
+    }
+    return result;
+}
+static double npr(double n, double r) {return ncr(n, r) * fac(r);}
 
 static const te_variable functions[] = {
     /* must be in alphabetical order */
+    {"abs", abs,     TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"acos", acos,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"asin", asin,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"atan", atan,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"atan2", atan2,  TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    {"ceil", ceil,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"cos", cos,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"cosh", cosh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"e", e,          TE_FUNCTION0 | TE_FLAG_PURE, 0},
+    {"exp", exp,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"fac", fac,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"floor", floor,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"ln", log,       TE_FUNCTION1 | TE_FLAG_PURE, 0},
+#ifdef TE_NAT_LOG
+    {"log", log,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+#else
+    {"log", log10,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+#endif
+    {"log10", log10,  TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"ncr", ncr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    {"npr", npr,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    {"pi", pi,        TE_FUNCTION0 | TE_FLAG_PURE, 0},
     {"pow", pow,      TE_FUNCTION2 | TE_FLAG_PURE, 0},
+    {"sin", sin,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"sinh", sinh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"sqrt", sqrt,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"tan", tan,      TE_FUNCTION1 | TE_FLAG_PURE, 0},
+    {"tanh", tanh,    TE_FUNCTION1 | TE_FLAG_PURE, 0},
     {0, 0, 0, 0}
 };
 
@@ -168,6 +225,8 @@ static double sub(double a, double b) {return a - b;}
 static double mul(double a, double b) {return a * b;}
 static double divide(double a, double b) {return a / b;}
 static double negate(double a) {return -a;}
+static double comma(double a, double b) {(void)a; return b;}
+
 
 void next_token(state *s) {
     s->type = TOK_NULL;
@@ -224,6 +283,9 @@ void next_token(state *s) {
                     case '/': s->type = TOK_INFIX; s->function = divide; break;
                     case '^': s->type = TOK_INFIX; s->function = pow; break;
                     case '%': s->type = TOK_INFIX; s->function = fmod; break;
+                    case '(': s->type = TOK_OPEN; break;
+                    case ')': s->type = TOK_CLOSE; break;
+                    case ',': s->type = TOK_SEP; break;
                     case ' ': case '\t': case '\n': case '\r': break;
                     default: s->type = TOK_ERROR; break;
                 }
@@ -261,6 +323,14 @@ static te_expr *base(state *s) {
             ret->function = s->function;
             if (IS_CLOSURE(s->type)) ret->parameters[0] = s->context;
             next_token(s);
+            if (s->type == TOK_OPEN) {
+                next_token(s);
+                if (s->type != TOK_CLOSE) {
+                    s->type = TOK_ERROR;
+                } else {
+                    next_token(s);
+                }
+            }
             break;
 
         case TE_FUNCTION1:
@@ -283,7 +353,34 @@ static te_expr *base(state *s) {
             if (IS_CLOSURE(s->type)) ret->parameters[arity] = s->context;
             next_token(s);
 
-            s->type = TOK_ERROR;
+            if (s->type != TOK_OPEN) {
+                s->type = TOK_ERROR;
+            } else {
+                int i;
+                for(i = 0; i < arity; i++) {
+                    next_token(s);
+                    ret->parameters[i] = expr(s);
+                    if(s->type != TOK_SEP) {
+                        break;
+                    }
+                }
+                if(s->type != TOK_CLOSE || i != arity - 1) {
+                    s->type = TOK_ERROR;
+                } else {
+                    next_token(s);
+                }
+            }
+
+            break;
+
+        case TOK_OPEN:
+            next_token(s);
+            ret = list(s);
+            if (s->type != TOK_CLOSE) {
+                s->type = TOK_ERROR;
+            } else {
+                next_token(s);
+            }
             break;
 
         default:
@@ -317,7 +414,47 @@ static te_expr *power(state *s) {
     return ret;
 }
 
+#ifdef TE_POW_FROM_RIGHT
+static te_expr *factor(state *s) {
+    /* <factor>    =    <power> {"^" <power>} */
+    te_expr *ret = power(s);
 
+    int neg = 0;
+
+    if (ret->type == (TE_FUNCTION1 | TE_FLAG_PURE) && ret->function == negate) {
+        te_expr *se = ret->parameters[0];
+        free(ret);
+        ret = se;
+        neg = 1;
+    }
+
+    te_expr *insertion = 0;
+
+    while (s->type == TOK_INFIX && (s->function == pow)) {
+        te_fun2 t = s->function;
+        next_token(s);
+
+        if (insertion) {
+            /* Make exponentiation go right-to-left. */
+            te_expr *insert = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, insertion->parameters[1], power(s));
+            insert->function = t;
+            insertion->parameters[1] = insert;
+            insertion = insert;
+        } else {
+            ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, power(s));
+            ret->function = t;
+            insertion = ret;
+        }
+    }
+
+    if (neg) {
+        ret = NEW_EXPR(TE_FUNCTION1 | TE_FLAG_PURE, ret);
+        ret->function = negate;
+    }
+
+    return ret;
+}
+#else
 static te_expr *factor(state *s) {
     /* <factor>    =    <power> {"^" <power>} */
     te_expr *ret = power(s);
@@ -331,6 +468,7 @@ static te_expr *factor(state *s) {
 
     return ret;
 }
+#endif
 
 
 
@@ -367,6 +505,13 @@ static te_expr *expr(state *s) {
 static te_expr *list(state *s) {
     /* <list>      =    <expr> {"," <expr>} */
     te_expr *ret = expr(s);
+
+    while (s->type == TOK_SEP) {
+        next_token(s);
+        ret = NEW_EXPR(TE_FUNCTION2 | TE_FLAG_PURE, ret, expr(s));
+        ret->function = comma;
+    }
+
     return ret;
 }
 
@@ -478,4 +623,34 @@ double te_interp(const char *expression, int *error) {
         ret = NAN;
     }
     return ret;
+}
+
+static void pn (const te_expr *n, int depth) {
+    int i, arity;
+    printf("%*s", depth, "");
+
+    switch(TYPE_MASK(n->type)) {
+    case TE_CONSTANT: printf("%f\n", n->value); break;
+    case TE_VARIABLE: printf("bound %p\n", n->bound); break;
+
+    case TE_FUNCTION0: case TE_FUNCTION1: case TE_FUNCTION2: case TE_FUNCTION3:
+    case TE_FUNCTION4: case TE_FUNCTION5: case TE_FUNCTION6: case TE_FUNCTION7:
+    case TE_CLOSURE0: case TE_CLOSURE1: case TE_CLOSURE2: case TE_CLOSURE3:
+    case TE_CLOSURE4: case TE_CLOSURE5: case TE_CLOSURE6: case TE_CLOSURE7:
+         arity = ARITY(n->type);
+         printf("f%d", arity);
+         for(i = 0; i < arity; i++) {
+             printf(" %p", n->parameters[i]);
+         }
+         printf("\n");
+         for(i = 0; i < arity; i++) {
+             pn(n->parameters[i], depth + 1);
+         }
+         break;
+    }
+}
+
+
+void te_print(const te_expr *n) {
+    pn(n, 0);
 }

@@ -7,6 +7,8 @@
 //#include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "dtostrf.h"
+#include <limits.h>
 
 #define Layer_main 0
 #define Layer_shortcuts 1
@@ -15,6 +17,8 @@
 #define EXPRESSIONS_BUFF_SIZE 64
 extern char expressions_buffer[EXPRESSIONS_BUFF_SIZE];
 extern int decimal_point_pressision;
+extern int input_count;
+void write_char_to_buff(char c);
 
 enum custom_keycodes {
     // for the calc layer
@@ -38,6 +42,7 @@ enum custom_keycodes {
     L1_POWER,
     L1_MOD,
     L1_EXIT_LAYER,
+    L1_DELETE,
     //other
     FLASH_MACRO,
 };
