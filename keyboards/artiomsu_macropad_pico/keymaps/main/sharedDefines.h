@@ -20,6 +20,13 @@ extern int decimal_point_pressision;
 extern int input_count;
 void write_char_to_buff(char c);
 
+extern bool rgb_timed_out;
+extern uint32_t rgb_timeout_counter;
+extern uint32_t rgb_time_out_index;
+#define RGB_MAX_OPTIONS 4
+
+extern bool about_to_boot; // same functionality as QK_BOOT but fancier
+
 enum custom_keycodes {
     // for the calc layer
     L1_1 = SAFE_RANGE,
@@ -45,6 +52,7 @@ enum custom_keycodes {
     L1_DELETE,
     //other
     FLASH_MACRO,
+    BOOT_TRIGGER,
 };
 
 #endif

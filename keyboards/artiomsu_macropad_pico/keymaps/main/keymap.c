@@ -11,7 +11,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_KP_0,         KC_KP_DOT,      KC_KP_ENTER
     ),
     [Layer_shortcuts] = LAYOUT_artiomsu_macropad(
-		TO(Layer_main),  KC_F2,          QK_BOOT,            FLASH_MACRO,
+		TO(Layer_main),  KC_F2,          BOOT_TRIGGER,       FLASH_MACRO,
         PB_10,           PB_11,          PB_12,              PB_13,
 		PB_7,            PB_8,           PB_9,               PB_14,
 		PB_4,            PB_5,           PB_6,
@@ -98,8 +98,15 @@ bool encoder_update_user_Layer_shortcuts(uint8_t index, bool clockwise) {
             } else {            rgblight_decrease_sat_noeeprom();}
             break;
         case 2:
-            if (clockwise) {    rgblight_increase_speed_noeeprom();
-            } else {            rgblight_decrease_speed_noeeprom();}
+            if (clockwise) {
+                if(rgb_time_out_index < RGB_MAX_OPTIONS -1){
+                    rgb_time_out_index++;
+                }
+            } else {
+                if(rgb_time_out_index > 0){
+                    rgb_time_out_index--;
+                }
+            }
             break;
         case 3:
             if (clockwise) {    rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
@@ -112,6 +119,8 @@ bool encoder_update_user_Layer_shortcuts(uint8_t index, bool clockwise) {
 }
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
+    rgb_timed_out = false;
+    rgb_timeout_counter=0;
     switch (get_highest_layer(layer_state)) {
         case Layer_main:
             return encoder_update_user_Layer_main(index, clockwise);

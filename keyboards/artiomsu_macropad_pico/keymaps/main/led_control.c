@@ -1,23 +1,16 @@
 #include "sharedDefines.h"
 
-// for the numlock and layer leds
-bool num_lock_led_is_on = false;        // if numlock should be on
-int led_state_current = 0;              // what is the current layer temp
+bool rgb_timed_out = false;
+uint32_t rgb_time_out_options[RGB_MAX_OPTIONS] = {30000, 60000, 300000, 600000};
+char rgb_time_out_options_dict[RGB_MAX_OPTIONS][4] = {"30s\0", "1m\0", "5m\0", "10m\0"};
+uint32_t rgb_time_out_index = 2;
+uint32_t rgb_timeout_counter = 0;
 
-bool led_update_user(led_t led_state) {
-    num_lock_led_is_on = led_state.num_lock;
-    return true;
-}
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    led_state_current = get_highest_layer(state);
-    return state;
-}
+uint8_t count_down_to_boot = 32;
+bool about_to_boot = false;
 
 void keyboard_post_init_user(void) {
-    // set this to sync the state of the two halves since we are not using eeprom.
-    rgblight_mode_noeeprom(RGBLIGHT_MODE_RAINBOW_SWIRL);
-    //rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+    rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
     rgblight_sethsv_noeeprom(13, 250, 200);
     expressions_buffer[0] = '\0';
 }
@@ -32,36 +25,14 @@ static void render_logo(void) {
     oled_write_P(qmk_logo, false);
 }
 
-// void oled_clear_whole_screen(void){
-//     uint8_t width = oled_max_chars();
-//     //uint8_t height = oled_max_lines();
-
-//     char buff[width];
-//     uint8_t i = 0;
-//     for(i = 0; i<width; i++){
-//         buff[i]='#';
-//     }
-//     buff[width-1] = '\n';
-//     buff[width] = '\0';
-//     oled_set_cursor(0, 0);
-//     oled_write(buff, false);
-//     oled_set_cursor(0, 0);
-// }
-
 void oled_write_led_state(void){
     led_t led_state = host_keyboard_led_state();
     uint8_t buff_size = oled_max_chars();
     char buff[buff_size];
-    // sprintf(buff, " Num[%c] Cap[%c] Scrl[%c]", // doesn't look great imo but another option
-    //     led_state.num_lock ? 'Y' : 'N',
-    //     led_state.caps_lock ? 'Y' : 'N',
-    //     led_state.scroll_lock ? 'Y' : 'N'
-    // );
-    snprintf(buff, buff_size, "%s%s%s%s",
+    snprintf(buff, buff_size, "%s%s%s",
         led_state.num_lock ? " NUM" : " ",
         led_state.caps_lock ? " CAPS" : " ",
-        led_state.scroll_lock ? " SCROLL" : " ",
-        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+        led_state.scroll_lock ? " SCROLL" : " "
     );
     oled_write_P(buff, false);
 }
@@ -69,46 +40,65 @@ void oled_write_led_state(void){
 void oled_write_led_status(void){
     uint8_t buff_size = oled_max_chars();
     char buff[buff_size];
-    snprintf(buff, buff_size, " ArtiomSu Mode-> %d %s",
-        rgblight_get_mode(),
-        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+    snprintf(buff, buff_size, " ArtiomSu Mode-> %d ",
+        rgblight_get_mode()
     );
     oled_write_P(buff, false);
     char buff2[buff_size];
-    snprintf(buff2, buff_size, "\n Hue-> %d Sat-> %d %s",
+    snprintf(buff2, buff_size, "\n Hue-> %d St-> %d",
         rgblight_get_hue(),
-        rgblight_get_sat(),
-        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+        rgblight_get_sat()
     );
     oled_write_P(buff2, false);
     char buff3[buff_size];
-    snprintf(buff3, buff_size, "\n Val-> %d Spd-> %d %s",
+    snprintf(buff3, buff_size, "\n Val-> %d Tm-> %s",
         rgblight_get_val(),
-        rgblight_get_speed(),
-        "                                     " // TODO: this should fill the end with ' ' chars without buffer overflows right?
+        rgb_time_out_options_dict[rgb_time_out_index]
     );
     oled_write_P(buff3, false);
 }
 
+void oled_write_led_shortcuts(void){
+    uint8_t buff_size = oled_max_chars();
+    char buff[buff_size];
+    snprintf(buff, buff_size, " Shortcuts   %s",
+        rgb_time_out_options_dict[rgb_time_out_index]
+    );
+    oled_write_P(buff, false);
+    oled_write_P(PSTR("\n F2 BOOT FLASH\n"), false);
+    char buff2[buff_size];
+    snprintf(buff2, buff_size, " S Sat-> %d Tm T/R\n",
+        rgblight_get_sat()
+    );
+    oled_write_P(buff2, false);
+    oled_write_P(PSTR(""), false);
+}
+
 bool oled_task_user(void) {
-    //oled_set_cursor(0, 0);
-    //oled_advance_page(true);
+    // The boot is delayed so that the screen has time to update
+    if(about_to_boot){
+        render_logo();
+        oled_write_P(PSTR("    Mounting To PC "), false);
+        count_down_to_boot--;
+        if(rgblight_get_mode() != RGBLIGHT_MODE_STATIC_LIGHT){
+            rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
+            rgblight_sethsv_noeeprom(0, 250, 100);
+        }
+        if(count_down_to_boot == 0){
+            reset_keyboard();
+        }
+        return false;
+    }
+
     switch (get_highest_layer(layer_state)) {
         case Layer_main:
-            //render_logo();
             oled_write_led_status();
             oled_write_P(PSTR("\n"), false);
             break;
         case Layer_shortcuts:
-            oled_write_P(PSTR(" Shortcuts\n"), false);
-            oled_write_P(PSTR(" F2 BOOT FLASH\n"), false);
-            oled_write_P(PSTR(" S Sat Speed T/R\n"), false);
+            oled_write_led_shortcuts();
             break;
         case Layer_calc:
-            //oled_advance_page(true);
-            //oled_clear();
-            //oled_set_cursor(0, 0);
-            //oled_clear_whole_screen();
             oled_write_P(PSTR(" Calculator\n"), false);
             char pres[32];
             sprintf(pres, " Precision %d\n", decimal_point_pressision);
@@ -126,4 +116,40 @@ bool oled_task_user(void) {
     }
     oled_write_led_state();
     return false;
+}
+
+void matrix_scan_user(void) {
+  uint32_t current_timer_value = timer_read32();
+
+  if(rgb_timeout_counter == 0){ // this is reset in macros
+      rgb_timeout_counter = current_timer_value;
+  }
+
+  if(!rgb_timed_out){
+      if(timer_elapsed32(rgb_timeout_counter) > rgb_time_out_options[rgb_time_out_index]){
+          rgb_timed_out = true;
+          rgb_timeout_counter = current_timer_value;
+      }
+  }
+
+  if(rgb_timed_out){
+    if(rgblight_is_enabled()){
+        rgblight_disable_noeeprom();
+    }
+  }else{
+    if(!rgblight_is_enabled()){
+        rgblight_enable_noeeprom();
+    }
+  }
+
+  if(rgblight_is_enabled()){
+    if(!is_oled_on()){
+        oled_on();
+    }
+  }else{
+    if(is_oled_on()){
+        oled_off();
+    }
+  }
+
 }

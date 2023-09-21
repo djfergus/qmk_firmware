@@ -12,6 +12,8 @@ double te_interp(const char *expression, int *error);
 void delete_char_from_buff(void);
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    rgb_timed_out = false;
+    rgb_timeout_counter=0;
     switch (keycode) {
         case L1_1:
             if (record->event.pressed) {
@@ -135,6 +137,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("cd /temp/GIT/qmk_firmware && make clean && qmk flash -kb artiomsu_macropad_pico -km main");
             }
             break;
+        case BOOT_TRIGGER:
+            if(record->event.pressed){
+                about_to_boot = true;
+            }
     }
 	return true;
 }
