@@ -126,5 +126,12 @@ The 3 pin side, has the ground pin in the middle. And the two pins on the side w
 # Photos
 
 ![photo1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_1.jpg)
+![photo2](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_2.jpg)
+![photo3](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_3.jpg)
+![photo4](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_4.jpg)
+![photo5](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_5.jpg)
+![photo6](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_6.jpg)
+![photo7](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_7.jpg)
+![photo8](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_8.jpg)
 
 
