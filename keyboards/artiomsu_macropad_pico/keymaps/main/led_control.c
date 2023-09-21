@@ -29,10 +29,11 @@ void oled_write_led_state(void){
     led_t led_state = host_keyboard_led_state();
     uint8_t buff_size = oled_max_chars();
     char buff[buff_size];
-    snprintf(buff, buff_size, "%s%s%s",
+    snprintf(buff, buff_size, "%s%s%s%s",
         led_state.num_lock ? " NUM" : " ",
         led_state.caps_lock ? " CAPS" : " ",
-        led_state.scroll_lock ? " SCROLL" : " "
+        led_state.scroll_lock ? " SCROLL" : " ",
+        "                                   "
     );
     oled_write_P(buff, false);
 }
