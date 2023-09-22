@@ -3,7 +3,7 @@
 bool rgb_timed_out = false;
 uint32_t rgb_time_out_options[RGB_MAX_OPTIONS] = {30000, 60000, 300000, 600000};
 char rgb_time_out_options_dict[RGB_MAX_OPTIONS][4] = {"30s\0", "1m\0", "5m\0", "10m\0"};
-uint32_t rgb_time_out_index = 2;
+uint32_t rgb_time_out_index = 0;
 uint32_t rgb_timeout_counter = 0;
 
 uint8_t count_down_to_boot = 32;

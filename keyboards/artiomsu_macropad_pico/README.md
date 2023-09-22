@@ -98,7 +98,9 @@ Glue in the led strip grid. Connect it to 5v output on the pico.
 
 # Build Video
 
-coming soon.
+[demo](https://www.youtube.com/watch?v=DFtIEDBoUzQ)
+
+[build](https://www.youtube.com/watch?v=P-ggW76Ui1A)
 
 # QMK Tips
 
