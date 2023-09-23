@@ -3,7 +3,7 @@
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [Layer_main] = LAYOUT_artiomsu_macropad(
-        LT(Layer_shortcuts, KC_KB_MUTE), KC_KP_EQUAL, TO(Layer_calc), KC_BACKSPACE,
+        LT(Layer_shortcuts, KC_MUTE), KC_KP_EQUAL, TO(Layer_calc), KC_BACKSPACE,
         KC_NUM_LOCK,     KC_KP_SLASH,    KC_KP_ASTERISK,     KC_KP_MINUS,
         KC_KP_7,         KC_KP_8,        KC_KP_9,            KC_KP_PLUS,
         KC_KP_4,         KC_KP_5,        KC_KP_6,
@@ -66,8 +66,8 @@ bool encoder_update_user_Layer_calc(uint8_t index, bool clockwise) {
 bool encoder_update_user_Layer_main(uint8_t index, bool clockwise) {
     switch (index){
         case 0:
-            if (clockwise) {    tap_code(KC_KB_VOLUME_UP);
-            } else {            tap_code(KC_KB_VOLUME_DOWN);}
+            if (clockwise) {    tap_code(KC_VOLU);
+            } else {            tap_code(KC_VOLD);}
             break;
         case 1:
             if (clockwise) {    rgblight_increase_val_noeeprom();
