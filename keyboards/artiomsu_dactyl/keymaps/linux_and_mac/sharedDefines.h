@@ -4,6 +4,7 @@
 #include QMK_KEYBOARD_H
 //#include "version.h"
 #include "secrets.h"
+#include "os_detection.h"
 
 #define bool _Bool
 #define true 1
@@ -72,32 +73,16 @@ enum custom_keycodes {
 extern bool rgb_show;
 extern bool rgb_timed_out;
 extern uint32_t rgb_timeout_counter;
-//extern uint16_t rgb_sync_to_timer; //sync out timer to the official rgb timer.
 extern uint32_t rgb_time_out_value;  // in milliseconds
 
 extern bool use_bunnyhop;
 extern bool enable_bunnyhop;
 extern uint8_t bunny_hop_delay_counter;
 
-extern uint8_t modifiers_blink_count; // this is for stuff like enable_bunnyhop and the leader key
 extern bool leader_key_is_running;
-
-extern int8_t brightness_amount;
-extern uint8_t hue_amount;
 
 extern bool combos_on; // use combo feature by default
 extern bool mac_mode;
-
-//extern int word_length_count;
-//extern int last_word_length;
-
-//do not change the following
-extern bool use_default_lighting; // do not change used inside loop
-extern bool g_suspend_state;
-
-extern bool scrollwheel_up_on;
-extern bool scrollwheel_down_on;
-extern uint16_t scroll_delay_timer;
 
 extern bool colemak_mode;
 
@@ -132,13 +117,12 @@ extern uint16_t unlock_password[UNLOCK_PASSWORD_LENGTH];
 
 extern bool password_bypass;
 
-/*
-if the `#define SHOW_UNLOCK_ANIMATION` line is uncommented, the keyboard will light up an led for each correct key press. Might want to turn this off as it will be possible to guess the password eventually since you will know when you hit a correct letter.
-*/
-#define SHOW_UNLOCK_ANIMATION
+void manage_mac_mode_fn(void);
+void rgb_manage_leader(bool on);
+void rgb_manage_timeout(bool timed_out);
+void rgb_manage_macro_recording(bool on);
+void rgb_manage_password_lock(bool on);
 
-extern bool caps_lock_on;
-extern bool num_lock_on;
 extern bool dynamic_macro_recording;
 
 #endif

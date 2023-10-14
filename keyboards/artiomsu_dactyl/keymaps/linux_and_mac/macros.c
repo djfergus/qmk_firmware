@@ -15,12 +15,12 @@ bool dynamic_macro_recording = false;
 
 void dynamic_macro_record_start_user(int8_t direction){
     dynamic_macro_recording = true;
-    rgblight_blink_layer_repeat(13, 800, 10);
+    rgb_manage_macro_recording(dynamic_macro_recording);
 }
 
 void dynamic_macro_record_end_user(int8_t direction){
     dynamic_macro_recording = false;
-    rgblight_unblink_layer(13);
+    rgb_manage_macro_recording(dynamic_macro_recording);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -32,10 +32,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unlock_password_index = 0;
             }
         }
-        rgblight_set_layer_state(15, true);
+        rgb_manage_password_lock(true);
         return false; // return false to block the keys.
     }
-    rgblight_set_layer_state(15, false);
+    rgb_manage_password_lock(false);
 
     unlock_password_index = 0;
     rgb_timed_out = false;
@@ -86,19 +86,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             enable_bunnyhop = !enable_bunnyhop;
         break;
         case ST_M_brightness_up:
-            //brightness_amount+=10;
             rgblight_increase_val_noeeprom();
         break;
         case ST_M_brightness_down:
-            //brightness_amount-=10;
             rgblight_decrease_val_noeeprom();
         break;
         case ST_M_hue_up:
-            //hue_amount+=5;
             rgblight_increase_hue_noeeprom();
         break;
         case ST_M_hue_down:
-            //hue_amount-=5;
             rgblight_decrease_hue_noeeprom();
         break;
         case ST_M_sat_up:
@@ -124,7 +120,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
         case ST_M_toggle_rgb:
             rgb_show = !rgb_show;
-            //rgb_show ? rgblight_enable_noeeprom() : rgblight_disable_noeeprom();
         break;
         case ST_M_led_timeout_30s:
             rgb_time_out_value = 30000;
@@ -140,14 +135,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         break;
         case ST_M_mac_mode_toggle:
             mac_mode = !mac_mode;
-            if(mac_mode){
-                layer_move(Layer_mac_main);
-            }else{
-                layer_move(Layer_main);
-            }
-            if(colemak_mode){ // reset the colemak mode
-                layer_on(Layer_colemak);
-            }
+            manage_mac_mode_fn();
         break;
         case ST_M_combo_toggle:
             combo_toggle();
@@ -177,4 +165,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
     return true;
+}
+
+void manage_mac_mode_fn(void){
+    if(mac_mode){
+        layer_move(Layer_mac_main);
+    }else{
+        layer_move(Layer_main);
+    }
+    if(colemak_mode){ // reset the colemak mode
+        layer_on(Layer_colemak);
+    }
 }

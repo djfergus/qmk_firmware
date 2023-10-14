@@ -1,9 +1,6 @@
 #include "sharedDefines.h"
 
-bool scrollwheel_down_on = false;
-bool scrollwheel_up_on = false;
 //combos don't forget to edit COMBO_COUNT in config.h
-
 enum combo_events {
     COMBO_LEFT_SQUARE_BRACKET,
     COMBO_RIGHT_SQUARE_BRACKET,
@@ -205,10 +202,10 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
         pressed ? register_code16(KC_NONUS_HASH) : unregister_code16(KC_NONUS_HASH);
     break;
     case COMBO_SCROLL_UP:
-        scrollwheel_up_on = pressed;
+        pressed ? register_code16(KC_MS_WH_UP) : unregister_code16(KC_MS_WH_UP);
     break;
     case COMBO_SCROLL_DOWN:
-        scrollwheel_down_on = pressed;
+        pressed ? register_code16(KC_MS_WH_DOWN) : unregister_code16(KC_MS_WH_DOWN);
     break;
     case COMBO_ALT_F4:
         if(pressed){

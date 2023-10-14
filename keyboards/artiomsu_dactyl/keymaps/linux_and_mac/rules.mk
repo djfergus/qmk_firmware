@@ -11,6 +11,7 @@ BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 COMBO_ENABLE = yes			# combo feature
 LEADER_ENABLE = yes			# leader key
 DYNAMIC_MACRO_ENABLE = yes  # dynamic macro feature
+OS_DETECTION_ENABLE = yes   # os detection
 
 RGBLIGHT_ENABLE = yes        # Enable keyboard RGB underglow
 RGBLIGHT_DRIVER = ws2812

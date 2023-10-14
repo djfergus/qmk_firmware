@@ -1,23 +1,8 @@
 #include "sharedDefines.h"
 
-int8_t brightness_amount = -70;
-uint8_t hue_amount = 0;
-
 bool rgb_show = true;
 bool rgb_timed_out = true; // set to true so that you will need to type in the password straight away
-//uint16_t rgb_sync_to_timer = 0; //sync out timer to the official rgb timer.
 uint32_t rgb_time_out_value = 300000; // in milliseconds // 5 minutes by default
-
-uint8_t modifiers_blink_count = 0; // this is for stuff like enable_bunnyhop and the leader key
-
-bool use_default_lighting = true; // do not change used inside loop
-bool g_suspend_state;
-
-//extern rgb_config_t rgb_matrix_config;
-
-bool caps_lock_on = false;
-bool num_lock_on = false;
-//bool isLeft = is_keyboard_left(); doesn't work for leds, since the state is synced externally, but will leave it here for future reference.
 
 #define LAYER_NUM_LEDS_INDIC 10
 
@@ -88,11 +73,6 @@ const rgblight_segment_t PROGMEM led_l_on_dynamic_macros_rec[] = RGBLIGHT_LAYER_
     {65, 43, HSV_GREEN}
 );
 
-// this doesn't work it becomes white for some reason
-const rgblight_segment_t PROGMEM led_l_blackout[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, RGBLED_NUM, RGB_BLACK}
-);
-
 //good
 const rgblight_segment_t PROGMEM led_l_password_locked[] = RGBLIGHT_LAYER_SEGMENTS(
     {35, 30, HSV_RED}
@@ -100,109 +80,127 @@ const rgblight_segment_t PROGMEM led_l_password_locked[] = RGBLIGHT_LAYER_SEGMEN
 
 // don't forget to increase RGBLIGHT_MAX_LAYERS in config.h
 const rgblight_segment_t* const PROGMEM led_all_layers[] = RGBLIGHT_LAYERS_LIST(
-    led_l_capslock,
-    led_l_numlock,
-    led_l_mac_main,
-    led_l_colemac,
-    led_l_symbols,
-    led_l_macros,
-    led_l_gaming,
-    led_l_mouse,
-    led_l_nav,
+    led_l_capslock,               // 0
+    led_l_numlock,                // 1
+    led_l_mac_main,               // 2
+    led_l_colemac,                // 3
+    led_l_symbols,                // 4
+    led_l_macros,                 // 5
+    led_l_gaming,                 // 6
+    led_l_mouse,                  // 7
+    led_l_nav,                    // 8
 
-    led_l_on_combos,
-    led_l_on_password_bypass,
-    led_l_on_bunny_hopping,
-    led_l_on_leader,
-    led_l_on_dynamic_macros_rec,
-    led_l_blackout,
-    led_l_password_locked
+    led_l_on_combos,              // 9
+    led_l_on_password_bypass,     // 10
+    led_l_on_bunny_hopping,       // 11
+    led_l_on_leader,              // 12
+    led_l_on_dynamic_macros_rec,  // 13
+    led_l_password_locked         // 14
 );
 
+enum RGB_LAYER_MODS_STATE {
+    RGB_L_M_S_CAPS = 0,
+    RGB_L_M_S_NUM = 1,
+    RGB_L_M_S_L_MAC = 2,
+    RGB_L_M_S_L_COLMAC = 3,
+    RGB_L_M_S_L_SYM = 4,
+    RGB_L_M_S_L_MACROS = 5,
+    RGB_L_M_S_L_GAMING = 6,
+    RGB_L_M_S_L_MOUSE = 7,
+    RGB_L_M_S_L_NAV = 8,
+    RGB_L_M_S_COMBOS = 9,
+    RGB_L_M_S_PASS_BYPASS = 10,
+    RGB_L_M_S_B_HOPS = 11,
+    RGB_L_M_S_LEADER = 12,
+    RGB_L_M_S_MACRO_REC = 13,
+    RGB_L_M_S_PASS_LOCK = 14
+};
+
+void default_layer_blink_unblink(bool blink, enum RGB_LAYER_MODS_STATE layer){
+    blink ? rgblight_blink_layer_repeat(layer, 1000, 5) : rgblight_unblink_layer(layer);
+}
+
+void default_layer_blink_unblink_t(bool blink, enum RGB_LAYER_MODS_STATE layer, uint16_t duration_ms, uint8_t times){
+    blink ? rgblight_blink_layer_repeat(layer, duration_ms, times) : rgblight_unblink_layer(layer);
+}
 
 void keyboard_post_init_user(void) {
-    scroll_delay_timer = timer_read();
     rgblight_layers = led_all_layers;
     // set this to sync the state of the two halves since we are not using eeprom.
     rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
-    //rgblight_mode_noeeprom(RGBLIGHT_MODE_STATIC_LIGHT);
     rgblight_sethsv_noeeprom(13, 250, 20);
+    switch (detected_host_os())
+    {
+        case OS_MACOS:
+        case OS_IOS:
+            mac_mode = true;
+            manage_mac_mode_fn();
+            break;
+        default:
+            break;
+    }
 }
 
 void suspend_power_down_user(void) {
-    g_suspend_state = true;
+    rgb_show = true;
 }
 
 void suspend_wakeup_init_user(void) {
-    g_suspend_state = false;
+    rgb_show = false;
+}
+
+void rgb_manage_leader(bool on){
+    rgblight_set_layer_state(RGB_L_M_S_LEADER, on);
+}
+
+void rgb_manage_timeout(bool timed_out){
+    if(timed_out){
+        if(rgblight_is_enabled()){
+            rgblight_disable_noeeprom();
+        }
+    }else{
+        if(!rgblight_is_enabled()){
+            if(rgb_show){
+                rgblight_enable_noeeprom();
+            }
+        }else{
+            if(!rgb_show){
+                // bit of a hack here but works for now..
+                rgblight_unblink_all_but_layer(0);
+                rgblight_set_layer_state(RGB_L_M_S_L_MOUSE, false);
+                rgblight_disable_noeeprom();
+            }
+        }
+    }
+}
+
+void rgb_manage_macro_recording(bool on){
+    default_layer_blink_unblink_t(on, RGB_L_M_S_MACRO_REC, 800, 10);
+}
+
+void rgb_manage_password_lock(bool on){
+    rgblight_set_layer_state(RGB_L_M_S_PASS_LOCK, on);
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    //rgblight_set_layer_state(2, layer_state_cmp(state, Layer_mac_main));
-    if(layer_state_cmp(state, Layer_mac_main)){
-        rgblight_blink_layer_repeat(2, 1000, 5);
-    }else{
-        rgblight_unblink_layer(2);
-    }
-    //rgblight_set_layer_state(3, layer_state_cmp(state, Layer_colemak));
-    if(layer_state_cmp(state, Layer_colemak)){
-        rgblight_blink_layer_repeat(3, 1000, 5);
-    }else{
-        rgblight_unblink_layer(3);
-    }
-    rgblight_set_layer_state(4, layer_state_cmp(state, Layer_symbols) || layer_state_cmp(state, Layer_mac_symbols));
-    rgblight_set_layer_state(5, layer_state_cmp(state, Layer_macros));
-    rgblight_set_layer_state(6, layer_state_cmp(state, Layer_gaming));
-    rgblight_set_layer_state(7, layer_state_cmp(state, Layer_mouse));
-    rgblight_set_layer_state(8, layer_state_cmp(state, Layer_nav));
+    default_layer_blink_unblink(layer_state_cmp(state, Layer_mac_main), RGB_L_M_S_L_MAC);
+    default_layer_blink_unblink(layer_state_cmp(state, Layer_colemak), RGB_L_M_S_L_COLMAC);
+    rgblight_set_layer_state(RGB_L_M_S_L_SYM, layer_state_cmp(state, Layer_symbols) || layer_state_cmp(state, Layer_mac_symbols));
+    rgblight_set_layer_state(RGB_L_M_S_L_MACROS, layer_state_cmp(state, Layer_macros));
+    rgblight_set_layer_state(RGB_L_M_S_L_GAMING, layer_state_cmp(state, Layer_gaming));
+    rgblight_set_layer_state(RGB_L_M_S_L_MOUSE, layer_state_cmp(state, Layer_mouse));
+    rgblight_set_layer_state(RGB_L_M_S_L_NAV, layer_state_cmp(state, Layer_nav));
 
-    //rgblight_set_layer_state(9, combos_on);
-    if(combos_on){
-        rgblight_blink_layer_repeat(9, 1000, 5);
-    }else{
-        rgblight_unblink_layer(9);
-    }
-    //rgblight_set_layer_state(10, password_bypass);
-    if(password_bypass){
-        rgblight_blink_layer_repeat(10, 1000, 5);
-    }else{
-        rgblight_unblink_layer(10);
-    }
-    //rgblight_set_layer_state(11, enable_bunnyhop);
-    if(enable_bunnyhop){
-        rgblight_blink_layer_repeat(11, 1000, 5);
-    }else{
-        rgblight_unblink_layer(11);
-    }
-    //rgblight_set_layer_state(12, leader_key_is_running); moved to leader.c
-    if(dynamic_macro_recording){ // also in macros.c
-       rgblight_blink_layer_repeat(13, 800, 10);
-    }else{
-       rgblight_unblink_layer(13);
-    }
-    // 14 for blackout in leader
-    //rgblight_set_layer_state(15, unlock_password_index < UNLOCK_PASSWORD_LENGTH); // moved to macros
-
+    default_layer_blink_unblink(combos_on, RGB_L_M_S_COMBOS);
+    default_layer_blink_unblink(password_bypass, RGB_L_M_S_PASS_BYPASS);
+    default_layer_blink_unblink(enable_bunnyhop, RGB_L_M_S_B_HOPS);
+    default_layer_blink_unblink_t(dynamic_macro_recording, RGB_L_M_S_MACRO_REC, 800, 10);
 
     return state;
 }
 
 bool led_update_user(led_t led_state) {
-    caps_lock_on = led_state.caps_lock;
-    num_lock_on = led_state.num_lock;
-
-    //rgblight_set_layer_state(0, caps_lock_on);
-    if(caps_lock_on){
-        rgblight_blink_layer_repeat(0, 1000, 5);
-    }else{
-        rgblight_unblink_layer(0);
-    }
-    //rgblight_set_layer_state(1, num_lock_on);
-    if(num_lock_on){
-        rgblight_blink_layer_repeat(1, 1000, 5);
-    }else{
-        rgblight_unblink_layer(1);
-    }
-
+    default_layer_blink_unblink(led_state.caps_lock, RGB_L_M_S_CAPS);
+    default_layer_blink_unblink(led_state.num_lock, RGB_L_M_S_NUM);
     return true;
 }

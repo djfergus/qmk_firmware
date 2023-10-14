@@ -22,6 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MK_W_OFFSET_UNMOD 1
 #define MK_W_INTERVAL_UNMOD 20
 
+#define MK_W_INTERVAL_2 20
+#define MK_W_INTERVAL_1 100
+#define MK_W_INTERVAL_0 120
+
 #define MK_C_OFFSET_UNMOD 10 //Cursor offset per movement (unmodified)
 #define MK_C_INTERVAL_UNMOD 16 //Time between cursor movements (unmodified)
 #define MK_C_OFFSET_0 2 //Cursor offset per movement (KC_ACL0)
