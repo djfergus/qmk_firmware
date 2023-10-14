@@ -11,7 +11,7 @@ bool about_to_boot = false;
 
 void keyboard_post_init_user(void) {
     rgblight_mode_noeeprom(RGBLIGHT_MODE_TWINKLE + 3);
-    rgblight_sethsv_noeeprom(13, 250, 200);
+    rgblight_sethsv_noeeprom(13, 250, 100);
     expressions_buffer[0] = '\0';
 }
 

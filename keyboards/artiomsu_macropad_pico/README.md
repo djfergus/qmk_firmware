@@ -1,6 +1,7 @@
 # Macropad Pico
 
 ![header](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/header.jpg)
+![header2](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/header2.jpg)
 
 This is a remake of my first [macropad](https://github.com/ArtiomSu/qmk_firmware/tree/macropad_artiomsu/keyboards/macropad_artiomsu) with additional features aswell as using the raspberry pi pico instead of the arduino pro micro
 
@@ -95,6 +96,17 @@ Prepare the led strip. There is 6 sections with 5 leds each.
 Glue in the led strip grid. Connect it to 5v output on the pico.
 ![step_10](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_10.jpg)
 
+#### Step 11
+Now its time for the led strip around the edges. I used 19 leds for this. And another 5 for the bottom.
+![step_11](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_11.jpg)
+
+#### Step 12
+Glue in the 19 leds around and connect the last 5 leds.
+![step_12](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_12.jpg)
+
+#### Step 13
+Glue in all the leds, this is what it should look like. The end of the grid connects to the start of the edge leds. And finish up with the bottom leds just under the oled display. for a total of 54 leds
+![step_13](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/step_13.jpg)
 
 # Build Video
 
@@ -127,6 +139,7 @@ The 3 pin side, has the ground pin in the middle. And the two pins on the side w
 
 # Photos
 
+![photo0](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_0.jpg)
 ![photo1](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_1.jpg)
 ![photo2](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_2.jpg)
 ![photo3](https://github.com/ArtiomSu/qmk_firmware/raw/artiomsu_macropad_pico/keyboards/artiomsu_macropad_pico/public/images/photo_3.jpg)

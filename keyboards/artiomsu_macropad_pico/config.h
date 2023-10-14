@@ -1,8 +1,12 @@
 
 #pragma once
 
-
-#define RGBLED_NUM 30
+/*
+30 for the grid
+19 for the ring around
+5 bottom
+*/
+#define RGBLED_NUM 54
 //#define WS2812_DI_PIN GP28 use the one in info.json
 
 #define WS2812_PIO_USE_PIO1 // use state machine 1 for rgb
