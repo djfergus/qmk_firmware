@@ -24,16 +24,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     30 LEDs around the bottom of the board using 60/m led strip
     43 LEDs pointing up, in a grid
 */
-#define RGBLED_NUM 109
-#define RGBLIGHT_SPLIT
+#define RGBLED_NUM 1
+
+#define RGBLIGHT_DEFAULT_ON true
+
+//#define RGBLIGHT_SPLIT
 //#define RGBLED_SPLIT { 36, 36 }
 
-#define SERIAL_USART_FULL_DUPLEX
+// half duplex
+//#define SERIAL_USART_FULL_DUPLEX
+
 #define SERIAL_USART_DRIVER SIOD0
 #define SERIAL_USART_TX_PIN GP0
-#define SERIAL_USART_RX_PIN GP1
+//#define SERIAL_USART_RX_PIN GP1
 #define SERIAL_PIO_USE_PIO0 // use state machine 0 for serial split
 #define WS2812_PIO_USE_PIO1 // use state machine 1 for rgb
+#define WS2812_BYTE_ORDER WS2812_BYTE_ORDER_RGB
+#define RGB_MATRIX_DEFAULT_VAL 32
+//#define WS2812_DI_PIN GP23 
 
 //#define SPLIT_TRANSPORT_MIRROR // if this one is enabled the led modes dont sync // This mirrors the master side matrix to the slave side for features that react or require knowledge of master side key presses on the slave side. The purpose of this feature is to support cosmetic use of key events (e.g. RGB reacting to keypresses).
 #define SPLIT_LAYER_STATE_ENABLE // This enables syncing of the layer state between both halves of the split keyboard. The main purpose of this feature is to enable support for use of things like OLED display of the currently active layer.
@@ -42,8 +50,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SPLIT_ACTIVITY_ENABLE // This synchronizes the activity timestamps between sides of the split keyboard, allowing for activity timeouts to occur.
 
 //#define MASTER_LEFT
-#define MASTER_RIGHT
-
+//#define MASTER_RIGHT
+#define EE_HANDS
 
 #define RGBLIGHT_EFFECT_ALTERNATING
 #define RGBLIGHT_EFFECT_BREATHING
@@ -58,3 +66,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
 #define RGBLIGHT_EFFECT_SNAKE_LENGTH 8
+//#define BACKLIGHT_DEFAULT_ON false
+
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_LED GP25
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U
+
+#define BACKLIGHT_PWM_CHANNEL RP2040_PWM_CHANNEL_B
